@@ -26,22 +26,23 @@ def facex_regions(
         provides clear explanations by analyzing 19 key regions of the face, such as the eyes, nose, mouth,
         hair, and skin. This method helps reveal which parts of the face the model focuses on when making
         predictions about attributes like age, gender, or race.
-        
+
         Rather than explaining each individual image separately, FaceX aggregates information across the
         entire dataset, offering a broader view of the model's behavior. It looks at how the model activates
         different regions of the face for each decision. This aggregated information helps
         you see which facial features are most influential in the model's predictions, and whether certain
         features are being emphasized more than others.
-                    
+
         In addition to providing an overall picture of which regions are important, FaceX also zooms in on
         specific areas of the face - such as a section of the skin or a part of the hair - showing which
         patches of the image have the highest impact on the model's decision. This makes it easier to
         identify potential biases or problems in how the model is interpreting the face.
-        
+
         Overall, with FaceX, you can quickly and easily get a better understanding of your model's
-        decision-making process. This is especially useful for ensuring that your model is fair and 
+        decision-making process. This is especially useful for ensuring that your model is fair and
         transparent, and for spotting any potential biases that may
         affect its performance.
+
         <span class="alert alert-warning alert-dismissible fade show" role="alert"
         style="display: inline-block; padding: 10px;"> <i class="bi bi-exclamation-triangle-fill"></i> GPU
         access is recommended as this analysis can be computationally intensive, especially with large

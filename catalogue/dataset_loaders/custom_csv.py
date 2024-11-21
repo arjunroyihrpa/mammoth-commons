@@ -3,6 +3,7 @@ from mammoth.integration import loader
 from typing import List, Optional
 import os
 
+
 def _download(url, path=None):
     import urllib.request
 
@@ -92,14 +93,11 @@ def read_csv(url, **kwargs):
     return pd.read_csv(path, delimiter=delimiter, **kwargs)
 
 
-
 @loader(
     namespace="maniospas",
     version="v010",
     python="3.11",
-    packages=(
-        "pandas",
-    ),
+    packages=("pandas",),
 )
 def data_custom_csv(
     path: str = "",
