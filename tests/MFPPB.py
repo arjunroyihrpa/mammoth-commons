@@ -395,32 +395,32 @@ class BaseWeightBoosting(six.with_metaclass(ABCMeta, BaseEnsemble)):
         return X
 
     def calculate_weights(self, data, labels, sample_weight):
-        protected_positive = [0 for i in self.saIndex]
-        non_protected_positive = [0 for i in self.saIndex]
+        protected_positive = [0 for i in self.saValue]
+        non_protected_positive = [0 for i in self.saValue]
 
-        protected_negative = [0 for i in self.saIndex]
-        non_protected_negative = [0 for i in self.saIndex]
+        protected_negative = [0 for i in self.saValue]
+        non_protected_negative = [0 for i in self.saValue]
 
         for idx, val in enumerate(data):
-            for i in range(len((self.saIndex))):
+            for i in range(len((self.saValue))):
                 con = True
-                if isinstance(self.saValue[i], list):
+                if isinstance(self.saValue[self.sensitives[i]], list):
                     if (
-                        val[self.saIndex[i]] <= self.saValue[i][0]
-                        or val[self.saIndex[i]] >= self.saValue[i][1]
+                        self.saIndex[idx][i] <= self.saValue[self.sensitives[i]][0]
+                        or self.saIndex[idx][i] >= self.saValue[self.sensitives[i]][1]
                     ):
                         con = True
                     else:
                         con = False
-                elif isinstance(self.saValue[i], float):
-                    if val[self.saIndex[i]] <= self.saValue[i]:
+                elif isinstance(self.saValue[self.sensitives[i]], float):
+                    if self.saIndex[idx][i] <= self.saValue[self.sensitives[i]]:
                         con = True
-                    elif val[self.saIndex[i]] > self.saValue[i]:
+                    elif self.saIndex[idx][i] > self.saValue[self.sensitives[i]]:
                         con = False
-                elif isinstance(self.saValue[i], int):
-                    if val[self.saIndex[i]] == self.saValue[i]:
+                elif isinstance(self.saValue[self.sensitives[i]], int):
+                    if self.saIndex[idx][i] == self.saValue[self.sensitives[i]]:
                         con = True
-                    elif val[self.saIndex[i]] != self.saValue[i]:
+                    elif self.saIndex[idx][i] != self.saValue[self.sensitives[i]]:
                         con = False
                 if con == True:
                     if labels[idx] == 1:
@@ -436,19 +436,19 @@ class BaseWeightBoosting(six.with_metaclass(ABCMeta, BaseEnsemble)):
 
             tp = [
                 protected_positive[i] + non_protected_positive[i]
-                for i in range(len(self.saIndex))
+                for i in range(len(self.saValue))
             ]
             tn = [
                 protected_negative[i] + non_protected_negative[i]
-                for i in range(len(self.saIndex))
+                for i in range(len(self.saValue))
             ]
-            pp = [protected_positive[i] for i in range(len(self.saIndex))]
-            npp = [non_protected_positive[i] for i in range(len(self.saIndex))]
-            pn = [protected_negative[i] for i in range(len(self.saIndex))]
-            npn = [non_protected_negative[i] for i in range(len(self.saIndex))]
+            pp = [protected_positive[i] for i in range(len(self.saValue))]
+            npp = [non_protected_positive[i] for i in range(len(self.saValue))]
+            pn = [protected_negative[i] for i in range(len(self.saValue))]
+            npn = [non_protected_negative[i] for i in range(len(self.saValue))]
 
             tot = []
-            for i in range(len((self.saIndex))):
+            for i in range(len((self.saValue))):
                 tot.append(tp[i])
                 tot.append(tn[i])
                 tot.append(pp[i])
@@ -488,13 +488,15 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
         learning_rate=1.0,
         algorithm="SAMME",
         random_state=None,
-        saIndex=None,
-        saValue=None,
+        saIndex: np.ndarray = None,
+        saValue: dict = {},
         debug=False,
         X_test=None,
         y_test=None,
         preference=None,
         pareto=False,
+        pos_class=None,
+        #sensitives=None
     ):  # ,protected_attr=['Race','Sex']):
         super(Multi_Fair, self).__init__(
             estimator=estimator,
@@ -502,31 +504,44 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
             learning_rate=learning_rate,
             random_state=random_state,
         )
-
-        # self.prot_attr=protected_attr
+        
+        
         self.preference = preference  ########Initialization of Preference Weight vector
         self.pareto = pareto
         self.saIndex = saIndex
         self.saValue = saValue
         self.algorithm = algorithm
 
-        self.cost_protected_positive = [1 for i in self.saIndex]
-        self.cost_non_protected_positive = [1 for i in self.saIndex]
-        self.cost_protected_negative = [1 for i in self.saIndex]
-        self.cost_non_protected_negative = [1 for i in self.saIndex]
+        self.cost_protected_positive = [1 for i in self.saValue]
+        self.cost_non_protected_positive = [1 for i in self.saValue]
+        self.cost_protected_negative = [1 for i in self.saValue]
+        self.cost_non_protected_negative = [1 for i in self.saValue]
         self.estimators_ = None
         self.estimator_alphas_ = None
         self.classes_ = None
         self.n_classes_ = None
         self.costs = []
         self.PF = {}
+        self.sensitives=list(self.saValue.keys())
+        '''
+        if sensitives!=None:
+            self.prot_attr=sensitives
+            if len(self.saValue)!=len(self.prot_attr):
+                raise Exception(
+                    "Number of protected attributes do not match with the number of protected values"
+                )
         # self.PF_f={}
-
+        '''
         self.debug = debug
 
         self.X_test = X_test
         self.y_test = y_test
         self.pseudo = None
+        
+        if pos_class!=None:
+            self.pos_class=pos_class
+        else:
+            self.pos_class=1
 
     def fit(self, X, y, sample_weight=None):
         """Build a boosted classifier from the training set (X, y).
@@ -582,36 +597,37 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
 
     def calculate_fairness(self, data, labels, predictions):
         # TODO: this function needs optimization by employing the numpy structures
-        tp_protected = [0 for i in self.saIndex]
-        tn_protected = [0 for i in self.saIndex]
-        fp_protected = [0 for i in self.saIndex]
-        fn_protected = [0 for i in self.saIndex]
+        tp_protected = [0 for i in self.saValue]
+        tn_protected = [0 for i in self.saValue]
+        fp_protected = [0 for i in self.saValue]
+        fn_protected = [0 for i in self.saValue]
 
-        tp_non_protected = [0 for i in self.saIndex]
-        tn_non_protected = [0 for i in self.saIndex]
-        fp_non_protected = [0 for i in self.saIndex]
-        fn_non_protected = [0 for i in self.saIndex]
+        tp_non_protected = [0 for i in self.saValue]
+        tn_non_protected = [0 for i in self.saValue]
+        fp_non_protected = [0 for i in self.saValue]
+        fn_non_protected = [0 for i in self.saValue]
+        
 
         for idx, val in enumerate(data):
-            for i in range(len(self.saIndex)):
+            for i in range(len(self.saValue)):
                 # con=True
-                if isinstance(self.saValue[i], list):
+                if isinstance(self.saValue[self.sensitives[i]], list):
                     if (
-                        val[self.saIndex[i]] <= self.saValue[i][0]
-                        or val[self.saIndex[i]] >= self.saValue[i][1]
+                        self.saIndex[idx][i] <= self.saValue[self.sensitives[i]][0]
+                        or self.saIndex[idx][i] >= self.saValue[self.sensitives[i]][1]
                     ):
                         con = True
                     else:
                         con = False
-                elif isinstance(self.saValue[i], float):
-                    if val[self.saIndex[i]] <= self.saValue[i]:
+                elif isinstance(self.saValue[self.sensitives[i]], float):
+                    if self.saIndex[idx][i] <= self.saValue[self.sensitives[i]]:
                         con = True
-                    elif val[self.saIndex[i]] > self.saValue[i]:
+                    elif self.saIndex[idx][i] > self.saValue[self.sensitives[i]]:
                         con = False
-                elif isinstance(self.saValue[i], int):
-                    if val[self.saIndex[i]] == self.saValue[i]:
+                else:
+                    if self.saIndex[idx][i] == self.saValue[self.sensitives[i]]:
                         con = True
-                    elif val[self.saIndex[i]] != self.saValue[i]:
+                    elif self.saIndex[idx][i] != self.saValue[self.sensitives[i]]:
                         con = False
                 if con == True:  # protrcted population
                     if labels[idx] == predictions[idx]:  # correctly classified
@@ -647,7 +663,7 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
         cost = []
         fair_cost, eq_odds = [], []
         lists = ""
-        for i in range(len(self.saIndex)):
+        for i in range(len(self.saValue)):
             tpr_protected = tp_protected[i] / (tp_protected[i] + fn_protected[i])
             tpr_non_protected = tp_non_protected[i] / (
                 tp_non_protected[i] + fn_non_protected[i]
@@ -710,6 +726,7 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
             :maximise: boolean. True for maximising, False for minimising
             :return: A (n_points, ) boolean array, indicating whether each point is Pareto efficient
             """
+            eps=0.001
             is_efficient = np.ones(costs.shape[0], dtype=bool)
             for i, c in enumerate(costs):
                 if is_efficient[i]:
@@ -729,15 +746,16 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
             objective = deepcopy(self.fairobs)
         else:
             objective = deepcopy(self.ob)
+        #objective=np.round(objective,2)
         if self.pareto == False:
             PF = {i: objective[i] for i in range(len(objective))}
             F = np.array([objective[o] for o in range(len(objective))])
-            self.PF = F
+            self.PF = PF
         else:
             pf = is_pareto(objective)
             PF = {i: objective[i] for i in range(len(pf)) if pf[i] == True}
             F = np.array(list(PF.values()))
-            self.PF = F
+            self.PF = PF
 
         weights = self.preference  ##Preference Weights
 
@@ -880,6 +898,7 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
         estimator.fit(X, y, sample_weight=sample_weight)
         y_predict = estimator.predict(X)
         proba = estimator.predict_proba(X)
+        
 
         if iboost == 0:
             self.classes_ = getattr(estimator, "classes_", None)
@@ -928,8 +947,8 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
         else:
             # cumulative_error = estimator_error
             # cumulative_balanced_error = 1 - sklearn.metrics.balanced_accuracy_score(y, y_predict)
-            fairness = [1 for i in self.saIndex]
-            eq_ods = [1 for i in self.saIndex]
+            fairness = [1 for i in self.saValue]
+            eq_ods = [1 for i in self.saValue]
 
         """
         For fast training -to reduce actual runtime the loss functions are measured using tp, fp, fn, and tn.
@@ -939,7 +958,7 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
         tn, fp, fn, tp = confusion_matrix(
             y,
             self.classes_.take(np.argmax(self.predictions_array, axis=1), axis=0),
-            labels=[-1, 1],
+            #labels=[0, 1],
         ).ravel()
         TPR = (float(tp)) / (tp + fn)
         TNR = (float(tn)) / (tn + fp)
@@ -949,27 +968,27 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
 
         if not iboost == self.n_estimators - 1:
             for idx, row in enumerate(sample_weight):
-                if y[idx] == 1 and y_predict[idx] != 1:
-                    cost_p = [1 for i in self.saIndex]
-                    for i in range(len(self.saIndex)):
+                if y[idx] == self.pos_class and y_predict[idx] != self.pos_class:
+                    cost_p = [1 for i in self.saValue]
+                    for i in range(len(self.saValue)):
                         con = True
-                        if isinstance(self.saValue[i], list):
+                        if isinstance(self.saValue[self.sensitives[i]], list):
                             if (
-                                X[idx][self.saIndex[i]] <= self.saValue[i][0]
-                                or X[idx][self.saIndex[i]] >= self.saValue[i][1]
+                                self.saIndex[idx][i] <= self.saValue[self.sensitives[i]][0]
+                                or self.saIndex[idx][i] >= self.saValue[self.sensitives[i]][1]
                             ):
                                 con = True
                             else:
                                 con = False
-                        elif isinstance(self.saValue[i], float):
-                            if X[idx][self.saIndex[i]] <= self.saValue[i]:
+                        elif isinstance(self.saValue[self.sensitives[i]], float):
+                            if self.saIndex[idx][i] <= self.saValue[self.sensitives[i]]:
                                 con = True
-                            elif X[idx][self.saIndex[i]] > self.saValue[i]:
+                            elif self.saIndex[idx][i] > self.saValue[self.sensitives[i]]:
                                 con = False
-                        elif isinstance(self.saValue[i], int):
-                            if X[idx][self.saIndex[i]] == self.saValue[i]:
+                        elif isinstance(self.saValue[self.sensitives[i]], int):
+                            if self.saIndex[idx][i] == self.saValue[self.sensitives[i]]:
                                 con = True
-                            elif X[idx][self.saIndex[i]] != self.saValue[i]:
+                            elif self.saIndex[idx][i] != self.saValue[self.sensitives[i]]:
                                 con = False
                         if con == True:
                             cost_p[i] = self.cost_protected_positive[i]
@@ -980,27 +999,27 @@ class Multi_Fair(BaseWeightBoosting, ClassifierMixin):
                         alpha * max(proba[idx][0], proba[idx][1])
                     )
 
-                elif y[idx] == -1 and y_predict[idx] != -1:
-                    cost_n = [1 for i in self.saIndex]
-                    for i in range(len(self.saIndex)):
+                elif y[idx] != self.pos_class and y_predict[idx] == self.pos_class:
+                    cost_n = [1 for i in self.saValue]
+                    for i in range(len(self.saValue)):
                         con = True
-                        if isinstance(self.saValue[i], list):
+                        if isinstance(self.saValue[self.sensitives[i]], list):
                             if (
-                                X[idx][self.saIndex[i]] <= self.saValue[i][0]
-                                or X[idx][self.saIndex[i]] >= self.saValue[i][1]
+                                self.saIndex[idx][i] <= self.saValue[self.sensitives[i]][0]
+                                or self.saIndex[idx][i] >= self.saValue[self.sensitives[i]][1]
                             ):
                                 con = True
                             else:
                                 con = False
-                        elif isinstance(self.saValue[i], float):
-                            if X[idx][self.saIndex[i]] <= self.saValue[i]:
+                        elif isinstance(self.saValue[self.sensitives[i]], float):
+                            if self.saIndex[idx][i] <= self.saValue[self.sensitives[i]]:
                                 con = True
-                            elif X[idx][self.saIndex[i]] > self.saValue[i]:
+                            elif self.saIndex[idx][i] > self.saValue[self.sensitives[i]]:
                                 con = False
-                        elif isinstance(self.saValue[i], int):
-                            if X[idx][self.saIndex[i]] == self.saValue[i]:
+                        elif isinstance(self.saValue[self.sensitives[i]], int):
+                            if self.saIndex[idx][i] == self.saValue[self.sensitives[i]]:
                                 con = True
-                            elif X[idx][self.saIndex[i]] != self.saValue[i]:
+                            elif self.saIndex[idx][i] != self.saValue[self.sensitives[i]]:
                                 con = False
                         if con == True:
                             cost_n[i] = self.cost_protected_negative[i]
