@@ -111,7 +111,7 @@ def data_researchers(
             for i in DF_Affiliations.index
         ]
 
-    graph_data = Graph_CSH(DF_papers, DF_Affiliations)
+    graph_data = Graph_CSH(DF_papers, DF_Affiliations, sensitive_columns=["Gender"])
     graph_data.create_coauth_graph()
 
     return graph_data

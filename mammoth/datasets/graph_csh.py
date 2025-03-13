@@ -2,10 +2,11 @@ from mammoth.datasets.dataset import Dataset
 
 
 class Graph_CSH(Dataset):
-    def __init__(self, papers_df, affiliations_df):
+    def __init__(self, papers_df, affiliations_df, sensitive_columns=[]):
         self.papers_df = papers_df
         self.affiliations_df = affiliations_df
         self.G = None
+        self.cols = sensitive_columns
 
     def create_coauth_graph(self):
         import networkx as nx

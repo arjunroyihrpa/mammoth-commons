@@ -250,7 +250,6 @@ def generate_group_stats(dataset, sampling_attribute):
     return "\n".join(stats)
 
 
-# Heinous
 template = """
 <!DOCTYPE html>
 <html>
@@ -375,7 +374,18 @@ template = """
             border-bottom: 2px solid #007bff;
             color: #2c3e50;
         }}
+        .hidden {{
+            display: none;
+        }}
     </style>
+    <script>
+        function toggleProtectedAttribute() {{
+            var selectedValue = document.getElementById("protected-attribute").value;
+            document.getElementById("female-section").classList.add("hidden");
+            document.getElementById("male-section").classList.add("hidden");
+            document.getElementById(selectedValue + "-section").classList.remove("hidden");
+        }}
+    </script>
 </head>
 <body>
     <div class="csh-container">
@@ -384,7 +394,13 @@ template = """
             <div class="protected-attributes">
                 <h4>Protected attributes:</h4>
                 <div>Sensitive attribute: {sensitive_attribute}</div>
-                <div>Protected value: {protected_attribute}</div>
+                <div class="dropdown-container">
+                    <label for="protected-attribute">Select Protected Attribute:</label>
+                    <select id="protected-attribute" onchange="toggleProtectedAttribute()">
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
                 <div>Sampling attribute: {sampling_attribute}</div>
             </div>
             <div class="ranking-metrics">
@@ -394,86 +410,13 @@ template = """
         </div>
 
         <div class="main-content">
-            <div class="visualization-full network-visualization">
-                <h3 class="section-title">1. Network Structure</h3>
-                <img src="data:image/png;base64,{network_img_str}" alt="Network" style="width: 100%;"/>
-                <div class="network-stats">
-                    <div class="network-stat">Nodes: 1739</div>
-                    <div class="network-stat">Edges: 9943</div>
-                    <div class="network-stat">Density: 0.003</div>
-                    <div class="network-stat">LCC: 0.65</div>
-                    <div class="network-stat">CC: 529</div>
-                </div>
+            <div id="female-section" class="female-protected">
+                {female_fragment}
             </div>
-            
-            <div class="visualization-full">
-                <h3 class="section-title">2. Categorical Distribution</h3>
-                <img src="data:image/png;base64,{normal_distribution_img_str}" alt="Categorical Distribution" style="width: 100%;"/>
-                <div class="figure-caption">
-                    Distribution of {ranking_variable} across categories, separated by gender.
-                </div>
-                <img src="data:image/png;base64,{distribution_img_str}" alt="Categorical Distribution" style="width: 100%;"/>
-                <div class="figure-caption">
-                    Post-Mitigation Distribution of {ranking_variable} across categories, separated by gender.
-                </div>
+            <div id="male-section" class="male-protected hidden">
+                {male_fragment}
             </div>
 
-            <h3 class="section-title">3. Exposure Distance Analysis</h3>
-            <div class="visualization-full exposure-distance-visualization">
-                <img src="data:image/png;base64,{er_viz_str}" alt="Exposure Distance Visualization" />
-                <div class="figure-caption">
-                    <div class="caption-definition">
-                        The Exposure Distance (ED) measures how fair is the visibility of researchers from different demographic groups in rankings. 
-                        In this plot, we compare the position of each woman vs. each man inside the income group categories, and then we average those values. 
-                        A value of ED closer to 0 means a fairer representation, and we show how using a mitigation strategy (statistical parity in this case) 
-                        improves the metric, making it smaller.
-                    </div>
-                    <div class="caption-elements">
-                        <div class="caption-element">
-                            <span class="element-marker dot-marker"></span>
-                            Purple dots show the Exposure Distance when researchers are ranked by raw degree centrality
-                        </div>
-                        <div class="caption-element">
-                            <span class="element-marker boxplot-marker"></span>
-                            Box plots show the distribution of Exposure Distance across {n_runs} runs of the fairness-aware ranking algorithm
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="metrics">
-                <h3>Results</h3>
-                
-                <h4>Exposure Distance by Group</h4>
-                <table class="metrics-table">
-                    <tr>
-                        <th>Group</th>
-                        <th>Original ED</th>
-                        <th>Mean Fair ED</th>
-                        <th>Std Dev Fair ED</th>
-                    </tr>
-                    {group_metrics_rows}
-                </table>
-
-                <h4>Statistical Summary</h4>
-                <table class="metrics-table">
-                    <tr>
-                        <th>Metric</th>
-                        <th>Original</th>
-                        <th>Fair (Mean)</th>
-                    </tr>
-                    <tr>
-                        <td>Max ED Disparity</td>
-                        <td>{max_disparity_old:.2f}</td>
-                        <td>{max_disparity_new:.2f}</td>
-                    </tr>
-                    <tr>
-                        <td>Std Dev Across Groups</td>
-                        <td>{std_dev_old:.2f}</td>
-                        <td>{std_dev_new:.2f}</td>
-                    </tr>
-                </table>
-            </div>
         </div>
 
         <div class="dataset-info">
@@ -489,19 +432,97 @@ template = """
 </html>
 """
 
+protected_fragment = """
+    <div class="visualization-full network-visualization">
+        <h3 class="section-title">1. Network Structure</h3>
+        <img src="data:image/png;base64,{network_img_str}" alt="Network" style="width: 100%;"/>
+        <div class="network-stats">
+            <div class="network-stat">Nodes: 1739</div>
+            <div class="network-stat">Edges: 9943</div>
+            <div class="network-stat">Density: 0.003</div>
+            <div class="network-stat">LCC: 0.65</div>
+            <div class="network-stat">CC: 529</div>
+        </div>
+    </div>
+    
+    <div class="visualization-full">
+        <h3 class="section-title">2. Categorical Distribution</h3>
+        <img src="data:image/png;base64,{normal_distribution_img_str}" alt="Categorical Distribution" style="width: 100%;"/>
+        <div class="figure-caption">
+            Distribution of {ranking_variable} across categories, separated by gender.
+        </div>
+        <img src="data:image/png;base64,{distribution_img_str}" alt="Categorical Distribution" style="width: 100%;"/>
+        <div class="figure-caption">
+            Post-Mitigation Distribution of {ranking_variable} across categories, separated by gender.
+        </div>
+    </div>
 
-def generate_html_report(
-    dataset,
+    <h3 class="section-title">3. Exposure Distance Analysis</h3>
+    <div class="visualization-full exposure-distance-visualization">
+        <img src="data:image/png;base64,{er_viz_str}" alt="Exposure Distance Visualization" />
+        <div class="figure-caption">
+            <div class="caption-definition">
+                The Exposure Distance (ED) measures how fair is the visibility of researchers from different demographic groups in rankings. 
+                In this plot, we compare the position of each woman vs. each man inside the income group categories, and then we average those values. 
+                A value of ED closer to 0 means a fairer representation, and we show how using a mitigation strategy (statistical parity in this case) 
+                improves the metric, making it smaller.
+            </div>
+            <div class="caption-elements">
+                <div class="caption-element">
+                    <span class="element-marker dot-marker"></span>
+                    Purple dots show the Exposure Distance when researchers are ranked by raw degree centrality
+                </div>
+                <div class="caption-element">
+                    <span class="element-marker boxplot-marker"></span>
+                    Box plots show the distribution of Exposure Distance across {n_runs} runs of the fairness-aware ranking algorithm
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="metrics">
+        <h3>Results</h3>
+        
+        <h4>Exposure Distance by Group</h4>
+        <table class="metrics-table">
+            <tr>
+                <th>Group</th>
+                <th>Original ED</th>
+                <th>Mean Fair ED</th>
+                <th>Std Dev Fair ED</th>
+            </tr>
+            {group_metrics_rows}
+        </table>
+
+        <h4>Statistical Summary</h4>
+        <table class="metrics-table">
+            <tr>
+                <th>Metric</th>
+                <th>Original</th>
+                <th>Fair (Mean)</th>
+            </tr>
+            <tr>
+                <td>Max ED Disparity</td>
+                <td>{max_disparity_old:.2f}</td>
+                <td>{max_disparity_new:.2f}</td>
+            </tr>
+            <tr>
+                <td>Std Dev Across Groups</td>
+                <td>{std_dev_old:.2f}</td>
+                <td>{std_dev_new:.2f}</td>
+            </tr>
+        </table>
+    </div>
+"""
+
+def generate_html_fragment(
+    ranking_variable,
     ER_Old,
     ER_Mitigation,
     boxplot_img_str,
     network_img_str,
     normal_distribution_img_str,
     distribution_img_str,
-    sensitive_attribute,
-    protected_attribute,
-    sampling_attribute,
-    ranking_variable,
     n_runs,
 ):
     # Calculate summary statistics
@@ -515,13 +536,10 @@ def generate_html_report(
     )
 
     # Generate HTML content
-    html_content = template.format(
-        sensitive_attribute=sensitive_attribute,
-        protected_attribute=protected_attribute,
-        sampling_attribute=sampling_attribute,
-        ranking_variable=ranking_variable,
+    html_content = protected_fragment.format(
         er_viz_str=boxplot_img_str,
         network_img_str=network_img_str,
+        ranking_variable=ranking_variable,
         normal_distribution_img_str=normal_distribution_img_str,
         distribution_img_str=distribution_img_str,
         group_metrics_rows=generate_group_metrics_rows(ER_Old, ER_Mitigation, n_runs),
@@ -530,52 +548,31 @@ def generate_html_report(
         std_dev_old=statistics.stdev(list(ER_Old.values())),
         std_dev_new=statistics.stdev(list(mean_mitigation_by_group.values())),
         n_runs=n_runs,
-        group_stats=generate_group_stats(dataset, sampling_attribute),
     )
 
-    return HTML(html_content)
+    return html_content
 
-
-def validate_input(
-    dataset, model, n_runs, sensitive, protected, sampling_attribute, ranking_variable
+def generate_html_report(
+    dataset,
+    sensitive_attribute,
+    sampling_attribute,
+    ranking_variable,
+    female_fragment,
+    male_fragment,
+    n_runs
 ):
-    if not isinstance(n_runs, int) or not (1 <= n_runs <= 100):
-        raise ValueError("n_runs must be an integer between 1 and 100")
 
-    try:
-        sensitive_attr = sensitive[0]
-        assert sensitive_attr == "Gender"
-        assert protected in ["female", "male"]
-    except:
-        raise ValueError(
-            "Currently, only `Gender` is a valid sensitive attribute, and the protected group is `female` or `male`"
-        )
 
-    required_columns = [sensitive_attr, sampling_attribute, ranking_variable]
-    missing_columns = [
-        col for col in required_columns if col not in dataset.data.columns
-    ]
-
-    if missing_columns:
-        raise ValueError(
-            f"The following columns are missing in the dataset: {', '.join(missing_columns)}"
-        )
-
-    if protected not in dataset.data[sensitive].values:
-        raise ValueError(
-            f"The protected value '{protected}' is not present in the sensitive column '{sensitive}'"
-        )
-
-    if ranking_variable not in ["Productivity", "Degree", "Citations"]:
-        raise ValueError(
-            f"The Ranking Variable can only be one of Productivity, Degree or Citations"
-        )
-
-    if sampling_attribute not in ["Nationality_IncomeGroup", "Nationality_Region"]:
-        raise ValueError(
-            f"The Sampling Attribute may only be one of `Nationality_IncomeGroup` or `Nationality_Region`"
-        )
-
+    html_content = template.format(
+        sensitive_attribute=sensitive_attribute,
+        sampling_attribute=sampling_attribute,
+        ranking_variable=ranking_variable,
+        group_stats=generate_group_stats(dataset, sampling_attribute),
+        female_fragment=female_fragment,
+        male_fragment=male_fragment,
+        n_runs=n_runs,
+    )
+    return HTML(html_content)
 
 def plot_network(
     G,
@@ -643,7 +640,6 @@ def exposure_distance_comparison(
     model: ResearcherRanking,
     sensitive: List[str] = "Gender",
     n_runs: int = 1,
-    protected: str = "female",
     sampling_attribute: str = "Nationality_IncomeGroup",
     ranking_variable: mammoth.integration.Options("Degree", "Citations", "Productivity") = "Degree"
 ) -> HTML:
@@ -652,171 +648,170 @@ def exposure_distance_comparison(
     Sensitive attributes is a comma-separated list of the attributes relevant for fairness analysis. WCurrently, only *Gender* is supported.
     Args:
         n_runs: Choose a natural number between 1 and 100.
-        protected: The protected group for the fairness analysis. Currently, only *female* or *male* are supported.
         sampling_attribute: The value by which we group the analysis for finer-grained results. One of *Nationality&#95;IncomeGroup* or *Nationality&#95;Region*.
         ranking_variable: This refers to the main criteria by which ranking is done.  One of *Degree*, *Citations* or *Productivity*.
     """
 
-    # TODO: uncomment
-    # validate_input(
-    #    dataset,
-    #    model,
-    #    n_runs,
-    #    sensitive,
-    #    protected,
-    #    sampling_attribute,
-    #    ranking_variable,
-    # )
+    fragments = {
+        "male": "",
+        "female": ""
+    }
+    for protected in ["female", "male"]:
+        n_runs = int(n_runs)
 
-    n_runs = int(n_runs)
+        # initialize our own baseline model
+        model_baseline = model.baseline_rank
 
-    # initialize our own baseline model
-    model_baseline = model.baseline_rank
+        researchers_graph = dataset.G
 
-    researchers_graph = dataset.G
-
-    # Plot the network if it is small enough
-    if len(researchers_graph.nodes) < 2500:
-        network_image = plot_network(
-            G=researchers_graph,
-            title=" Co-authorship network",
-            name_plot="Co-authorship_network.pdf",
-        )
-    else:
-        network_image = image_to_base64("./data/researchers/network.png")
-
-    Dataframe_nodes = {"id": []}
-    for i in researchers_graph.nodes():
-        Dataframe_nodes["id"] += [i]
-        for k, v in researchers_graph.nodes[i].items():
-            try:
-                Dataframe_nodes[k] += [v]
-            except:
-                Dataframe_nodes[k] = [v]
-
-    data = pd.DataFrame(Dataframe_nodes)
-
-    # Only consider those rows where the sampling attribute is not missing
-    dataframe_sampling = data[~data[sampling_attribute].isnull()]
-
-    Old_ranking_variable = ranking_variable
-    sensitive_attribute = sensitive[0]
-    protected_attribute = protected
-
-    ER_Old = {}
-    ER_Mitigation = {}
-
-    ranked_dataframe_normal = pd.DataFrame()
-    ranked_dataframe_mitigation = pd.DataFrame()
-
-    for category in sorted(set(dataframe_sampling[sampling_attribute])):
-
-        dataframe_filtered = dataframe_sampling[
-            dataframe_sampling[sampling_attribute] == category
-        ]
-
-        print(f"{len(dataframe_filtered)} researchers in the category {category}")
-
-        # Rank the rows using the model
-        if callable(model_baseline):
-            ranked_dataframe_normal_category = model_baseline(
-                dataframe_filtered, ranking_variable
+        # Plot the network if it is small enough
+        if len(researchers_graph.nodes) < 2500:
+            network_image = plot_network(
+                G=researchers_graph,
+                title=" Co-authorship network",
+                name_plot="Co-authorship_network.pdf",
             )
         else:
-            ranked_dataframe_normal_category = model_baseline.rank(
-                dataframe_filtered, ranking_variable
-            )
+            network_image = image_to_base64("./data/researchers/network.png")
 
-        # Compute the exposure distance for the normal ranking
-        ER_Old[category] = Exposure_distance(
-            ranked_dataframe_normal_category,
-            ranking_variable=Old_ranking_variable,
-            sensitive_attribute=sensitive_attribute,
-            protected_attirbute=protected_attribute,
-        )
-        ranked_dataframe_normal = pd.concat(
-            [ranked_dataframe_normal, ranked_dataframe_normal_category]
-        )
+        Dataframe_nodes = {"id": []}
+        for i in researchers_graph.nodes():
+            Dataframe_nodes["id"] += [i]
+            for k, v in researchers_graph.nodes[i].items():
+                try:
+                    Dataframe_nodes[k] += [v]
+                except:
+                    Dataframe_nodes[k] = [v]
 
-        # Compute the exposure distance for the normal ranking
-        ER_Mitigation[category] = {}
-        ranked_dataframe_mitigation_category_runs = []
+        data = pd.DataFrame(Dataframe_nodes)
 
-        for r in range(n_runs):
+        # Only consider those rows where the sampling attribute is not missing
+        dataframe_sampling = data[~data[sampling_attribute].isnull()]
+
+        Old_ranking_variable = ranking_variable
+        sensitive_attribute = sensitive[0]
+        protected_attribute = protected
+
+        ER_Old = {}
+        ER_Mitigation = {}
+
+        ranked_dataframe_normal = pd.DataFrame()
+        ranked_dataframe_mitigation = pd.DataFrame()
+
+        for category in sorted(set(dataframe_sampling[sampling_attribute])):
+
+            dataframe_filtered = dataframe_sampling[
+                dataframe_sampling[sampling_attribute] == category
+            ]
+
+            print(f"{len(dataframe_filtered)} researchers in the category {category}")
+
             # Rank the rows using the model
-            if callable(model):
-                ranked_dataframe_mitigation_category = model(
+            if callable(model_baseline):
+                ranked_dataframe_normal_category = model_baseline(
                     dataframe_filtered, ranking_variable
                 )
             else:
-                ranked_dataframe_mitigation_category = model.rank(
+                ranked_dataframe_normal_category = model_baseline.rank(
                     dataframe_filtered, ranking_variable
                 )
 
-            ER_Mitigation[category][r] = Exposure_distance(
-                ranked_dataframe_mitigation_category,
+            # Compute the exposure distance for the normal ranking
+            ER_Old[category] = Exposure_distance(
+                ranked_dataframe_normal_category,
                 ranking_variable=Old_ranking_variable,
                 sensitive_attribute=sensitive_attribute,
                 protected_attirbute=protected_attribute,
             )
-            ranked_dataframe_mitigation_category_runs.append(
-                ranked_dataframe_mitigation_category
+            ranked_dataframe_normal = pd.concat(
+                [ranked_dataframe_normal, ranked_dataframe_normal_category]
             )
 
-        # Concatenate all runs
-        all_runs_df = pd.concat(ranked_dataframe_mitigation_category_runs)
+            # Compute the exposure distance for the normal ranking
+            ER_Mitigation[category] = {}
+            ranked_dataframe_mitigation_category_runs = []
 
-        # Separate numeric columns for mean calculation
-        numeric_cols = all_runs_df.select_dtypes(include=[np.number]).columns
-        mean_ranking_df = all_runs_df[numeric_cols].groupby(level=0).mean()
+            for r in range(n_runs):
+                # Rank the rows using the model
+                if callable(model):
+                    ranked_dataframe_mitigation_category = model(
+                        dataframe_filtered, ranking_variable
+                    )
+                else:
+                    ranked_dataframe_mitigation_category = model.rank(
+                        dataframe_filtered, ranking_variable
+                    )
 
-        # If you need non-numeric columns, take the first occurrence (e.g., string columns remain unchanged)
-        non_numeric_df = (
-            all_runs_df.select_dtypes(exclude=[np.number]).groupby(level=0).first()
+                ER_Mitigation[category][r] = Exposure_distance(
+                    ranked_dataframe_mitigation_category,
+                    ranking_variable=Old_ranking_variable,
+                    sensitive_attribute=sensitive_attribute,
+                    protected_attirbute=protected_attribute,
+                )
+                ranked_dataframe_mitigation_category_runs.append(
+                    ranked_dataframe_mitigation_category
+                )
+
+            # Concatenate all runs
+            all_runs_df = pd.concat(ranked_dataframe_mitigation_category_runs)
+
+            # Separate numeric columns for mean calculation
+            numeric_cols = all_runs_df.select_dtypes(include=[np.number]).columns
+            mean_ranking_df = all_runs_df[numeric_cols].groupby(level=0).mean()
+
+            # If you need non-numeric columns, take the first occurrence (e.g., string columns remain unchanged)
+            non_numeric_df = (
+                all_runs_df.select_dtypes(exclude=[np.number]).groupby(level=0).first()
+            )
+
+            # Merge numeric and non-numeric back together
+            mean_ranking_df = pd.concat([mean_ranking_df, non_numeric_df], axis=1)
+
+            # Append to the main mitigation DataFrame
+            ranked_dataframe_mitigation = pd.concat(
+                [ranked_dataframe_mitigation, mean_ranking_df]
+            )
+
+        normal_distribution_image = boxplots_rankings(
+            ranked_dataframe_normal,
+            hue_variable=sensitive_attribute,
+            y_variable=sampling_attribute,
+            ranking_variable="Ranking_" + Old_ranking_variable,
         )
 
-        # Merge numeric and non-numeric back together
-        mean_ranking_df = pd.concat([mean_ranking_df, non_numeric_df], axis=1)
-
-        # Append to the main mitigation DataFrame
-        ranked_dataframe_mitigation = pd.concat(
-            [ranked_dataframe_mitigation, mean_ranking_df]
+        distribution_image = boxplots_rankings(
+            ranked_dataframe_mitigation,
+            hue_variable=sensitive_attribute,
+            y_variable=sampling_attribute,
+            ranking_variable="Ranking_" + Old_ranking_variable,
         )
 
-    normal_distribution_image = boxplots_rankings(
-        ranked_dataframe_normal,
-        hue_variable=sensitive_attribute,
-        y_variable=sampling_attribute,
-        ranking_variable="Ranking_" + Old_ranking_variable,
-    )
+        mitigation_strategies_image = boxplots_mitigation_strategies_pretty(
+            ER_Old,
+            ER_Mitigation,
+            Method="Statistical_parity",
+            sampling_attribute=sampling_attribute,
+            n_runs=n_runs,
+        )
 
-    distribution_image = boxplots_rankings(
-        ranked_dataframe_mitigation,
-        hue_variable=sensitive_attribute,
-        y_variable=sampling_attribute,
-        ranking_variable="Ranking_" + Old_ranking_variable,
-    )
-
-    mitigation_strategies_image = boxplots_mitigation_strategies_pretty(
-        ER_Old,
-        ER_Mitigation,
-        Method="Statistical_parity",
-        sampling_attribute=sampling_attribute,
-        n_runs=n_runs,
-    )
-
-    # Generate the complete HTML report
+        fragments[protected] = generate_html_fragment(
+            ranking_variable=ranking_variable,
+            ER_Old=ER_Old,
+            ER_Mitigation=ER_Mitigation,
+            boxplot_img_str=mitigation_strategies_image,
+            network_img_str=network_image,
+            normal_distribution_img_str=normal_distribution_image,
+            distribution_img_str=distribution_image,
+            n_runs=n_runs,
+        )
+    
+    # Now create the full report
     return generate_html_report(
         dataset=data,
-        ER_Old=ER_Old,
-        ER_Mitigation=ER_Mitigation,
-        boxplot_img_str=mitigation_strategies_image,
-        network_img_str=network_image,
-        normal_distribution_img_str=normal_distribution_image,
-        distribution_img_str=distribution_image,
         sensitive_attribute=sensitive,
-        protected_attribute=protected,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
+        female_fragment=fragments["female"],
+        male_fragment=fragments["male"],
         n_runs=n_runs,
     )
