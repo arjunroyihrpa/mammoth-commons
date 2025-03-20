@@ -1,0 +1,2001 @@
+,Gender,Ranking,Value,Nationality,Author_id,country_affiliation
+0,Men,0,29582,Russian Federation,90537224.0,Russian Federation
+1,Men,2,28804,United Kingdom,83664887.0,
+2,Men,3,19064,Finland,30950566.0,Canada
+3,Men,4,18086,Czech Republic,152174469.0,Austria
+4,Men,5,18086,France,103415785.0,France
+5,Men,6,17868,France,4482617.0,France
+6,Men,7,17764,Switzerland,11835810.0,Switzerland
+7,Men,8,17336,Germany,90363682.0,Germany
+8,Men,9,17172,Romania,145807922.0,
+9,Men,10,17104,Hungary,93514322.0,Hungary
+10,Men,11,17088,Greece,102486748.0,
+11,Men,12,16110,Italy,48416223.0,Italy
+12,Men,13,16094,Italy,2425652.0,Italy
+13,Men,14,16090,Italy,115044451.0,Italy
+14,Men,15,16090,Italy,41203319.0,Italy
+15,Men,16,16090,Poland,103414125.0,Poland
+16,Men,17,16090,Argentina,145387135.0,Italy
+17,Men,18,16090,Italy,47617241.0,Italy
+18,Men,19,16090,Poland,13894161.0,
+19,Men,20,16090,Italy,72840235.0,Italy
+20,Men,21,16030,Czech Republic,30804631.0,Austria
+21,Men,22,15994,Austria,31013010.0,Switzerland
+22,Men,23,15994,France,121054669.0,France
+23,Men,24,15384,United States,93897542.0,
+24,Men,25,15090,United States,6576184.0,United States
+25,Men,26,14992,Argentina,152528851.0,France
+26,Men,27,14986,Italy,143613377.0,France
+27,Men,28,14986,Austria,4052619.0,Austria
+28,Men,29,14986,Poland,144719937.0,Poland
+29,Men,30,14790,Poland,2257280.0,Poland
+30,Men,31,14586,United States,91110499.0,
+31,Men,32,14270,Japan,15956782.0,Japan
+32,Men,33,14054,Poland,94057997.0,
+33,Men,35,14040,China,123865528.0,China
+34,Men,36,14040,Austria,152451029.0,
+35,Men,37,13998,South Africa,144512508.0,United States
+36,Men,38,13918,Netherlands,101843408.0,Germany
+37,Men,39,13138,Martinique,152166940.0,Norway
+38,Men,40,13086,Russian Federation,5492994.0,Russian Federation
+39,Men,41,13080,,27993375.0,Poland
+40,Men,42,12982,South Korea,98258897.0,
+41,Men,43,12816,Netherlands,143941246.0,Switzerland
+42,Men,44,12814,Turkey,2070891.0,Switzerland
+43,Men,45,12814,Spain,82320268.0,Mexico
+44,Men,46,12546,Latvia,145760293.0,France
+45,Men,47,12508,Germany,30049258.0,Norway
+46,Men,48,12422,Israel,8617400.0,
+47,Men,49,12280,Colombia,144999271.0,Italy
+48,Men,50,12112,China,47825073.0,China
+49,Men,51,12110,Poland,91519211.0,
+50,Men,52,12066,Poland,145675620.0,Germany
+51,Men,53,12066,Italy,48295633.0,Italy
+52,Men,54,12054,Italy,46729764.0,Italy
+53,Men,55,12052,Sweden,2144827.0,United States
+54,Men,56,11930,France,93525937.0,France
+55,Men,58,11770,Senegal,145326290.0,Switzerland
+56,Men,59,11740,Italy,34892953.0,Italy
+57,Men,60,11692,Italy,145276710.0,Brazil
+58,Men,61,11660,Australia,5137259.0,United States
+59,Men,62,11642,Greece,3128489.0,Australia
+60,Men,64,11634,Italy,101997226.0,Italy
+61,Men,65,11548,Uruguay,143901197.0,Brazil
+62,Men,66,11548,Russian Federation,30134517.0,France
+63,Men,67,11396,Poland,145456932.0,United Kingdom
+64,Men,68,11306,Switzerland,121143308.0,Germany
+65,Men,69,11286,Germany,144787594.0,Germany
+66,Men,71,11286,Poland,5122694.0,Poland
+67,Men,72,11046,Spain,152334015.0,Spain
+68,Men,73,10942,United States,30122830.0,China
+69,Men,74,10938,Israel,144283409.0,Russian Federation
+70,Men,76,10852,Belgium,143703166.0,France
+71,Men,77,10796,India,144538368.0,
+72,Men,78,10774,Finland,102804226.0,Finland
+73,Men,79,10758,Argentina,117301327.0,Spain
+74,Men,80,10752,Austria,103915477.0,Austria
+75,Men,81,10742,Germany,2868584.0,
+76,Men,82,10724,China,94882717.0,China
+77,Men,83,10712,Poland,3769183.0,France
+78,Men,84,10710,Germany,92683486.0,United States
+79,Men,85,10706,Argentina,145160069.0,France
+80,Men,86,10702,Italy,145480533.0,France
+81,Men,87,10700,Germany,152369724.0,Germany
+82,Men,88,10700,France,145834834.0,Switzerland
+83,Men,89,10690,,91502840.0,Austria
+84,Men,91,10680,Egypt,92186754.0,Egypt
+85,Men,93,10672,Israel,145253367.0,Belgium
+86,Men,94,10668,Italy,1836519.0,Belgium
+87,Men,95,10668,Germany,143700019.0,Germany
+88,Men,96,10668,Finland,4232200.0,Finland
+89,Men,97,10666,Zimbabwe,145127797.0,United Kingdom
+90,Men,98,10664,Martinique,152911671.0,Switzerland
+91,Men,99,10662,Austria,100781915.0,Germany
+92,Men,100,10662,Italy,3389864.0,Germany
+93,Men,101,10662,Turkey,145394435.0,Germany
+94,Men,103,10662,Bulgaria,72968238.0,Bulgaria
+95,Men,104,10662,Belgium,118547314.0,Belgium
+96,Men,106,10662,,10326669.0,Belgium
+97,Men,107,10662,,103132379.0,Bulgaria
+98,Men,108,10662,Germany,47830324.0,United States
+99,Men,109,10662,Morocco,102630420.0,United States
+100,Men,110,10662,Tunisia,145712251.0,Croatia
+101,Men,111,10662,Denmark,145023841.0,Germany
+102,Men,112,10662,Germany,152499105.0,Germany
+103,Men,113,10662,Austria,4319753.0,France
+104,Men,114,10662,Germany,103967529.0,Germany
+105,Men,115,10662,Egypt,117798268.0,Cyprus
+106,Men,117,10662,Greece,103244985.0,Italy
+107,Men,118,10662,Germany,143670057.0,Germany
+108,Men,119,10662,Israel,134296992.0,Germany
+109,Men,120,10662,Germany,144222776.0,United States
+110,Men,121,10662,Germany,5384838.0,Germany
+111,Men,122,10662,France,41175935.0,France
+112,Men,123,10662,Netherlands,49682481.0,Italy
+113,Men,124,10662,Germany,143798888.0,Germany
+114,Men,125,10662,Sweden,145393173.0,Belgium
+115,Men,126,10662,Belgium,143755111.0,France
+116,Men,127,10662,Bulgaria,48493584.0,Bulgaria
+117,Men,129,10662,Belgium,145776910.0,Belgium
+118,Men,130,10662,Finland,103453843.0,
+119,Men,131,10662,Israel,102938062.0,Israel
+120,Men,132,10662,Slovakia,116541524.0,Switzerland
+121,Men,133,10662,Belgium,103891057.0,Germany
+122,Men,134,10662,Germany,96121737.0,Germany
+123,Men,135,10662,Greece,47679615.0,Greece
+124,Men,136,10662,South Korea,103166902.0,Germany
+125,Men,137,10662,Italy,152474861.0,Italy
+126,Men,138,10662,France,152265223.0,Belgium
+127,Men,139,10662,Switzerland,145897969.0,Germany
+128,Men,140,10662,Switzerland,145386081.0,Germany
+129,Men,141,10662,Austria,4456436.0,Austria
+130,Men,142,10662,Ukraine,117394674.0,Germany
+131,Men,143,10662,Germany,145978529.0,Germany
+132,Men,145,10662,Luxembourg,144641263.0,Germany
+133,Men,147,10662,Japan,145261895.0,Turkey
+134,Men,148,10662,,145491173.0,Germany
+135,Men,149,10662,Bulgaria,145012681.0,Bulgaria
+136,Men,151,10662,Armenia,39669631.0,Armenia
+137,Men,153,10662,Hungary,117098600.0,United States
+138,Men,155,10662,Belgium,4019666.0,Belgium
+139,Men,156,10662,Austria,102997657.0,Austria
+140,Men,157,10662,Ecuador,153337923.0,France
+141,Men,159,10662,Albania,40955724.0,Austria
+142,Men,160,10662,EW,117090106.0,Estonia
+143,Men,162,10662,Germany,3951396.0,France
+144,Men,163,10662,Turkey,103183186.0,Turkey
+145,Men,164,10662,Argentina,2519589.0,Taiwan
+146,Men,165,10662,Austria,144359623.0,Austria
+147,Men,166,10662,Brazil,8547224.0,Brazil
+148,Men,167,10662,Croatia,144524793.0,Switzerland
+149,Men,169,10662,France,143665256.0,France
+150,Men,170,10662,Germany,143869747.0,Germany
+151,Men,171,10662,Ukraine,145609281.0,Belarus
+152,Men,174,10662,Netherlands,144537226.0,Germany
+153,Men,175,10662,Croatia,113751619.0,Switzerland
+154,Men,176,10662,Belgium,100736779.0,Belgium
+155,Men,178,10662,Bulgaria,5268819.0,Bulgaria
+156,Men,179,10662,Bulgaria,152315212.0,United States
+157,Men,180,10662,EW,145618985.0,Estonia
+158,Men,182,10662,Finland,144892759.0,Finland
+159,Men,183,10662,Finland,116946786.0,Germany
+160,Men,184,10662,Germany,144512994.0,Germany
+161,Men,185,10662,Romania,144233016.0,France
+162,Men,186,10662,Denmark,97768409.0,Italy
+163,Men,187,10662,Austria,3045241.0,Austria
+164,Men,188,10662,Romania,103028361.0,Austria
+165,Men,191,10662,Belgium,6020671.0,Belgium
+166,Men,192,10662,Bulgaria,143743927.0,Bulgaria
+167,Men,193,10662,France,48816532.0,Belgium
+168,Men,194,10662,Switzerland,145196719.0,Germany
+169,Men,196,10662,Egypt,145018408.0,Egypt
+170,Men,197,10662,Finland,143970692.0,Finland
+171,Men,198,10662,Germany,102783068.0,Germany
+172,Men,199,10662,Switzerland,3915669.0,Switzerland
+173,Men,200,10662,Greece,70166470.0,Germany
+174,Men,201,10662,Switzerland,117986473.0,France
+175,Men,202,10662,Germany,144766426.0,Germany
+176,Men,203,10662,,104233709.0,Belarus
+177,Men,204,10662,Germany,152202705.0,Germany
+178,Men,206,10572,Russian Federation,6888485.0,United States
+179,Men,207,10550,,1383078198.0,Mexico
+180,Men,208,10550,Israel,4852218.0,Russian Federation
+181,Men,209,10550,Greece,153832981.0,United States
+182,Men,210,10550,Luxembourg,152113599.0,United States
+183,Men,211,10550,Ireland,153274045.0,Poland
+184,Men,212,10536,Russian Federation,152582943.0,United States
+185,Men,214,10430,Austria,2893830.0,Italy
+186,Men,215,10402,India,50333459.0,India
+187,Men,217,10400,Italy,6730661.0,Switzerland
+188,Men,218,10336,Germany,103073150.0,Germany
+189,Men,219,10256,Israel,88728784.0,Germany
+190,Men,220,10236,Japan,144404763.0,
+191,Men,221,10112,Switzerland,153145608.0,Switzerland
+192,Men,222,10078,Denmark,4200639.0,United States
+193,Men,223,10070,,144987975.0,Hungary
+194,Men,225,10070,Germany,71988178.0,Switzerland
+195,Men,226,10070,Finland,71563046.0,United States
+196,Men,227,10070,Venezuela Bolivarian Republic of,94726076.0,Spain
+197,Men,230,10070,Italy,39469173.0,Italy
+198,Men,231,10070,Italy,3004173.0,Italy
+199,Men,232,10070,,1381456186.0,Spain
+200,Men,233,10070,,1382867633.0,Spain
+201,Men,234,10070,Germany,13973384.0,Switzerland
+202,Men,235,10070,Italy,1406488970.0,France
+203,Men,236,10024,Greece,107616242.0,Greece
+204,Men,237,9942,Switzerland,29997203.0,Switzerland
+205,Men,238,9902,Italy,1827523.0,United States
+206,Men,239,9902,Italy,115832599.0,Italy
+207,Men,240,9876,Poland,6045696.0,United States
+208,Men,241,9854,Cyprus,96033956.0,Greece
+209,Men,242,9854,Greece,71862525.0,
+210,Men,243,9842,Russian Federation,1831284.0,United States
+211,Men,244,9826,Russian Federation,4487306.0,United States
+212,Men,245,9770,Argentina,2591037.0,Italy
+213,Men,246,9770,Belgium,46858564.0,Belgium
+214,Men,247,9736,Russian Federation,102004054.0,United States
+215,Men,248,9726,Ukraine,66767845.0,Russian Federation
+216,Men,249,9716,India,30606021.0,United States
+217,Men,250,9714,Argentina,50070649.0,United States
+218,Men,251,9692,Austria,3168676.0,Belgium
+219,Men,252,9680,Morocco,96302956.0,India
+220,Men,253,9678,Belgium,1394528556.0,Belgium
+221,Men,254,9674,Germany,102468103.0,Germany
+222,Men,255,9670,Turkey,102938099.0,China
+223,Men,256,9668,Bulgaria,32400290.0,Bulgaria
+224,Men,257,9664,Germany,153768286.0,Germany
+225,Men,258,9664,Italy,6848305.0,Brazil
+226,Men,259,9664,Canada,92845509.0,France
+227,Men,261,9664,Greece,82909381.0,Greece
+228,Men,262,9664,Germany,2158933.0,Germany
+229,Men,263,9664,Canada,95765829.0,United States
+230,Men,264,9664,Germany,117815318.0,Germany
+231,Men,265,9664,Greece,41201711.0,Switzerland
+232,Men,266,9664,Greece,5886609.0,Greece
+233,Men,267,9664,,1382867248.0,Germany
+234,Men,268,9664,Czech Republic,152399184.0,United States
+235,Men,270,9664,Greece,101781040.0,Greece
+236,Men,271,9664,Switzerland,30448104.0,Germany
+237,Men,272,9664,Argentina,49234470.0,Switzerland
+238,Men,273,9664,South Africa,152281122.0,United States
+239,Men,274,9664,Italy,3546931.0,Switzerland
+240,Men,276,9664,Germany,102368293.0,Germany
+241,Men,277,9664,Tunisia,143788142.0,Italy
+242,Men,278,9664,Greece,67299128.0,Greece
+243,Men,279,9664,Germany,46429511.0,France
+244,Men,282,9664,Germany,152148846.0,Germany
+245,Men,283,9664,Germany,3513352.0,
+246,Men,284,9664,Greece,2884888.0,Greece
+247,Men,285,9664,France,116691996.0,France
+248,Men,286,9664,Ukraine,6488930.0,United States
+249,Men,287,9664,Georgia,49916568.0,United States
+250,Men,288,9664,Germany,145419726.0,Germany
+251,Men,289,9664,India,145489651.0,France
+252,Men,290,9664,Dominican Republic,98837561.0,Switzerland
+253,Men,291,9664,Germany,103935290.0,Germany
+254,Men,292,9664,Hungary,102245770.0,Germany
+255,Men,293,9664,Germany,66216537.0,United States
+256,Men,295,9664,Italy,104893927.0,Brazil
+257,Men,296,9664,Switzerland,122531277.0,United States
+258,Men,297,9654,China,46791479.0,China
+259,Men,298,9652,United Kingdom,5497247.0,Italy
+260,Men,299,9644,India,6695404.0,India
+261,Men,300,9616,Italy,95510317.0,
+262,Men,301,9566,Russian Federation,92645594.0,Russian Federation
+263,Men,302,9562,Ukraine,152472668.0,Russian Federation
+264,Men,304,9552,Russian Federation,100558638.0,United States
+265,Men,305,9552,,1395252311.0,Mexico
+266,Men,306,9518,Hungary,50541946.0,Poland
+267,Men,307,9518,Italy,145330327.0,United States
+268,Men,308,9466,,1397445003.0,Germany
+269,Men,309,9440,Italy,41187293.0,Italy
+270,Men,310,9414,Italy,144034476.0,Canada
+271,Men,311,9392,Germany,144680796.0,United States
+272,Men,312,9390,Italy,152521515.0,Italy
+273,Men,313,9386,Hungary,92690953.0,Hungary
+274,Men,314,9372,Belarus,14779853.0,United States
+275,Men,315,9370,Italy,93598375.0,
+276,Men,316,9366,Germany,152489499.0,Switzerland
+277,Men,317,9358,Japan,2130346.0,
+278,Men,318,9356,Portugal,6949376.0,Italy
+279,Men,319,9346,Serbia,144694192.0,United States
+280,Men,320,9344,Germany,46569335.0,Germany
+281,Men,321,9338,Italy,144826751.0,Italy
+282,Men,322,9338,Netherlands,102277960.0,Switzerland
+283,Men,323,9338,Italy,102934214.0,Italy
+284,Men,324,9338,Italy,89562353.0,Italy
+285,Men,325,9338,Kenya,33011336.0,
+286,Men,326,9338,Latvia,101432560.0,United States
+287,Men,327,9338,Italy,101635046.0,Italy
+288,Men,328,9338,United Kingdom,30028559.0,United States
+289,Men,329,9308,Netherlands,4528694.0,France
+290,Men,330,9296,Italy,3260859.0,Italy
+291,Men,331,9296,Italy,118456581.0,Italy
+292,Men,332,9296,Brazil,51050611.0,Italy
+293,Men,333,9290,Portugal,150205927.0,Italy
+294,Men,334,9290,Italy,10213915.0,Italy
+295,Men,335,9290,New Zealand,15764654.0,United States
+296,Men,338,9268,United Kingdom,1381688750.0,Spain
+297,Men,339,9262,Azerbaijan,143803869.0,United States
+298,Men,340,9222,Hong Kong,145638832.0,
+299,Men,341,9180,Switzerland,146138716.0,United Kingdom
+300,Men,342,9170,China,11937462.0,United States
+301,Men,343,9168,Iran,90819355.0,Italy
+302,Men,344,9140,Finland,2147907.0,Finland
+303,Men,345,9132,Italy,152109188.0,Italy
+304,Men,347,9088,Italy,4828579.0,Italy
+305,Men,348,9058,Russian Federation,30022567.0,United States
+306,Men,349,9058,Sri Lanka,50120151.0,Sri Lanka
+307,Men,350,9058,United States,2759516.0,United States
+308,Men,351,9020,Poland,14002421.0,United States
+309,Men,352,9014,Poland,143994083.0,
+310,Men,353,9002,Israel,92152791.0,France
+311,Men,354,8990,Israel,48564494.0,
+312,Men,355,8960,Algeria,72936287.0,United States
+313,Men,356,8960,Germany,114954583.0,United States
+314,Men,357,8958,Malta,3635734.0,Italy
+315,Men,359,8958,Turkey,152527991.0,Turkey
+316,Men,361,8916,Turkey,31474792.0,United States
+317,Men,362,8892,Bangladesh,9815710.0,
+318,Men,363,8888,,152434569.0,Turkey
+319,Men,364,8884,Turkey,116546614.0,
+320,Men,365,8884,Romania,1894880.0,United States
+321,Men,366,8884,EW,12121798.0,Russian Federation
+322,Men,367,8884,Italy,146156614.0,United States
+323,Men,368,8882,Philippines,1406167296.0,China
+324,Men,369,8870,Italy,47452274.0,Italy
+325,Men,370,8844,Italy,91186166.0,United States
+326,Men,371,8844,Germany,144169533.0,Switzerland
+327,Men,372,8842,India,50073704.0,Sweden
+328,Men,373,8840,Russian Federation,145266047.0,
+329,Men,375,8818,Greece,5945581.0,United States
+330,Men,376,8818,Greece,2178581.0,United States
+331,Men,377,8810,Italy,46848340.0,Portugal
+332,Men,379,8802,China,72871552.0,China
+333,Men,380,8782,Mozambique,103199280.0,Italy
+334,Men,381,8778,India,47274429.0,Turkey
+335,Men,382,8770,Italy,2307161.0,Italy
+336,Men,383,8768,Serbia,96508999.0,Serbia
+337,Men,384,8758,Russian Federation,144368846.0,Russian Federation
+338,Men,386,8754,Italy,7595658.0,United States
+339,Men,387,8754,Chile,143613378.0,France
+340,Men,388,8750,Iran,3220406.0,Switzerland
+341,Men,390,8750,Italy,47835778.0,Switzerland
+342,Men,391,8748,Germany,9369570.0,United States
+343,Men,392,8744,Jordan,1390626751.0,India
+344,Men,393,8734,Austria,71885060.0,Germany
+345,Men,394,8730,China,36829932.0,China
+346,Men,395,8728,India,40080983.0,India
+347,Men,396,8728,Italy,12635624.0,Italy
+348,Men,397,8726,Greece,104237038.0,Greece
+349,Men,398,8724,China,51380657.0,United States
+350,Men,399,8708,,6112491.0,Italy
+351,Men,400,8708,Ghana,34585611.0,United Kingdom
+352,Men,401,8706,Italy,52316520.0,Italy
+353,Men,402,8704,Portugal,48326951.0,Italy
+354,Men,403,8702,Greece,5106576.0,United States
+355,Men,404,8702,Belgium,152318425.0,United States
+356,Men,405,8700,Martinique,90074298.0,United States
+357,Men,406,8698,India,49926328.0,United States
+358,Men,407,8696,Russian Federation,34376811.0,Russian Federation
+359,Men,408,8696,Greece,93621997.0,Italy
+360,Men,409,8696,India,47611320.0,United States
+361,Men,410,8696,Switzerland,47725358.0,Germany
+362,Men,411,8696,Thailand,35769881.0,United Kingdom
+363,Men,412,8696,Taiwan Province of China,47739641.0,China
+364,Men,413,8694,Switzerland,13246484.0,Switzerland
+365,Men,414,8694,India,144281577.0,India
+366,Men,415,8692,Germany,152207332.0,United States
+367,Men,416,8692,Iran,144696011.0,United States
+368,Men,417,8692,Germany,103241624.0,Czech Republic
+369,Men,418,8690,Pakistan,35066778.0,
+370,Men,419,8690,Argentina,2715682.0,
+371,Men,420,8688,Serbia,30907766.0,Serbia
+372,Men,421,8688,China,92035057.0,United States
+373,Men,422,8686,Poland,41184135.0,Poland
+374,Men,423,8686,Italy,152580653.0,Italy
+375,Men,424,8686,Netherlands,40372578.0,Switzerland
+376,Men,425,8684,Mexico,1381458917.0,United States
+377,Men,426,8684,Poland,41185080.0,Austria
+378,Men,427,8684,Hungary,94992677.0,United States
+379,Men,428,8684,New Zealand,102078614.0,
+380,Men,429,8684,Austria,104484933.0,Switzerland
+381,Men,430,8684,Italy,104435762.0,Italy
+382,Men,431,8684,Romania,49254560.0,United States
+383,Men,432,8682,Portugal,153376722.0,Portugal
+384,Men,433,8682,Serbia,91254850.0,Serbia
+385,Men,434,8682,Spain,1390673266.0,Spain
+386,Men,435,8682,Turkey,47358477.0,Turkey
+387,Men,437,8680,Lithuania,30753461.0,Lithuania
+388,Men,438,8680,Russian Federation,152836901.0,Russian Federation
+389,Men,439,8680,Viet Nam,72754694.0,South Korea
+390,Men,440,8680,Italy,96155382.0,United States
+391,Men,441,8680,Italy,96223709.0,Italy
+392,Men,442,8680,Ukraine,15619281.0,
+393,Men,443,8680,Italy,4356316.0,Italy
+394,Men,444,8678,Germany,152250431.0,Germany
+395,Men,445,8678,Italy,152526461.0,United States
+396,Men,446,8678,Austria,51112721.0,United States
+397,Men,447,8678,Italy,1960922.0,France
+398,Men,449,8678,Mexico,92377169.0,United States
+399,Men,450,8676,Japan,152131913.0,Switzerland
+400,Men,453,8676,Kuwait,152221219.0,Italy
+401,Men,455,8676,Italy,152385469.0,France
+402,Men,456,8676,Germany,46349591.0,Germany
+403,Men,458,8674,,93602869.0,Turkey
+404,Men,459,8674,France,52233255.0,United Kingdom
+405,Men,460,8674,Austria,102994455.0,United Kingdom
+406,Men,461,8674,Ukraine,103223035.0,Germany
+407,Men,462,8674,Italy,1858059.0,Switzerland
+408,Men,463,8674,Russian Federation,117706347.0,Russian Federation
+409,Men,464,8674,South Korea,152381081.0,
+410,Men,465,8672,Russian Federation,2109539.0,
+411,Men,466,8672,Germany,47556457.0,United States
+412,Men,467,8672,Iran,103356025.0,United States
+413,Men,468,8672,Greece,100804798.0,United Kingdom
+414,Men,469,8672,Italy,92766542.0,Italy
+415,Men,470,8672,Italy,143695431.0,Italy
+416,Men,471,8672,Italy,97660590.0,Italy
+417,Men,472,8670,South Korea,9632657.0,South Korea
+418,Men,473,8670,Egypt,144056675.0,Egypt
+419,Men,474,8670,Russian Federation,93573319.0,Turkey
+420,Men,476,8668,Netherlands,78608935.0,Belgium
+421,Men,477,8668,Uruguay,91319984.0,Spain
+422,Men,478,8666,Saudi Arabia,50710061.0,United States
+423,Men,479,8666,Indonesia,152350204.0,Turkey
+424,Men,481,8666,Poland,103129820.0,Poland
+425,Men,482,8666,India,66655889.0,United States
+426,Men,484,8666,Hungary,123948375.0,Hungary
+427,Men,485,8666,India,50175896.0,Switzerland
+428,Men,486,8666,United Kingdom,50227298.0,United Kingdom
+429,Men,487,8666,Australia,145694574.0,France
+430,Men,488,8666,Italy,4303590.0,Italy
+431,Men,489,8666,Mexico,1390563123.0,Mexico
+432,Men,490,8666,Senegal,51901489.0,
+433,Men,491,8666,Italy,101115228.0,Italy
+434,Men,492,8666,,101666007.0,Germany
+435,Men,493,8666,Venezuela Bolivarian Republic of,152223951.0,Spain
+436,Men,494,8666,Italy,152188084.0,Italy
+437,Men,495,8666,Italy,49732483.0,Switzerland
+438,Men,497,8666,Georgia,101290538.0,United States
+439,Men,498,8666,Luxembourg,101150584.0,United Kingdom
+440,Men,500,8666,United Kingdom,49190668.0,United States
+441,Men,501,8666,Italy,91347380.0,Italy
+442,Men,502,8666,Bulgaria,102736389.0,United States
+443,Men,503,8666,Finland,72263480.0,United States
+444,Men,504,8666,Russian Federation,100577606.0,United States
+445,Men,505,8666,Nigeria,102546241.0,United States
+446,Men,506,8666,Italy,5859787.0,Italy
+447,Men,507,8666,Germany,48035210.0,Switzerland
+448,Men,509,8666,Peru,11674166.0,United States
+449,Men,512,8666,Thailand,104419763.0,United States
+450,Men,513,8666,Germany,145267924.0,Germany
+451,Men,514,8666,Denmark,144281078.0,Switzerland
+452,Men,515,8666,Turkey,101234189.0,Turkey
+453,Men,516,8666,Ukraine,103423068.0,United States
+454,Men,517,8666,Georgia,96976189.0,Poland
+455,Men,518,8666,Italy,16854071.0,Italy
+456,Men,519,8666,United Kingdom,152147324.0,United States
+457,Men,520,8666,,102651941.0,Russian Federation
+458,Men,521,8666,Switzerland,69482539.0,Switzerland
+459,Men,522,8666,Italy,103173260.0,United States
+460,Men,523,8666,Ukraine,144812224.0,Croatia
+461,Men,524,8666,China,117217551.0,Taiwan
+462,Men,525,8666,Colombia,114150078.0,Mexico
+463,Men,526,8666,Poland,100791525.0,United States
+464,Men,528,8666,Turkey,102519220.0,Turkey
+465,Men,529,8666,Turkey,145242216.0,United States
+466,Men,530,8666,Greece,70187024.0,Greece
+467,Men,531,8666,Germany,33250705.0,Germany
+468,Men,533,8666,Germany,38818174.0,Netherlands
+469,Men,534,8666,Fiji,102306732.0,United States
+470,Men,535,8666,Sweden,144275113.0,
+471,Men,536,8666,Germany,117413007.0,United States
+472,Men,538,8666,Brazil,103303059.0,Brazil
+473,Men,539,8666,SQ,150910629.0,
+474,Men,540,8666,Switzerland,47914211.0,South Africa
+475,Men,541,8666,Spain,145224135.0,France
+476,Men,542,8666,Algeria,49195915.0,France
+477,Men,543,8666,Brazil,144252508.0,
+478,Men,544,8666,South Korea,31826286.0,
+479,Men,545,8666,Armenia,121829557.0,Armenia
+480,Men,546,8666,Turkey,102682989.0,Turkey
+481,Men,547,8666,Poland,72163905.0,Poland
+482,Men,549,8666,Russian Federation,49145844.0,Russian Federation
+483,Men,550,8666,Turkey,31229206.0,United States
+484,Men,551,8666,Ukraine,144044913.0,Germany
+485,Men,553,8666,Armenia,92060614.0,Armenia
+486,Men,554,8666,Kenya,1409998887.0,Spain
+487,Men,555,8666,Italy,144201236.0,Italy
+488,Men,556,8666,Viet Nam,1399953750.0,United States
+489,Men,558,8666,India,1384034948.0,United States
+490,Men,559,8666,Italy,152489533.0,Italy
+491,Men,560,8666,Hungary,134765008.0,Hungary
+492,Men,561,8666,Portugal,93061884.0,Belgium
+493,Men,562,8666,Italy,152459643.0,Italy
+494,Men,563,8666,Chile,152576476.0,Italy
+495,Men,564,8666,Italy,116780990.0,Italy
+496,Men,565,8666,Italy,153074225.0,Italy
+497,Men,566,8666,Moldova,98251694.0,United States
+498,Men,567,8666,Martinique,102466013.0,Switzerland
+499,Men,568,8666,Venezuela Bolivarian Republic of,104655628.0,Puerto Rico
+500,Men,569,8666,Russian Federation,145702730.0,Belarus
+501,Men,571,8666,Russian Federation,143739281.0,Russian Federation
+502,Men,572,8666,Russian Federation,113491379.0,Russian Federation
+503,Men,573,8666,Honduras,1387803817.0,Mexico
+504,Men,575,8666,Pakistan,122280283.0,United States
+505,Men,576,8666,Italy,100671723.0,United States
+506,Men,577,8666,Lebanon,3007535.0,Switzerland
+507,Men,578,8666,United States,46917370.0,
+508,Men,579,8666,Angola,9660597.0,Brazil
+509,Men,581,8666,Paraguay,79583146.0,Italy
+510,Men,582,8666,Turkey,152427337.0,
+511,Men,583,8666,Armenia,100546636.0,United States
+512,Men,584,8666,Switzerland,100469166.0,United States
+513,Men,585,8666,Lebanon,103538057.0,United States
+514,Men,586,8666,Georgia,49214361.0,United States
+515,Men,588,8666,Belgium,30677078.0,Belgium
+516,Men,589,8666,Luxembourg,1976298.0,Italy
+517,Men,590,8666,Ireland,12573013.0,Poland
+518,Men,591,8666,Belarus,103972186.0,Russian Federation
+519,Men,592,8666,Brazil,87964929.0,Brazil
+520,Men,593,8666,Italy,104468971.0,Switzerland
+521,Men,594,8666,Spain,50514722.0,Spain
+522,Men,595,8666,France,145005957.0,France
+523,Men,596,8666,Mexico,152253996.0,United States
+524,Men,597,8666,Poland,152398526.0,Switzerland
+525,Men,598,8666,Russian Federation,152321091.0,Russian Federation
+526,Men,600,8666,Italy,102328938.0,Italy
+527,Men,601,8666,Malaysia,1389978262.0,Cyprus
+528,Men,602,8666,Greece,9060268.0,Egypt
+529,Men,603,8666,Pakistan,83228892.0,Pakistan
+530,Men,605,8666,United States,88141003.0,United States
+531,Men,607,8666,Argentina,104161222.0,Italy
+532,Men,608,8666,Cote d'Ivoire,152417994.0,United States
+533,Men,609,8666,Argentina,47900533.0,Italy
+534,Men,610,8666,Italy,46656344.0,Italy
+535,Men,611,8666,Russian Federation,46250245.0,Russian Federation
+536,Men,612,8666,Bulgaria,104223658.0,United States
+537,Men,613,8666,Germany,143613380.0,Switzerland
+538,Men,614,8666,Taiwan Province of China,1390731430.0,
+539,Men,615,8666,Thailand,89316917.0,United States
+540,Men,616,8666,Colombia,133757271.0,Colombia
+541,Men,617,8666,Turkey,100789135.0,Turkey
+542,Men,618,8666,Italy,102835091.0,United States
+543,Men,619,8666,South Africa,143639565.0,United States
+544,Men,620,8666,Greece,5148485.0,United Kingdom
+545,Men,621,8666,,152148389.0,Russian Federation
+546,Men,622,8666,Israel,145334691.0,Germany
+547,Men,623,8666,Russian Federation,152816629.0,Russian Federation
+548,Men,624,8666,Iran,38441728.0,Switzerland
+549,Men,627,8666,France,145742986.0,France
+550,Men,628,8666,Italy,96976463.0,Italy
+551,Men,629,8666,Belarus,67137672.0,United States
+552,Men,630,8666,,98708159.0,Russian Federation
+553,Men,631,8666,Myanmar,2682187.0,United States
+554,Men,632,8666,Italy,34809505.0,Italy
+555,Men,633,8666,Poland,93963204.0,United States
+556,Men,634,8666,Albania,152566885.0,Switzerland
+557,Men,636,8666,India,152604585.0,India
+558,Men,637,8666,Cyprus,98495969.0,Switzerland
+559,Men,638,8666,Italy,12550769.0,Italy
+560,Men,640,8666,Italy,48205222.0,Italy
+561,Men,641,8666,Algeria,49443564.0,United States
+562,Men,642,8666,Poland,82642943.0,United States
+563,Men,643,8666,Ukraine,144083732.0,United States
+564,Men,644,8666,Austria,50568614.0,Switzerland
+565,Men,645,8666,Belgium,145484041.0,Germany
+566,Men,646,8666,,152381528.0,Russian Federation
+567,Men,647,8666,Italy,88344258.0,
+568,Men,648,8666,South Korea,152560787.0,United States
+569,Men,649,8666,Italy,102828795.0,Italy
+570,Men,650,8666,France,143852133.0,France
+571,Men,651,8666,Egypt,123493415.0,United States
+572,Men,653,8666,Romania,94308746.0,United States
+573,Men,654,8666,Italy,102987929.0,Switzerland
+574,Men,655,8666,Italy,153584057.0,United Kingdom
+575,Men,656,8666,Kazakhstan,100678401.0,United States
+576,Men,657,8666,United States,51972784.0,Poland
+577,Men,659,8666,Russian Federation,113839976.0,United States
+578,Men,661,8666,Russian Federation,153320676.0,Russian Federation
+579,Men,662,8666,Finland,30091224.0,
+580,Men,663,8666,Russian Federation,1389907322.0,Russian Federation
+581,Men,664,8666,Russian Federation,101328292.0,United States
+582,Men,666,8666,Finland,152213495.0,Finland
+583,Men,668,8666,Italy,97689511.0,Italy
+584,Men,669,8666,Italy,144169876.0,Spain
+585,Men,670,8666,Russian Federation,98771532.0,Russian Federation
+586,Men,671,8666,Saudi Arabia,152253793.0,United States
+587,Men,672,8666,Ireland,3137370.0,
+588,Men,674,8666,Germany,115829870.0,Germany
+589,Men,675,8666,Italy,2804014.0,Switzerland
+590,Men,676,8666,Venezuela Bolivarian Republic of,39946182.0,Belarus
+591,Men,678,8666,Poland,103108983.0,United States
+592,Men,679,8666,Netherlands,47265641.0,Italy
+593,Men,681,8666,Iran,102302526.0,Iran
+594,Men,682,8666,Nepal,5424671.0,United States
+595,Men,683,8666,Venezuela Bolivarian Republic of,1390456496.0,Spain
+596,Men,684,8666,Ukraine,145314910.0,Russian Federation
+597,Men,685,8666,Portugal,102954217.0,Switzerland
+598,Men,686,8666,Hungary,49487224.0,
+599,Men,687,8666,Kazakhstan,145427700.0,Russian Federation
+600,Men,688,8666,Bangladesh,153324158.0,India
+601,Men,691,8666,Russian Federation,152634191.0,United States
+602,Men,692,8666,Uruguay,84616938.0,Italy
+603,Men,693,8666,Italy,46390660.0,United States
+604,Men,694,8666,Germany,112876512.0,United States
+605,Men,695,8666,,1387447052.0,Russian Federation
+606,Men,697,8666,,41171350.0,Italy
+607,Men,698,8666,India,80267496.0,India
+608,Men,699,8666,Portugal,1390455505.0,Brazil
+609,Men,700,8666,Bangladesh,102684626.0,India
+610,Men,701,8666,Italy,50648472.0,United States
+611,Men,702,8666,Costa Rica,144638349.0,Spain
+612,Men,703,8666,Italy,48099131.0,Italy
+613,Men,704,8666,Italy,103477895.0,Italy
+614,Men,705,8666,Russian Federation,1743443.0,Russian Federation
+615,Men,706,8666,Germany,4951938.0,Germany
+616,Men,707,8666,Hong Kong,116939747.0,United States
+617,Men,709,8666,Italy,152172763.0,Italy
+618,Men,710,8666,Switzerland,145079512.0,Germany
+619,Men,711,8666,Ukraine,102198541.0,United States
+620,Men,713,8666,South Africa,145992555.0,
+621,Men,714,8666,Germany,145161133.0,Germany
+622,Men,715,8666,Poland,152308372.0,Poland
+623,Men,716,8666,Ukraine,101173911.0,Russian Federation
+624,Men,718,8666,Germany,150282894.0,United States
+625,Men,719,8666,Armenia,117672023.0,Armenia
+626,Men,721,8666,Italy,1403062838.0,Italy
+627,Men,722,8666,Cyprus,40556099.0,Switzerland
+628,Men,723,8666,Ukraine,152452290.0,United States
+629,Men,724,8666,Italy,31538229.0,Italy
+630,Men,725,8666,Serbia,145443454.0,Serbia
+631,Men,726,8666,Italy,91419417.0,Italy
+632,Men,727,8666,Russian Federation,145147120.0,Russian Federation
+633,Men,728,8666,Colombia,152441611.0,Spain
+634,Men,729,8666,China,95767792.0,United States
+635,Men,730,8666,United States,122242919.0,United States
+636,Men,731,8666,Italy,49301227.0,Italy
+637,Men,732,8666,Germany,51226416.0,Switzerland
+638,Men,733,8666,Colombia,152506395.0,Italy
+639,Men,734,8666,Austria,34861430.0,Austria
+640,Men,735,8666,United Kingdom,104050587.0,New Zealand
+641,Men,737,8666,Netherlands,145003409.0,United States
+642,Men,738,8666,Germany,145364970.0,Germany
+643,Men,739,8666,Russian Federation,102971184.0,Russian Federation
+644,Men,740,8666,South Korea,103204500.0,South Korea
+645,Men,741,8666,Italy,34628853.0,United States
+646,Men,743,8666,Venezuela Bolivarian Republic of,117172358.0,Switzerland
+647,Men,744,8666,Japan,102757131.0,United States
+648,Men,745,8666,Australia,38086612.0,Spain
+649,Men,746,8666,Italy,152935344.0,Italy
+650,Men,747,8666,Switzerland,8912758.0,United States
+651,Men,748,8666,Spain,152323699.0,Spain
+652,Men,749,8666,India,80300281.0,India
+653,Men,750,8666,Russian Federation,143958114.0,Russian Federation
+654,Men,751,8666,Austria,49692531.0,Switzerland
+655,Men,752,8666,Hungary,102000662.0,Hungary
+656,Men,753,8666,Slovakia,6748997.0,United States
+657,Men,754,8666,Venezuela Bolivarian Republic of,121436541.0,Switzerland
+658,Men,756,8666,Egypt,144153549.0,Switzerland
+659,Men,757,8666,United States,95697428.0,United States
+660,Men,758,8666,Israel,14794022.0,United States
+661,Men,759,8666,Hungary,97093870.0,Hungary
+662,Men,760,8666,Belarus,104400314.0,United States
+663,Men,761,8666,Turkey,103286561.0,Turkey
+664,Men,762,8666,Italy,51320351.0,
+665,Men,763,8666,Italy,46933565.0,Italy
+666,Men,764,8666,Germany,103455055.0,Germany
+667,Men,765,8666,Cote d'Ivoire,103900465.0,Switzerland
+668,Men,767,8666,Russian Federation,108335060.0,Russian Federation
+669,Men,768,8666,Italy,31214210.0,Portugal
+670,Men,770,8666,,13211663.0,Russian Federation
+671,Men,771,8666,,1382870458.0,Spain
+672,Men,772,8666,India,101824361.0,United States
+673,Men,773,8666,Colombia,30989514.0,
+674,Men,775,8666,Italy,2990002.0,United States
+675,Men,776,8666,Italy,48067829.0,Italy
+676,Men,777,8666,Austria,4712979.0,Switzerland
+677,Men,779,8666,Poland,103888389.0,United States
+678,Men,780,8666,,31293928.0,United States
+679,Men,781,8666,Switzerland,115718278.0,Switzerland
+680,Men,783,8666,Belgium,2296676.0,Belgium
+681,Men,784,8666,United Kingdom,152451034.0,
+682,Men,785,8666,Italy,46558176.0,Italy
+683,Men,786,8666,Malta,152107396.0,Italy
+684,Men,787,8666,Poland,102912209.0,United States
+685,Men,788,8666,Uruguay,2457057.0,United States
+686,Men,790,8666,France,1382869030.0,Switzerland
+687,Men,791,8666,Belgium,81029325.0,United Kingdom
+688,Men,792,8666,Poland,49067690.0,Poland
+689,Men,793,8666,Italy,94971462.0,Italy
+690,Men,794,8666,Ethiopia,118094873.0,United States
+691,Men,795,8666,Italy,97654960.0,Italy
+692,Men,796,8666,Georgia,101664170.0,United States
+693,Men,797,8666,Hong Kong,152238065.0,United States
+694,Men,798,8666,Poland,8199970.0,Poland
+695,Men,799,8666,Russian Federation,33880060.0,Russian Federation
+696,Men,800,8666,United States,1383358836.0,Switzerland
+697,Men,801,8666,Brazil,51016462.0,Italy
+698,Men,802,8666,Turkey,102708133.0,Turkey
+699,Men,803,8666,Austria,12525801.0,United States
+700,Men,804,8666,Cyprus,103024965.0,Cyprus
+701,Men,806,8666,Philippines,1390436524.0,Spain
+702,Men,807,8666,Greece,145792365.0,United States
+703,Men,808,8666,United States,152455651.0,United States
+704,Men,809,8666,Zambia,104447309.0,United States
+705,Men,810,8666,Turkey,145946270.0,United States
+706,Men,811,8666,Russian Federation,3548419.0,Germany
+707,Men,812,8666,,69940233.0,Russian Federation
+708,Men,813,8666,Slovenia,152236556.0,Croatia
+709,Men,814,8666,Denmark,94071841.0,United States
+710,Men,816,8666,Austria,5055634.0,Austria
+711,Men,817,8666,India,24422408.0,India
+712,Men,818,8666,Poland,100989641.0,United Kingdom
+713,Men,819,8666,Italy,152267285.0,Italy
+714,Men,820,8666,Serbia,118199806.0,Austria
+715,Men,822,8666,Japan,102717455.0,United States
+716,Men,825,8666,Italy,1382868343.0,Italy
+717,Men,826,8666,Italy,144765973.0,Portugal
+718,Men,828,8666,Austria,46916563.0,Switzerland
+719,Men,829,8666,Turkey,49360183.0,United States
+720,Men,830,8666,Israel,102775532.0,Russian Federation
+721,Men,831,8666,Italy,115079003.0,Italy
+722,Men,832,8666,Costa Rica,1387434620.0,Spain
+723,Men,833,8666,Switzerland,103086052.0,United States
+724,Men,834,8666,Italy,144187781.0,Switzerland
+725,Men,835,8666,Poland,152393250.0,United States
+726,Men,837,8666,,152394117.0,Russian Federation
+727,Men,838,8666,Ukraine,83714110.0,United States
+728,Men,839,8666,Italy,31155162.0,Switzerland
+729,Men,840,8666,Georgia,5869571.0,Italy
+730,Men,841,8666,Russian Federation,113179141.0,Germany
+731,Men,842,8666,Argentina,5497149.0,United States
+732,Men,843,8666,Italy,2611664.0,Italy
+733,Men,845,8666,Ukraine,102616414.0,United States
+734,Men,846,8666,United States,70095224.0,United States
+735,Men,847,8666,Cote d'Ivoire,94341768.0,
+736,Men,849,8666,Ecuador,48402605.0,Spain
+737,Men,850,8666,,113798737.0,Bulgaria
+738,Men,851,8666,Armenia,100862479.0,Russian Federation
+739,Men,852,8666,Morocco,98787829.0,United States
+740,Men,853,8666,France,100581295.0,Switzerland
+741,Men,854,8666,Cyprus,15494054.0,Cyprus
+742,Men,855,8666,Hungary,49936917.0,Hungary
+743,Men,856,8666,Hungary,7196969.0,United States
+744,Men,857,8666,Luxembourg,1381458158.0,Belgium
+745,Men,858,8666,Turkey,48875016.0,Turkey
+746,Men,859,8666,Serbia,103207378.0,United States
+747,Men,864,8666,Italy,103099983.0,Italy
+748,Men,865,8666,Israel,46600762.0,Russian Federation
+749,Men,866,8666,Greece,116789762.0,United States
+750,Men,867,8666,India,46745160.0,India
+751,Men,868,8666,Argentina,103145072.0,Spain
+752,Men,869,8666,Lithuania,52312669.0,Lithuania
+753,Men,870,8666,Spain,144699310.0,Spain
+754,Men,871,8666,Ukraine,152214717.0,Russian Federation
+755,Men,872,8666,Greece,144289950.0,Cyprus
+756,Men,873,8666,Turkey,89738276.0,Turkey
+757,Men,874,8666,Turkey,102374428.0,France
+758,Men,875,8666,Greece,143967980.0,Italy
+759,Men,876,8666,South Korea,97580382.0,South Korea
+760,Men,877,8666,Israel,7563925.0,Turkey
+761,Men,878,8666,Germany,5617802.0,Germany
+762,Men,879,8666,Puerto Rico,98364101.0,Italy
+763,Men,880,8666,Portugal,50222545.0,Italy
+764,Men,881,8666,Italy,71589310.0,Italy
+765,Men,882,8666,Russian Federation,1390437911.0,Russian Federation
+766,Men,883,8666,India,70095301.0,United States
+767,Men,884,8666,Australia,41180894.0,United Kingdom
+768,Men,885,8666,Canada,102403585.0,Italy
+769,Men,886,8666,Iran,6428983.0,France
+770,Men,888,8666,Germany,152506582.0,Switzerland
+771,Men,890,8666,Belgium,145667665.0,
+772,Men,891,8666,Switzerland,14541881.0,Switzerland
+773,Men,892,8666,Belgium,97774841.0,Switzerland
+774,Men,893,8666,United Kingdom,49302807.0,United States
+775,Men,894,8666,Israel,1405183830.0,United States
+776,Men,895,8666,Finland,103067557.0,Finland
+777,Men,896,8666,Croatia,145305802.0,Croatia
+778,Men,897,8666,Mexico,1388777577.0,Spain
+779,Men,899,8666,Austria,6378594.0,Germany
+780,Men,900,8666,Croatia,49046804.0,Italy
+781,Men,901,8666,Belgium,152182145.0,Switzerland
+782,Men,902,8666,Turkey,47674976.0,United States
+783,Men,903,8666,Israel,145604830.0,France
+784,Men,904,8666,Israel,152213480.0,Russian Federation
+785,Men,905,8666,Iran,101424886.0,Iran
+786,Men,906,8666,Italy,92511275.0,Italy
+787,Men,908,8666,Lithuania,26940292.0,
+788,Men,909,8666,Switzerland,102336607.0,
+789,Men,910,8666,,100817503.0,United States
+790,Men,911,8666,Russian Federation,46959223.0,Switzerland
+791,Men,912,8658,Ukraine,101446317.0,Germany
+792,Men,913,8620,Netherlands,2756734.0,
+793,Men,914,8586,Denmark,145818908.0,
+794,Men,915,8572,China,122900513.0,China
+795,Men,918,8410,Poland,1387411596.0,Australia
+796,Men,919,8344,Japan,2444308.0,
+797,Men,921,8158,Ukraine,80499537.0,Russian Federation
+798,Men,922,7994,United Kingdom,22705353.0,
+799,Men,923,7884,China,48319305.0,United States
+800,Men,924,7824,China,144189695.0,China
+801,Men,925,7824,Finland,143851511.0,
+802,Men,926,7774,United Kingdom,5525594.0,United States
+803,Men,927,7688,Germany,1777563.0,
+804,Men,928,7682,Slovenia,5528894.0,Slovenia
+805,Men,929,7652,Greenland,104512618.0,United Kingdom
+806,Men,930,7614,Slovenia,4169504.0,Slovenia
+807,Men,931,7606,India,2064842.0,
+808,Men,932,7580,Argentina,2472915.0,
+809,Men,933,7574,Greece,52169673.0,France
+810,Men,934,7562,Finland,50631644.0,Finland
+811,Men,935,7532,Italy,145237825.0,
+812,Men,936,7514,Netherlands,30106037.0,Germany
+813,Men,937,7508,Switzerland,2848278.0,Germany
+814,Men,938,7474,Denmark,144750702.0,United States
+815,Men,940,7454,Greece,2629409.0,Egypt
+816,Men,941,7450,Denmark,114896883.0,United States
+817,Men,942,7444,Italy,2590439.0,Italy
+818,Men,943,7440,Greece,34004679.0,Greece
+819,Men,944,7440,Cyprus,152609773.0,Brazil
+820,Men,945,7438,Finland,38277190.0,Switzerland
+821,Men,946,7434,Netherlands,13421913.0,Switzerland
+822,Men,947,7428,Netherlands,2129013.0,Switzerland
+823,Men,948,7426,Kenya,145404507.0,Japan
+824,Men,949,7424,Australia,16187646.0,France
+825,Men,950,7424,Belgium,102793393.0,Belgium
+826,Men,951,7424,United Kingdom,50853833.0,Switzerland
+827,Men,952,7424,Dominican Republic,50670976.0,Germany
+828,Men,953,7424,Georgia,2557322.0,Poland
+829,Men,954,7424,Ukraine,102348410.0,Russian Federation
+830,Men,955,7424,New Zealand,46471851.0,
+831,Men,956,7424,Poland,102092890.0,Switzerland
+832,Men,957,7424,Germany,72494641.0,Switzerland
+833,Men,958,7424,Sweden,41219669.0,United States
+834,Men,959,7424,Iran,144680639.0,France
+835,Men,960,7424,Poland,31024564.0,United States
+836,Men,961,7424,Chile,50318136.0,Italy
+837,Men,962,7424,Italy,31273229.0,Italy
+838,Men,963,7424,Italy,79492533.0,Italy
+839,Men,964,7424,India,92175739.0,United States
+840,Men,965,7424,Italy,50883754.0,Italy
+841,Men,966,7424,Germany,119254873.0,Germany
+842,Men,967,7424,Greece,71537550.0,Greece
+843,Men,968,7424,Italy,14170768.0,China
+844,Men,970,7424,Austria,79996581.0,Czech Republic
+845,Men,971,7424,,152297568.0,Sweden
+846,Men,972,7424,Russian Federation,48267029.0,Russian Federation
+847,Men,973,7424,Italy,47066255.0,Italy
+848,Men,974,7424,Switzerland,2700023.0,Germany
+849,Men,975,7424,Czech Republic,48088419.0,Czech Republic
+850,Men,976,7424,France,6249303.0,Switzerland
+851,Men,977,7424,New Zealand,83013431.0,United States
+852,Men,979,7424,Peru,70246030.0,United Kingdom
+853,Men,980,7424,Sweden,152234689.0,Finland
+854,Men,981,7424,Albania,91257618.0,Germany
+855,Men,982,7424,South Africa,4639542.0,Italy
+856,Men,983,7424,Italy,103259703.0,Italy
+857,Men,984,7424,,1381141890.0,Spain
+858,Men,985,7424,Italy,116768921.0,Italy
+859,Men,986,7424,Argentina,144950773.0,Italy
+860,Men,987,7424,Italy,50349537.0,Italy
+861,Men,988,7424,Macedonia,102625445.0,United States
+862,Men,989,7424,Belgium,16033404.0,Belgium
+863,Men,991,7424,Sweden,49767697.0,Sweden
+864,Men,992,7424,Israel,102090814.0,France
+865,Men,993,7424,Mexico,34176982.0,Spain
+866,Men,994,7424,Martinique,3935467.0,Norway
+867,Men,995,7424,Argentina,3715063.0,Italy
+868,Men,996,7424,,91287872.0,Sweden
+869,Men,997,7424,South Korea,40182006.0,China
+870,Men,998,7424,Italy,2111809.0,Italy
+871,Men,999,7424,Algeria,104618258.0,United States
+872,Men,1000,7424,Germany,145081801.0,Germany
+873,Men,1001,7424,Austria,92379677.0,Italy
+874,Men,1002,7424,Indonesia,98489684.0,Italy
+875,Men,1003,7424,United Kingdom,1985192.0,United Kingdom
+876,Men,1004,7424,Greece,9048616.0,Greece
+877,Men,1005,7424,Argentina,50446509.0,Italy
+878,Men,1007,7424,Poland,71583971.0,Austria
+879,Men,1008,7424,,90775887.0,Sweden
+880,Men,1009,7424,Switzerland,117751797.0,Switzerland
+881,Men,1010,7424,Italy,77799810.0,Italy
+882,Men,1011,7420,Panama,94459620.0,Spain
+883,Men,1012,7414,Pakistan,1736646.0,
+884,Men,1013,7360,New Zealand,6688218.0,
+885,Men,1014,7332,Kazakhstan,5493738.0,
+886,Men,1015,7318,Mexico,153590278.0,France
+887,Men,1016,7300,Switzerland,144556947.0,
+888,Men,1017,7290,Indonesia,115902638.0,United States
+889,Men,1018,7252,Netherlands,103283482.0,Netherlands
+890,Men,1019,7246,South Korea,145502276.0,Taiwan
+891,Men,1020,7182,Cote d'Ivoire,2357233.0,
+892,Men,1021,7158,Cuba,144930977.0,France
+893,Men,1022,7134,Ireland,3409061.0,
+894,Men,1023,7126,Poland,2114739.0,Germany
+895,Men,1024,7110,Spain,7424765.0,
+896,Men,1025,7046,Germany,50105319.0,United Kingdom
+897,Men,1026,7040,Saudi Arabia,144998237.0,
+898,Men,1027,6970,Poland,41189955.0,Poland
+899,Men,1028,6942,Italy,47679133.0,France
+900,Men,1029,6906,Germany,145301717.0,Germany
+901,Men,1030,6856,United States,6956456.0,United States
+902,Men,1031,6838,Hungary,3713713.0,United States
+903,Men,1032,6830,Ecuador,66229998.0,Mexico
+904,Men,1033,6802,Australia,152597838.0,South Korea
+905,Men,1034,6746,Netherlands,5566934.0,
+906,Men,1035,6666,Austria,91782693.0,Germany
+907,Men,1036,6654,Italy,50268059.0,United States
+908,Men,1037,6640,Germany,49967661.0,United States
+909,Men,1038,6626,Israel,153467374.0,United States
+910,Men,1039,6622,Slovenia,73039304.0,Slovenia
+911,Men,1041,6442,Belgium,145289278.0,
+912,Men,1043,6412,Venezuela Bolivarian Republic of,65888406.0,Spain
+913,Men,1044,6412,France,152316486.0,France
+914,Men,1045,6390,Sweden,1381142817.0,Sweden
+915,Men,1046,6380,Greece,47313217.0,Italy
+916,Men,1048,6380,,80372749.0,Austria
+917,Men,1049,6362,Austria,152444106.0,Austria
+918,Men,1050,6352,Italy,72508395.0,Italy
+919,Men,1051,6352,Uruguay,4032928.0,Switzerland
+920,Men,1053,6344,Malaysia,144202078.0,Belgium
+921,Men,1057,6320,Italy,152582921.0,Switzerland
+922,Men,1058,6320,Netherlands,2344582.0,France
+923,Men,1060,6320,Germany,31043128.0,Germany
+924,Men,1061,6320,Luxembourg,2684022.0,Switzerland
+925,Men,1062,6320,Sweden,46873056.0,United States
+926,Men,1063,6320,Turkey,49959557.0,France
+927,Men,1064,6320,Sweden,2968014.0,Sweden
+928,Men,1065,6320,Sweden,31355509.0,Sweden
+929,Men,1068,6316,Martinique,40400509.0,Germany
+930,Men,1069,6312,Poland,102818580.0,Germany
+931,Men,1070,6312,United States,137602439.0,United States
+932,Men,1071,6244,,102813915.0,Italy
+933,Men,1072,6200,Germany,4301429.0,
+934,Men,1074,6122,Russian Federation,46787491.0,France
+935,Men,1075,6116,Israel,145639271.0,
+936,Men,1076,6094,United States,145950187.0,
+937,Men,1078,6006,New Zealand,14250738.0,
+938,Men,1079,5990,France,49122351.0,Germany
+939,Men,1080,5988,Taiwan Province of China,153193041.0,
+940,Men,1081,5986,Australia,152487894.0,United States
+941,Men,1082,5968,France,10171113.0,France
+942,Men,1083,5968,Germany,2016961.0,Germany
+943,Men,1085,5950,Poland,144348414.0,United States
+944,Men,1086,5948,Italy,152179270.0,Italy
+945,Men,1087,5946,Germany,70575596.0,Germany
+946,Men,1089,5918,Russian Federation,144209403.0,United States
+947,Men,1091,5876,Canada,1651627971.0,
+948,Men,1092,5876,United States,1410695071.0,
+949,Men,1093,5872,Bulgaria,40044799.0,Russian Federation
+950,Men,1094,5868,Germany,2258386.0,Italy
+951,Men,1095,5868,Italy,5211651.0,Italy
+952,Men,1096,5868,Italy,145030016.0,
+953,Men,1097,5868,Denmark,152199839.0,Italy
+954,Men,1098,5868,Philippines,91179771.0,Spain
+955,Men,1100,5868,Italy,25617143.0,Italy
+956,Men,1101,5868,Argentina,3930779.0,Germany
+957,Men,1103,5862,Russian Federation,152342341.0,France
+958,Men,1104,5848,Germany,7016248.0,
+959,Men,1105,5814,Moldova,31143521.0,
+960,Men,1106,5806,Netherlands,122586087.0,Netherlands
+961,Men,1107,5796,Sweden,70982302.0,United States
+962,Men,1108,5792,Finland,35323701.0,
+963,Men,1109,5784,France,153267600.0,Switzerland
+964,Men,1110,5782,United States,1788462.0,United States
+965,Men,1111,5768,Czech Republic,2178982.0,United States
+966,Men,1112,5746,Martinique,145223087.0,United States
+967,Men,1114,5738,Dominican Republic,3568346.0,Austria
+968,Men,1115,5736,Russian Federation,9891471.0,
+969,Men,1116,5728,Italy,47712869.0,Italy
+970,Men,1117,5720,India,101681273.0,South Korea
+971,Men,1118,5720,Hungary,114063385.0,Hungary
+972,Men,1119,5720,Cyprus,35012824.0,United States
+973,Men,1120,5720,Austria,143965480.0,Germany
+974,Men,1121,5704,Bulgaria,15521927.0,Germany
+975,Men,1122,5702,Italy,46230734.0,Italy
+976,Men,1124,5688,Netherlands,145268131.0,Netherlands
+977,Men,1125,5682,Italy,46849649.0,Croatia
+978,Men,1126,5666,Argentina,5482670.0,Italy
+979,Men,1127,5664,Germany,101048629.0,Germany
+980,Men,1130,5658,Italy,72940559.0,Germany
+981,Men,1131,5656,Lebanon,114632640.0,Italy
+982,Men,1132,5656,Austria,144977733.0,United States
+983,Men,1133,5656,,1382606047.0,United Kingdom
+984,Men,1134,5656,Ukraine,152517074.0,Ukraine
+985,Men,1135,5656,Austria,3480921.0,Switzerland
+986,Men,1136,5656,South Africa,152804581.0,Switzerland
+987,Men,1137,5656,Switzerland,152375522.0,Switzerland
+988,Men,1139,5656,Germany,40947876.0,Switzerland
+989,Men,1140,5656,Germany,143682055.0,Switzerland
+990,Men,1141,5656,Russian Federation,6162898.0,Russian Federation
+991,Men,1142,5656,Poland,13786470.0,Poland
+992,Men,1143,5656,Switzerland,49548007.0,Switzerland
+993,Men,1144,5656,Netherlands,107586172.0,France
+994,Men,1145,5656,Italy,108790718.0,Germany
+995,Men,1147,5656,Poland,1398066602.0,Poland
+996,Men,1148,5656,Italy,5151965.0,Italy
+997,Men,1149,5656,Germany,50563462.0,United Kingdom
+998,Men,1150,5656,Bulgaria,152533563.0,Russian Federation
+999,Men,1151,5656,Italy,49159272.0,Italy
+1000,Women,1,29582,Belarus,88842366.0,United Kingdom
+1001,Women,34,14040,Greece,49538063.0,Switzerland
+1002,Women,57,11846,Argentina,122573750.0,Italy
+1003,Women,63,11634,Portugal,6288779.0,Switzerland
+1004,Women,70,11286,Spain,103676235.0,Germany
+1005,Women,75,10856,Argentina,2746732.0,Belgium
+1006,Women,90,10690,Russian Federation,113699956.0,France
+1007,Women,92,10678,Poland,114073928.0,Germany
+1008,Women,102,10662,China,47933405.0,United States
+1009,Women,105,10662,Portugal,152540909.0,France
+1010,Women,116,10662,Italy,145912976.0,Australia
+1011,Women,128,10662,Serbia,2290631.0,Croatia
+1012,Women,144,10662,France,144106393.0,France
+1013,Women,146,10662,Germany,143830965.0,Germany
+1014,Women,150,10662,Democratic Republic Congo,145343221.0,Finland
+1015,Women,152,10662,Finland,145777501.0,Finland
+1016,Women,154,10662,Ireland,145794553.0,Belgium
+1017,Women,158,10662,EW,143860238.0,Switzerland
+1018,Women,161,10662,Romania,3070272.0,Belgium
+1019,Women,168,10662,Austria,6679979.0,Germany
+1020,Women,172,10662,Morocco,152230546.0,France
+1021,Women,173,10662,,1383163066.0,Finland
+1022,Women,177,10662,Finland,145962221.0,Finland
+1023,Women,181,10662,Netherlands,117926956.0,Belgium
+1024,Women,189,10662,Bosnia and Herzegovina,152483664.0,United States
+1025,Women,190,10662,Belgium,144921946.0,Belgium
+1026,Women,195,10662,France,5201098.0,Taiwan
+1027,Women,205,10662,Finland,143970691.0,Finland
+1028,Women,213,10490,Romania,143860235.0,United Kingdom
+1029,Women,216,10400,Italy,3714314.0,Italy
+1030,Women,224,10070,Italy,152231842.0,Ireland
+1031,Women,228,10070,India,88190476.0,India
+1032,Women,229,10070,Austria,88926942.0,Switzerland
+1033,Women,260,9664,India,14990447.0,United States
+1034,Women,269,9664,Colombia,143793671.0,Colombia
+1035,Women,275,9664,Algeria,104073683.0,Switzerland
+1036,Women,280,9664,Argentina,104130543.0,United States
+1037,Women,281,9664,,1382866731.0,Germany
+1038,Women,294,9664,India,144091499.0,India
+1039,Women,303,9552,Russian Federation,152171507.0,United States
+1040,Women,336,9290,Italy,2826024.0,Italy
+1041,Women,337,9290,India,152130269.0,United States
+1042,Women,346,9088,Italy,152178843.0,Switzerland
+1043,Women,358,8958,Slovakia,91244599.0,Turkey
+1044,Women,360,8958,Turkey,152145871.0,Turkey
+1045,Women,374,8826,India,46402728.0,Germany
+1046,Women,378,8804,Sweden,14413294.0,Italy
+1047,Women,385,8756,France,152163988.0,Switzerland
+1048,Women,389,8750,Germany,94161269.0,Germany
+1049,Women,436,8682,China,1409730493.0,China
+1050,Women,448,8678,Bangladesh,100917554.0,India
+1051,Women,451,8676,China,3768636.0,China
+1052,Women,452,8676,India,48775525.0,Germany
+1053,Women,454,8676,Italy,46725465.0,Italy
+1054,Women,457,8676,Argentina,83237771.0,Italy
+1055,Women,475,8668,Venezuela Bolivarian Republic of,1384372859.0,Italy
+1056,Women,480,8666,Slovenia,72384747.0,United Kingdom
+1057,Women,483,8666,Bulgaria,1381217623.0,United States
+1058,Women,496,8666,Poland,1382868594.0,Poland
+1059,Women,499,8666,Turkey,102323038.0,United States
+1060,Women,508,8666,South Korea,98037289.0,United States
+1061,Women,510,8666,India,2287842.0,United States
+1062,Women,511,8666,Germany,145722666.0,United States
+1063,Women,527,8666,Switzerland,30718056.0,Switzerland
+1064,Women,532,8666,Tanzania,96836569.0,Italy
+1065,Women,537,8666,India,1409847558.0,India
+1066,Women,548,8666,Greece,50063509.0,Germany
+1067,Women,552,8666,Italy,102467385.0,Italy
+1068,Women,557,8666,United Arab Emirates,102578590.0,United States
+1069,Women,570,8666,Greece,91712201.0,Poland
+1070,Women,574,8666,Denmark,1388836117.0,
+1071,Women,580,8666,Netherlands,66102166.0,United States
+1072,Women,587,8666,Portugal,1390441728.0,Brazil
+1073,Women,599,8666,Italy,46280460.0,Italy
+1074,Women,604,8666,Turkey,152384861.0,Turkey
+1075,Women,606,8666,Lebanon,71516522.0,Italy
+1076,Women,625,8666,Albania,119233348.0,Hungary
+1077,Women,626,8666,Italy,145133639.0,Italy
+1078,Women,635,8666,Turkey,102534175.0,Turkey
+1079,Women,639,8666,Turkey,1381215716.0,Turkey
+1080,Women,652,8666,France,115373398.0,France
+1081,Women,658,8666,Tunisia,50859325.0,United States
+1082,Women,660,8666,South Africa,144198778.0,Belgium
+1083,Women,665,8666,Iran,152403937.0,Turkey
+1084,Women,667,8666,Portugal,152468643.0,
+1085,Women,673,8666,Ecuador,48654315.0,United States
+1086,Women,677,8666,China,5330263.0,China
+1087,Women,680,8666,Turkey,1420075770.0,Turkey
+1088,Women,689,8666,Bulgaria,144108422.0,Bulgaria
+1089,Women,690,8666,Mexico,102895909.0,Spain
+1090,Women,696,8666,India,103308889.0,United States
+1091,Women,708,8666,Turkey,143924769.0,Netherlands
+1092,Women,712,8666,,1382869381.0,Italy
+1093,Women,717,8666,Italy,144281973.0,Italy
+1094,Women,720,8666,Netherlands,103234670.0,Italy
+1095,Women,736,8666,Italy,114356722.0,France
+1096,Women,742,8666,Romania,83113156.0,
+1097,Women,755,8666,India,144750408.0,France
+1098,Women,766,8666,Pakistan,1409994633.0,
+1099,Women,769,8666,Turkey,2082900.0,Turkey
+1100,Women,774,8666,Argentina,88403640.0,Italy
+1101,Women,778,8666,Netherlands,1390275063.0,Netherlands
+1102,Women,782,8666,Netherlands,143937755.0,Belgium
+1103,Women,789,8666,Turkey,104809222.0,United States
+1104,Women,805,8666,Portugal,103366680.0,Brazil
+1105,Women,815,8666,Germany,152373536.0,Germany
+1106,Women,821,8666,Italy,152390512.0,Italy
+1107,Women,823,8666,Monaco,152307625.0,Italy
+1108,Women,824,8666,Italy,100876865.0,Italy
+1109,Women,827,8666,SQ,123533920.0,China
+1110,Women,836,8666,Italy,152184984.0,France
+1111,Women,844,8666,Italy,21746817.0,Italy
+1112,Women,848,8666,,102751570.0,Turkey
+1113,Women,860,8666,Nepal,144027311.0,United States
+1114,Women,861,8666,Japan,48941403.0,United States
+1115,Women,862,8666,Russian Federation,11479525.0,Russian Federation
+1116,Women,863,8666,Iran,69505634.0,Iran
+1117,Women,887,8666,Turkey,93730921.0,Turkey
+1118,Women,889,8666,Algeria,152112053.0,United States
+1119,Women,898,8666,Russian Federation,11690433.0,United States
+1120,Women,907,8666,Costa Rica,104228250.0,Italy
+1121,Women,916,8518,Japan,2381885.0,Japan
+1122,Women,917,8422,Sweden,152505598.0,France
+1123,Women,920,8170,China,8392935.0,United States
+1124,Women,939,7456,Netherlands Antilles,95888159.0,Italy
+1125,Women,969,7424,,1381141056.0,France
+1126,Women,978,7424,Cyprus,102914583.0,France
+1127,Women,990,7424,Italy,145443078.0,Switzerland
+1128,Women,1006,7424,France,52421421.0,France
+1129,Women,1040,6464,Belgium,153871550.0,Brazil
+1130,Women,1042,6412,Belgium,66596099.0,Canada
+1131,Women,1047,6380,United Kingdom,152133416.0,United Kingdom
+1132,Women,1052,6346,Russian Federation,152465080.0,Russian Federation
+1133,Women,1054,6342,Poland,2040402.0,Poland
+1134,Women,1055,6338,Sweden,3991571.0,Finland
+1135,Women,1056,6320,Italy,11354211.0,Italy
+1136,Women,1059,6320,Ecuador,3782225.0,Colombia
+1137,Women,1066,6320,Italy,8333133.0,Italy
+1138,Women,1067,6320,Russian Federation,102280780.0,Russian Federation
+1139,Women,1073,6174,Ireland,5063321.0,United States
+1140,Women,1077,6046,Sweden,145514685.0,Sweden
+1141,Women,1084,5964,China,46935678.0,United States
+1142,Women,1088,5938,Poland,39761140.0,Germany
+1143,Women,1090,5910,South Africa,1504402317.0,
+1144,Women,1099,5868,Algeria,134883059.0,France
+1145,Women,1102,5866,Brazil,145676182.0,
+1146,Women,1113,5744,Algeria,1745327.0,France
+1147,Women,1123,5702,Italy,5226398.0,United Kingdom
+1148,Women,1128,5664,Uruguay,2809822.0,
+1149,Women,1129,5658,Italy,103298438.0,United Kingdom
+1150,Women,1138,5656,Bulgaria,152173879.0,Brazil
+1151,Women,1146,5656,,1382790961.0,Poland
+1152,Women,1166,5656,Italy,102422848.0,Italy
+1153,Women,1182,5482,United Kingdom,6531291.0,Germany
+1154,Women,1187,5442,China,143983921.0,China
+1155,Women,1195,5374,Belgium,1381141553.0,Germany
+1156,Women,1197,5374,Belgium,91807591.0,Belgium
+1157,Women,1203,5368,Kenya,152303184.0,Australia
+1158,Women,1210,5348,Belgium,116458523.0,United States
+1159,Women,1211,5348,Bulgaria,121668698.0,Bulgaria
+1160,Women,1212,5348,Croatia,143837932.0,Belgium
+1161,Women,1225,5348,Mexico,102501054.0,Brazil
+1162,Women,1248,5314,Greece,51898640.0,Taiwan
+1163,Women,1258,5314,India,103081561.0,United States
+1164,Women,1279,5236,India,3674586.0,United States
+1165,Women,1286,5202,Pakistan,144535125.0,United States
+1166,Women,1307,5016,Mexico,48469231.0,Spain
+1167,Women,1316,4952,Netherlands,94213214.0,Netherlands
+1168,Women,1319,4940,Nigeria,67142542.0,Italy
+1169,Women,1328,4836,Peru,4034007.0,Spain
+1170,Women,1346,4714,Poland,5588265.0,Poland
+1171,Women,1359,4638,United Kingdom,1397816381.0,United Kingdom
+1172,Women,1377,4498,China,1723081.0,China
+1173,Women,1378,4488,Brazil,6302307.0,United Kingdom
+1174,Women,1383,4472,,1382606061.0,Switzerland
+1175,Women,1385,4462,Sweden,152171438.0,United States
+1176,Women,1410,4422,Lebanon,152369754.0,Japan
+1177,Women,1411,4422,Reunion,78221567.0,Russian Federation
+1178,Women,1417,4414,Japan,2960329.0,Switzerland
+1179,Women,1424,4398,Russian Federation,145830759.0,Russian Federation
+1180,Women,1444,4352,Jamaica,1737905.0,Germany
+1181,Women,1449,4350,India,93131260.0,
+1182,Women,1455,4350,Turkey,107959584.0,Turkey
+1183,Women,1481,4350,Italy,1403056952.0,United States
+1184,Women,1482,4350,Pakistan,152121498.0,Switzerland
+1185,Women,1488,4350,United Kingdom,47997943.0,Germany
+1186,Women,1499,4350,India,153705740.0,India
+1187,Women,1503,4350,Armenia,14010383.0,Russian Federation
+1188,Women,1508,4350,Belgium,1389196715.0,Brazil
+1189,Women,1514,4350,Malaysia,30701990.0,Italy
+1190,Women,1519,4350,Turkey,1390448471.0,Turkey
+1191,Women,1525,4350,United States,26753295.0,United States
+1192,Women,1527,4350,Japan,52485698.0,United States
+1193,Women,1534,4350,Poland,10295719.0,Poland
+1194,Women,1538,4350,Iran,79282959.0,Iran
+1195,Women,1539,4350,New Zealand,89545709.0,United States
+1196,Women,1543,4350,India,103087484.0,United States
+1197,Women,1544,4350,Turkey,152345415.0,United States
+1198,Women,1551,4350,India,152547924.0,India
+1199,Women,1555,4350,Russian Federation,121248008.0,United States
+1200,Women,1557,4350,Austria,5942664.0,Switzerland
+1201,Women,1559,4350,Colombia,145760526.0,United States
+1202,Women,1567,4350,Ireland,152548042.0,United States
+1203,Women,1571,4350,Sri Lanka,101273225.0,Sri Lanka
+1204,Women,1573,4350,Paraguay,10343630.0,Italy
+1205,Women,1580,4350,Germany,152226182.0,
+1206,Women,1581,4350,Russian Federation,152536645.0,Russian Federation
+1207,Women,1592,4344,South Korea,47659550.0,South Korea
+1208,Women,1599,4334,Costa Rica,152960754.0,Puerto Rico
+1209,Women,1626,4316,Nepal,47329867.0,United States
+1210,Women,1627,4316,Italy,1403066423.0,
+1211,Women,1628,4316,Spain,103926111.0,Italy
+1212,Women,1632,4316,Colombia,41193574.0,Spain
+1213,Women,1633,4316,Peru,47974094.0,Spain
+1214,Women,1634,4316,Pakistan,3136483.0,
+1215,Women,1642,4316,Romania,6390106.0,United States
+1216,Women,1643,4316,Nigeria,1387443352.0,
+1217,Women,1644,4316,Zambia,144611998.0,United States
+1218,Women,1649,4316,France,98554296.0,Switzerland
+1219,Women,1652,4316,Paraguay,104369699.0,Italy
+1220,Women,1659,4316,South Korea,98771439.0,France
+1221,Women,1662,4316,Colombia,1390436304.0,Spain
+1222,Women,1663,4316,Italy,98837771.0,Italy
+1223,Women,1680,4316,Turkey,4290346.0,Germany
+1224,Women,1701,4316,Bulgaria,5608705.0,Germany
+1225,Women,1703,4316,Sri Lanka,3435189.0,Sri Lanka
+1226,Women,1711,4316,Belarus,113698383.0,Germany
+1227,Women,1713,4316,Turkey,9188493.0,United States
+1228,Women,1723,4316,United Kingdom,152440610.0,United States
+1229,Women,1739,4316,Turkey,152345414.0,United States
+1230,Women,1742,4316,Turkey,31401726.0,
+1231,Women,1743,4316,Turkey,66231949.0,Turkey
+1232,Women,1748,4316,India,103153218.0,United States
+1233,Women,1757,4316,Italy,102931326.0,United States
+1234,Women,1769,4316,Canada,102354698.0,United States
+1235,Women,1778,4316,Serbia,30893256.0,United States
+1236,Women,1795,4258,New Zealand,2549378.0,Germany
+1237,Women,1796,4258,Germany,103487082.0,United Kingdom
+1238,Women,1802,4230,Italy,2376549.0,Italy
+1239,Women,1833,4210,Italy,114842497.0,Italy
+1240,Women,1836,4210,United Kingdom,145085516.0,United States
+1241,Women,1840,4210,Kenya,52477734.0,
+1242,Women,1845,4210,Italy,117234283.0,Italy
+1243,Women,1858,4148,Italy,4472170.0,Italy
+1244,Women,1860,4148,Russian Federation,123580367.0,Russian Federation
+1245,Women,1889,4060,France,48539537.0,Switzerland
+1246,Women,1915,3938,China,1731689.0,United States
+1247,Women,1925,3908,China,1679704.0,Germany
+1248,Women,1955,3742,New Zealand,2470773.0,
+1249,Women,1970,3656,Israel,7142054.0,Russian Federation
+1250,Women,2002,3528,Germany,152235339.0,United States
+1251,Women,2008,3518,Costa Rica,1398591078.0,
+1252,Women,2011,3508,Uruguay,5363819.0,
+1253,Women,2013,3504,Germany,4670094.0,Germany
+1254,Women,2039,3402,Finland,4794549.0,Finland
+1255,Women,2042,3398,Spain,2694744.0,Spain
+1256,Women,2044,3394,Italy,144570670.0,United Kingdom
+1257,Women,2064,3360,,2950486.0,
+1258,Women,2070,3350,,1397981919.0,Germany
+1259,Women,2072,3340,China,46736172.0,United States
+1260,Women,2074,3330,China,152293546.0,China
+1261,Women,2092,3290,Switzerland,4082230.0,
+1262,Women,2094,3282,Brazil,2166500.0,
+1263,Women,2118,3242,Philippines,122110754.0,
+1264,Women,2122,3230,Italy,7911128.0,Italy
+1265,Women,2128,3220,Austria,105019705.0,
+1266,Women,2139,3192,Spain,114967677.0,Spain
+1267,Women,2141,3192,Netherlands,47299463.0,France
+1268,Women,2148,3184,Spain,153474002.0,France
+1269,Women,2153,3174,Israel,8096983.0,United States
+1270,Women,2157,3166,Denmark,144765341.0,United States
+1271,Women,2162,3154,Italy,91979765.0,Argentina
+1272,Women,2193,3078,India,65760579.0,United States
+1273,Women,2198,3068,Russian Federation,6259043.0,
+1274,Women,2207,3048,,1393600765.0,Germany
+1275,Women,2223,3042,Italy,25666760.0,Switzerland
+1276,Women,2227,3042,Poland,82825054.0,Poland
+1277,Women,2232,3042,Austria,93194229.0,United States
+1278,Women,2267,2986,South Korea,145106120.0,
+1279,Women,2278,2976,Italy,2014047.0,Italy
+1280,Women,2283,2976,Turkey,144437191.0,United States
+1281,Women,2288,2976,Ukraine,102490395.0,Poland
+1282,Women,2296,2976,Germany,2111937.0,Germany
+1283,Women,2302,2976,Italy,145376364.0,Switzerland
+1284,Women,2309,2960,Germany,144759071.0,Germany
+1285,Women,2324,2920,Viet Nam,143916507.0,China
+1286,Women,2328,2916,China,145915294.0,China
+1287,Women,2330,2914,Germany,34645795.0,
+1288,Women,2334,2908,United States,5652082.0,United States
+1289,Women,2364,2856,Peru,3486718.0,Spain
+1290,Women,2374,2856,Ireland,39057110.0,
+1291,Women,2375,2856,Italy,2730455.0,United States
+1292,Women,2382,2856,Italy,36032527.0,United States
+1293,Women,2394,2838,Poland,4111688.0,
+1294,Women,2404,2826,Italy,144358335.0,United States
+1295,Women,2423,2814,Argentina,94381163.0,United States
+1296,Women,2426,2806,Russian Federation,2246234.0,
+1297,Women,2427,2806,China,47118974.0,China
+1298,Women,2431,2802,France,4854988.0,France
+1299,Women,2467,2732,Japan,38425840.0,Japan
+1300,Women,2471,2730,Israel,5850938.0,Spain
+1301,Women,2481,2714,Guatemala,2690467.0,
+1302,Women,2503,2682,Czech Republic,2892425.0,
+1303,Women,2505,2680,Italy,25695414.0,Italy
+1304,Women,2515,2662,Taiwan Province of China,145887998.0,United States
+1305,Women,2540,2618,Japan,145707609.0,Japan
+1306,Women,2542,2614,Netherlands,152172403.0,Netherlands
+1307,Women,2550,2614,Poland,2177150.0,Poland
+1308,Women,2553,2614,Romania,152112495.0,United Kingdom
+1309,Women,2558,2614,Chile,6168370.0,Brazil
+1310,Women,2585,2596,Belgium,32591465.0,Belgium
+1311,Women,2590,2592,Taiwan Province of China,144953179.0,China
+1312,Women,2598,2582,Japan,35400989.0,Japan
+1313,Women,2613,2560,Japan,2183122.0,Japan
+1314,Women,2616,2552,Germany,143651123.0,
+1315,Women,2619,2550,Germany,6829019.0,Germany
+1316,Women,2654,2508,China,144414730.0,United States
+1317,Women,2688,2474,China,1930287.0,China
+1318,Women,2696,2460,Japan,144643190.0,Japan
+1319,Women,2716,2438,Ukraine,5891280.0,United Kingdom
+1320,Women,2722,2426,China,3371419.0,United States
+1321,Women,2740,2398,China,145604388.0,United States
+1322,Women,2742,2396,China,38905826.0,China
+1323,Women,2757,2382,,144419168.0,Thailand
+1324,Women,2759,2382,China,1940874.0,
+1325,Women,2760,2380,Finland,3669028.0,Finland
+1326,Women,2770,2368,Finland,10166897.0,
+1327,Women,2778,2360,Malaysia,94520685.0,China
+1328,Women,2785,2354,,1412487483.0,
+1329,Women,2813,2332,,1398324796.0,
+1330,Women,2828,2312,Japan,144695292.0,Japan
+1331,Women,2832,2308,China,49049929.0,United States
+1332,Women,2845,2294,Japan,1912746.0,Japan
+1333,Women,2864,2270,,1398274228.0,
+1334,Women,2880,2262,Germany,91349975.0,
+1335,Women,2893,2250,China,47059298.0,China
+1336,Women,2897,2248,China,1900811.0,China
+1337,Women,2899,2248,Israel,5455616.0,
+1338,Women,2908,2236,Zimbabwe,4990502.0,Belgium
+1339,Women,2918,2230,Finland,20516097.0,Italy
+1340,Women,2922,2226,Chile,144762401.0,Brazil
+1341,Women,2939,2204,China,1700627.0,China
+1342,Women,2943,2198,Japan,2333864.0,Japan
+1343,Women,2961,2180,France,10142462.0,France
+1344,Women,2970,2172,China,144286908.0,United Kingdom
+1345,Women,2990,2162,Israel,5590680.0,
+1346,Women,3000,2154,Philippines,122110753.0,
+1347,Women,3001,2154,Serbia,145841579.0,Greece
+1348,Women,3008,2148,Czech Republic,6192483.0,Czech Republic
+1349,Women,3023,2136,Japan,143809408.0,Japan
+1350,Women,3030,2132,Switzerland,2242328.0,Switzerland
+1351,Women,3074,2092,Denmark,50396016.0,
+1352,Women,3077,2092,Italy,46354065.0,Italy
+1353,Women,3089,2086,Turkey,144309336.0,United States
+1354,Women,3105,2078,France,7365421.0,France
+1355,Women,3120,2070,Czech Republic,5722237.0,
+1356,Women,3124,2064,South Korea,145692218.0,South Korea
+1357,Women,3129,2058,Austria,2350196.0,
+1358,Women,3157,2038,Thailand,144996508.0,
+1359,Women,3163,2034,Japan,34952197.0,Japan
+1360,Women,3215,2000,Israel,143929302.0,Israel
+1361,Women,3220,1996,Netherlands,38663012.0,France
+1362,Women,3236,1996,Sweden,153819833.0,Finland
+1363,Women,3240,1996,Portugal,6465394.0,Brazil
+1364,Women,3265,1996,Japan,153037712.0,
+1365,Women,3266,1996,Italy,95657332.0,Italy
+1366,Women,3274,1996,Israel,102319862.0,Israel
+1367,Women,3277,1996,Italy,145016214.0,France
+1368,Women,3325,1976,Italy,93758175.0,Italy
+1369,Women,3329,1976,Georgia,1999331.0,Italy
+1370,Women,3349,1968,,1389266308.0,
+1371,Women,3372,1952,Belgium,6236963.0,Belgium
+1372,Women,3383,1942,China,145234273.0,United States
+1373,Women,3386,1940,India,15784504.0,Switzerland
+1374,Women,3405,1924,Albania,5165744.0,Russian Federation
+1375,Women,3407,1922,China,144897010.0,China
+1376,Women,3432,1910,France,1411589983.0,France
+1377,Women,3447,1896,Czech Republic,1768555.0,
+1378,Women,3469,1884,Serbia,6261234.0,United States
+1379,Women,3471,1884,Germany,90359222.0,France
+1380,Women,3482,1884,Germany,102089975.0,Germany
+1381,Women,3485,1884,Germany,3826998.0,Germany
+1382,Women,3503,1878,Italy,102690901.0,United Kingdom
+1383,Women,3506,1878,China,47652837.0,Hong Kong
+1384,Women,3510,1878,China,47873353.0,China
+1385,Women,3526,1874,Israel,38935050.0,China
+1386,Women,3545,1866,Brazil,144178175.0,
+1387,Women,3547,1866,Germany,37170677.0,United States
+1388,Women,3554,1862,China,48857192.0,United States
+1389,Women,3569,1858,Uruguay,5048091.0,Italy
+1390,Women,3573,1858,Italy,145100636.0,France
+1391,Women,3574,1858,China,47899174.0,China
+1392,Women,3575,1858,Turkey,152610371.0,France
+1393,Women,3578,1858,Canada,152529622.0,United States
+1394,Women,3596,1848,Italy,2291410.0,
+1395,Women,3613,1834,Japan,3319641.0,United States
+1396,Women,3622,1830,,3533290.0,Japan
+1397,Women,3626,1828,Luxembourg,5599844.0,
+1398,Women,3631,1828,,1390124908.0,Germany
+1399,Women,3634,1826,Slovakia,2900438.0,
+1400,Women,3648,1820,Switzerland,4905667.0,Belgium
+1401,Women,3649,1820,China,49681194.0,United States
+1402,Women,3650,1818,Greece,5462940.0,Germany
+1403,Women,3651,1818,New Zealand,7185293.0,Canada
+1404,Women,3657,1816,China,1764239.0,
+1405,Women,3658,1816,China,145067880.0,China
+1406,Women,3662,1814,China,50469060.0,United States
+1407,Women,3666,1810,New Zealand,123228680.0,United States
+1408,Women,3669,1810,Malaysia,123958716.0,
+1409,Women,3673,1808,China,122458628.0,
+1410,Women,3678,1808,Morocco,152601676.0,Germany
+1411,Women,3684,1806,Russian Federation,35309012.0,
+1412,Women,3694,1800,Taiwan Province of China,2321150.0,United States
+1413,Women,3695,1800,Germany,3488656.0,Germany
+1414,Women,3696,1798,Italy,3523715.0,Italy
+1415,Women,3741,1774,China,4233725.0,China
+1416,Women,3749,1770,South Korea,104453446.0,South Korea
+1417,Women,3756,1766,China,34461691.0,United States
+1418,Women,3760,1766,Argentina,4877959.0,
+1419,Women,3773,1760,France,48640086.0,France
+1420,Women,3791,1752,Taiwan Province of China,46771825.0,China
+1421,Women,3792,1752,Russian Federation,4376538.0,
+1422,Women,3808,1744,United Kingdom,15860126.0,Germany
+1423,Women,3809,1744,Belgium,35152114.0,Switzerland
+1424,Women,3823,1736,United Kingdom,48140709.0,
+1425,Women,3837,1730,Russian Federation,8108159.0,United States
+1426,Women,3840,1728,Morocco,3922995.0,United Kingdom
+1427,Women,3843,1726,Germany,48664428.0,Germany
+1428,Women,3849,1724,Hungary,48974043.0,Hungary
+1429,Women,3854,1720,Italy,11795823.0,Italy
+1430,Women,3859,1718,Uruguay,4535478.0,
+1431,Women,3866,1714,Belgium,3055195.0,Belgium
+1432,Women,3871,1710,Argentina,2753117.0,Italy
+1433,Women,3892,1698,Belgium,7226039.0,Belgium
+1434,Women,3893,1698,Algeria,9961084.0,France
+1435,Women,3896,1696,Brazil,3917364.0,
+1436,Women,3902,1694,Italy,1850273.0,France
+1437,Women,3904,1694,SQ,4082282.0,
+1438,Women,3915,1690,France,5486698.0,France
+1439,Women,3918,1688,China,12671453.0,China
+1440,Women,3925,1686,Belgium,2010026.0,Germany
+1441,Women,3937,1684,Turkey,2052309.0,Pakistan
+1442,Women,3960,1670,,1397514384.0,Belgium
+1443,Women,3961,1670,New Zealand,152314974.0,United Kingdom
+1444,Women,3963,1670,Belgium,145740869.0,Belgium
+1445,Women,3988,1660,Japan,102654936.0,United States
+1446,Women,3992,1658,Germany,2063287.0,Germany
+1447,Women,3993,1658,France,25645220.0,Switzerland
+1448,Women,3994,1658,Germany,7397445.0,
+1449,Women,4008,1652,Denmark,2704485.0,
+1450,Women,4010,1652,Italy,49615646.0,United States
+1451,Women,4021,1648,France,4434277.0,Spain
+1452,Women,4024,1648,Germany,2765810.0,Germany
+1453,Women,4034,1644,Bulgaria,38322312.0,United States
+1454,Women,4040,1644,South Africa,32717973.0,United States
+1455,Women,4049,1638,China,14038090.0,
+1456,Women,4063,1634,Denmark,51323822.0,United States
+1457,Women,4074,1628,China,66641366.0,United States
+1458,Women,4082,1624,Tunisia,4880141.0,United States
+1459,Women,4088,1622,Russian Federation,72711866.0,Russian Federation
+1460,Women,4089,1622,Martinique,1396607982.0,Italy
+1461,Women,4091,1620,Germany,2392507.0,Germany
+1462,Women,4111,1612,China,144526765.0,China
+1463,Women,4168,1598,Italy,11988801.0,United Kingdom
+1464,Women,4175,1596,Poland,152479360.0,Poland
+1465,Women,4178,1596,Denmark,144080998.0,United States
+1466,Women,4183,1596,Italy,122408714.0,Hungary
+1467,Women,4207,1596,Bulgaria,25667869.0,Russian Federation
+1468,Women,4238,1596,France,6834598.0,Switzerland
+1469,Women,4239,1596,Australia,92601148.0,
+1470,Women,4245,1596,Ukraine,145827700.0,Russian Federation
+1471,Women,4246,1596,Switzerland,48834923.0,Switzerland
+1472,Women,4251,1596,France,2005975507.0,France
+1473,Women,4263,1596,Italy,47115364.0,Italy
+1474,Women,4277,1596,Italy,7941750.0,Italy
+1475,Women,4290,1596,France,145805730.0,France
+1476,Women,4295,1596,Ukraine,152537670.0,Russian Federation
+1477,Women,4320,1586,Saudi Arabia,145319527.0,
+1478,Women,4342,1578,China,46659663.0,United States
+1479,Women,4360,1570,Japan,48733593.0,
+1480,Women,4361,1570,Italy,5587278.0,Italy
+1481,Women,4372,1566,China,51978787.0,
+1482,Women,4373,1566,Japan,2960540.0,Japan
+1483,Women,4397,1558,China,145860456.0,United States
+1484,Women,4405,1556,Germany,1698453.0,
+1485,Women,4408,1554,Israel,2941875.0,United States
+1486,Women,4413,1554,Kenya,5208615.0,Germany
+1487,Women,4417,1552,Taiwan Province of China,145396992.0,China
+1488,Women,4430,1546,China,48989626.0,China
+1489,Women,4432,1546,Ukraine,40390040.0,
+1490,Women,4440,1544,United States,4681977.0,United Kingdom
+1491,Women,4446,1542,Brazil,3935480.0,
+1492,Women,4454,1540,Japan,1695817.0,Japan
+1493,Women,4455,1538,Russian Federation,5153630.0,
+1494,Women,4465,1538,Spain,34825279.0,
+1495,Women,4471,1536,China,2529167.0,United States
+1496,Women,4497,1526,Italy,74815107.0,Italy
+1497,Women,4500,1526,China,47113208.0,China
+1498,Women,4518,1522,China,145166642.0,Russian Federation
+1499,Women,4521,1522,Italy,14757857.0,
+1500,Women,4530,1518,Poland,4810580.0,Poland
+1501,Women,4534,1516,Japan,35097991.0,
+1502,Women,4548,1512,Slovenia,6403343.0,
+1503,Women,4557,1510,Uganda,3004981.0,Mauritius
+1504,Women,4563,1508,China,145964782.0,China
+1505,Women,4569,1508,China,40317407.0,United States
+1506,Women,4578,1504,China,2364163.0,China
+1507,Women,4603,1498,United States,101302869.0,
+1508,Women,4605,1498,Viet Nam,48611537.0,United States
+1509,Women,4610,1496,Mexico,145271051.0,
+1510,Women,4611,1496,Chile,6917762.0,
+1511,Women,4615,1494,China,144487650.0,China
+1512,Women,4648,1486,Japan,37727261.0,Japan
+1513,Women,4657,1480,Philippines,1400324774.0,
+1514,Women,4663,1480,China,47845460.0,China
+1515,Women,4665,1480,Denmark,3676526.0,Germany
+1516,Women,4669,1478,Trinidad and Tobago,5369699.0,
+1517,Women,4676,1476,Taiwan Province of China,1809936.0,China
+1518,Women,4677,1476,Greece,5385064.0,France
+1519,Women,4678,1476,Germany,31490674.0,Germany
+1520,Women,4681,1476,China,48379516.0,United States
+1521,Women,4685,1474,Australia,6974331.0,Japan
+1522,Women,4695,1470,Dominican Republic,2303674.0,Italy
+1523,Women,4698,1470,Taiwan Province of China,145873991.0,United States
+1524,Women,4700,1470,Lithuania,152339385.0,Russian Federation
+1525,Women,4712,1466,China,47191067.0,United States
+1526,Women,4713,1466,,5125465.0,Chile
+1527,Women,4714,1466,Japan,144366833.0,United States
+1528,Women,4717,1464,,1896918.0,France
+1529,Women,4730,1462,,1397480348.0,
+1530,Women,4732,1460,Belgium,8772015.0,
+1531,Women,4737,1460,China,50367465.0,United States
+1532,Women,4740,1458,Philippines,6209969.0,
+1533,Women,4749,1456,,1401952530.0,Switzerland
+1534,Women,4757,1454,Argentina,2080372.0,France
+1535,Women,4775,1450,China,2244208.0,China
+1536,Women,4781,1448,Germany,1399002953.0,Germany
+1537,Women,4796,1446,Venezuela Bolivarian Republic of,1379521583.0,Netherlands
+1538,Women,4798,1446,Turkey,93506073.0,Germany
+1539,Women,4812,1446,Slovakia,94695816.0,United States
+1540,Women,4817,1446,Kenya,83459348.0,Italy
+1541,Women,4831,1446,Ukraine,7016145.0,Poland
+1542,Women,4834,1446,Germany,40936166.0,United Kingdom
+1543,Women,4836,1446,Italy,5549162.0,Italy
+1544,Women,4837,1446,Germany,49668016.0,United Kingdom
+1545,Women,4841,1446,Netherlands,102146994.0,Netherlands
+1546,Women,4903,1432,Brazil,5954729.0,
+1547,Women,4918,1428,China,144568347.0,
+1548,Women,4923,1428,Ukraine,38957748.0,Russian Federation
+1549,Women,4930,1426,Japan,10177291.0,Japan
+1550,Women,4938,1424,China,49681126.0,United States
+1551,Women,4939,1424,Cote d'Ivoire,4622323.0,
+1552,Women,4951,1418,Bolivia Plurinational State of,6820212.0,Mexico
+1553,Women,4954,1418,,4482965.0,France
+1554,Women,4960,1416,France,34833314.0,France
+1555,Women,4967,1414,China,50652988.0,China
+1556,Women,4979,1410,Spain,2389988.0,United States
+1557,Women,4985,1410,China,144801508.0,United States
+1558,Women,4991,1408,,1397690096.0,
+1559,Women,4994,1408,China,49111076.0,China
+1560,Women,4999,1408,China,40345798.0,China
+1561,Women,5006,1406,Hong Kong,120524532.0,United States
+1562,Women,5009,1406,Algeria,4618595.0,United Kingdom
+1563,Women,5015,1404,Italy,108772627.0,Italy
+1564,Women,5019,1404,Italy,152270506.0,Italy
+1565,Women,5020,1404,,102951146.0,Italy
+1566,Women,5026,1404,Belgium,94208927.0,Belgium
+1567,Women,5033,1404,Spain,1381168032.0,Spain
+1568,Women,5034,1404,Italy,32574500.0,Italy
+1569,Women,5036,1404,Italy,46734435.0,Italy
+1570,Women,5064,1404,,1380925789.0,France
+1571,Women,5066,1404,Germany,1841708.0,Germany
+1572,Women,5069,1404,Argentina,3935940.0,Italy
+1573,Women,5070,1402,Italy,3583584.0,Italy
+1574,Women,5079,1400,Japan,46750683.0,Japan
+1575,Women,5082,1400,Sri Lanka,29978992.0,Italy
+1576,Women,5091,1400,Germany,152233217.0,Germany
+1577,Women,5096,1398,China,92179621.0,United States
+1578,Women,5114,1394,China,144032123.0,
+1579,Women,5141,1390,China,48000611.0,United States
+1580,Women,5142,1390,India,46696206.0,India
+1581,Women,5143,1390,China,49670593.0,United Kingdom
+1582,Women,5160,1388,Ireland,2926083.0,
+1583,Women,5173,1384,France,152567183.0,Switzerland
+1584,Women,5176,1384,Philippines,2746941.0,
+1585,Women,5183,1382,Argentina,3997503.0,
+1586,Women,5197,1380,Italy,1910475.0,Italy
+1587,Women,5213,1380,Argentina,143914723.0,Spain
+1588,Women,5225,1374,China,2240130.0,United States
+1589,Women,5249,1368,Spain,153286805.0,Spain
+1590,Women,5250,1368,,1402165290.0,France
+1591,Women,5254,1366,Russian Federation,92274607.0,
+1592,Women,5261,1364,Japan,4118702.0,Japan
+1593,Women,5268,1360,Italy,6172849.0,
+1594,Women,5270,1360,India,10582630.0,Germany
+1595,Women,5275,1360,Japan,4373881.0,Japan
+1596,Women,5277,1360,China,31932952.0,China
+1597,Women,5281,1358,South Africa,3358317.0,
+1598,Women,5286,1356,Belgium,146026109.0,Switzerland
+1599,Women,5287,1356,China,11550220.0,France
+1600,Women,5294,1354,Japan,144430079.0,Japan
+1601,Women,5304,1352,Portugal,144431989.0,
+1602,Women,5336,1346,Colombia,3764334.0,United States
+1603,Women,5341,1344,Slovenia,6466121.0,
+1604,Women,5346,1344,South Korea,145496989.0,South Korea
+1605,Women,5369,1338,Italy,143734746.0,Italy
+1606,Women,5384,1334,Germany,152521209.0,Germany
+1607,Women,5398,1332,Italy,144384262.0,Italy
+1608,Women,5408,1330,Germany,47930054.0,Germany
+1609,Women,5420,1328,Philippines,4916259.0,Sweden
+1610,Women,5429,1326,China,50561502.0,United States
+1611,Women,5436,1326,China,145430770.0,China
+1612,Women,5452,1324,Taiwan Province of China,49794887.0,United States
+1613,Women,5470,1320,Japan,2792490.0,Japan
+1614,Women,5492,1314,Spain,47319717.0,Spain
+1615,Women,5495,1312,China,50025957.0,United Kingdom
+1616,Women,5513,1310,China,1730986.0,United States
+1617,Women,5528,1306,China,92400388.0,
+1618,Women,5540,1304,Japan,35250994.0,
+1619,Women,5543,1302,China,145631934.0,United States
+1620,Women,5557,1302,Germany,49919096.0,
+1621,Women,5570,1298,China,6377164.0,United States
+1622,Women,5580,1296,Israel,47689551.0,
+1623,Women,5592,1294,United States,3221267.0,France
+1624,Women,5594,1292,United States,145377524.0,United States
+1625,Women,5600,1292,Italy,31629021.0,Italy
+1626,Women,5602,1292,Japan,2284897.0,Japan
+1627,Women,5606,1292,China,11181418.0,United States
+1628,Women,5622,1288,China,2627247.0,China
+1629,Women,5638,1286,China,1712697.0,China
+1630,Women,5651,1284,Czech Republic,2407628.0,
+1631,Women,5672,1280,China,36995866.0,China
+1632,Women,5677,1280,South Korea,2897149.0,Germany
+1633,Women,5689,1278,Ukraine,15396251.0,Ukraine
+1634,Women,5695,1278,Benin,91468241.0,
+1635,Women,5699,1276,China,50269050.0,United States
+1636,Women,5722,1272,Czech Republic,51063402.0,
+1637,Women,5731,1270,Italy,152439645.0,
+1638,Women,5759,1264,Russian Federation,3672122.0,Russian Federation
+1639,Women,5760,1264,South Africa,144366651.0,United Kingdom
+1640,Women,5777,1260,China,144815039.0,China
+1641,Women,5783,1260,China,50599271.0,Russian Federation
+1642,Women,5794,1256,Germany,26192927.0,United States
+1643,Women,5803,1254,United States,46717429.0,
+1644,Women,5806,1252,China,144419331.0,China
+1645,Women,5829,1248,Finland,6645596.0,Austria
+1646,Women,5832,1248,India,49863417.0,Hungary
+1647,Women,5851,1246,China,1734704.0,United States
+1648,Women,5852,1246,France,1818864.0,
+1649,Women,5868,1242,France,6381050.0,Austria
+1650,Women,5883,1240,Chile,145851157.0,Chile
+1651,Women,5888,1240,Kenya,31054306.0,France
+1652,Women,5897,1238,Canada,5232374.0,
+1653,Women,5903,1236,China,145644794.0,China
+1654,Women,5946,1232,Philippines,2736355.0,
+1655,Women,5955,1232,Italy,2838861.0,Spain
+1656,Women,5957,1230,Germany,1844346.0,
+1657,Women,5970,1228,Russian Federation,48764555.0,
+1658,Women,5980,1226,Italy,36261292.0,Italy
+1659,Women,5986,1226,France,103107502.0,France
+1660,Women,6027,1218,Italy,5842840.0,Germany
+1661,Women,6029,1218,Germany,8051317.0,Italy
+1662,Women,6034,1216,France,5221216.0,France
+1663,Women,6036,1216,China,144679575.0,United States
+1664,Women,6045,1214,China,144829250.0,China
+1665,Women,6053,1212,Netherlands,13937587.0,Netherlands
+1666,Women,6066,1210,China,1678674.0,United States
+1667,Women,6075,1208,Israel,4496070.0,United States
+1668,Women,6076,1208,Bulgaria,145336945.0,
+1669,Women,6084,1206,Japan,32858874.0,Japan
+1670,Women,6144,1196,China,2594238.0,
+1671,Women,6147,1194,Italy,5826837.0,
+1672,Women,6160,1192,China,145774775.0,China
+1673,Women,6185,1188,Serbia,2609523.0,
+1674,Women,6189,1188,,115802432.0,Poland
+1675,Women,6198,1186,China,48631967.0,China
+1676,Women,6204,1184,,1401652546.0,
+1677,Women,6213,1182,Italy,2500650.0,Italy
+1678,Women,6217,1182,China,50079005.0,China
+1679,Women,6219,1180,Japan,2786572.0,
+1680,Women,6227,1178,Czech Republic,32177034.0,
+1681,Women,6238,1178,Guernsey,5207702.0,Italy
+1682,Women,6251,1176,China,49403774.0,China
+1683,Women,6253,1176,Czech Republic,1970737.0,Czech Republic
+1684,Women,6258,1174,Ireland,71722122.0,Spain
+1685,Women,6292,1170,Ukraine,10144012.0,Russian Federation
+1686,Women,6301,1168,Kenya,10352147.0,Spain
+1687,Women,6304,1168,Peru,5009500.0,
+1688,Women,6307,1168,China,2164778.0,China
+1689,Women,6319,1164,Portugal,32095951.0,
+1690,Women,6357,1158,Japan,145753149.0,Japan
+1691,Women,6374,1154,China,144603907.0,United States
+1692,Women,6392,1152,China,144907786.0,United States
+1693,Women,6405,1150,Italy,6070407.0,Italy
+1694,Women,6420,1148,Morocco,6152670.0,Italy
+1695,Women,6430,1146,China,40569887.0,United States
+1696,Women,6437,1146,China,49109731.0,China
+1697,Women,6450,1144,China,3042551.0,China
+1698,Women,6456,1142,Serbia,4550171.0,Greece
+1699,Women,6472,1140,China,143881196.0,China
+1700,Women,6493,1138,South Korea,47543768.0,United Kingdom
+1701,Women,6494,1138,Denmark,2609282.0,Denmark
+1702,Women,6502,1138,Italy,6278642.0,Italy
+1703,Women,6509,1136,Belgium,6088406.0,
+1704,Women,6522,1132,Martinique,4932760.0,
+1705,Women,6529,1132,United States,6360128.0,
+1706,Women,6530,1132,China,1869590.0,Taiwan
+1707,Women,6560,1126,China,49410806.0,United States
+1708,Women,6586,1122,South Korea,40049167.0,China
+1709,Women,6593,1122,China,2561201.0,China
+1710,Women,6595,1120,China,51192933.0,United States
+1711,Women,6608,1120,China,30079047.0,
+1712,Women,6624,1118,Russian Federation,3021514.0,Russian Federation
+1713,Women,6627,1118,Cote d'Ivoire,13707541.0,China
+1714,Women,6632,1116,Japan,34834635.0,Japan
+1715,Women,6633,1116,Taiwan Province of China,1858484.0,China
+1716,Women,6636,1116,Ecuador,4982856.0,Portugal
+1717,Women,6648,1116,Italy,4517790.0,
+1718,Women,6653,1114,Denmark,5783515.0,Denmark
+1719,Women,6664,1112,Italy,2917059.0,Italy
+1720,Women,6665,1112,Japan,49959731.0,United States
+1721,Women,6667,1112,Czech Republic,3839616.0,
+1722,Women,6668,1112,Brazil,5151437.0,Brazil
+1723,Women,6678,1110,Russian Federation,143656229.0,Sweden
+1724,Women,6708,1106,Serbia,152214700.0,Japan
+1725,Women,6717,1104,Spain,1398433179.0,
+1726,Women,6733,1104,Canada,40218842.0,Italy
+1727,Women,6747,1104,China,49087889.0,South Korea
+1728,Women,6748,1104,China,145081302.0,China
+1729,Women,6759,1102,Argentina,4643199.0,Belgium
+1730,Women,6768,1102,Spain,2155795.0,Italy
+1731,Women,6773,1100,Japan,48947901.0,Canada
+1732,Women,6775,1100,Japan,49033805.0,Japan
+1733,Women,6800,1098,Japan,145832394.0,United States
+1734,Women,6822,1096,Japan,48411701.0,Japan
+1735,Women,6824,1094,Taiwan Province of China,143723336.0,China
+1736,Women,6828,1094,Belgium,3128749.0,
+1737,Women,6830,1094,United States,47849166.0,
+1738,Women,6838,1092,Russian Federation,2552633.0,Russian Federation
+1739,Women,6858,1090,China,47717421.0,China
+1740,Women,6859,1090,Finland,152595265.0,
+1741,Women,6882,1088,,1390047055.0,Croatia
+1742,Women,6885,1088,Turkey,6706883.0,United States
+1743,Women,6891,1088,Colombia,144640575.0,
+1744,Women,6904,1086,Japan,9844475.0,
+1745,Women,6917,1084,China,1678691.0,China
+1746,Women,6924,1082,Ukraine,8462650.0,
+1747,Women,6944,1080,Japan,3188909.0,Japan
+1748,Women,6949,1080,Germany,143773619.0,Germany
+1749,Women,6962,1080,Italy,2389011.0,
+1750,Women,6980,1078,Germany,6575014.0,
+1751,Women,6982,1078,China,144088213.0,China
+1752,Women,6985,1078,France,4003989.0,
+1753,Women,6994,1076,China,145671915.0,United States
+1754,Women,7000,1076,,1383079108.0,Sweden
+1755,Women,7003,1076,Germany,134813212.0,Germany
+1756,Women,7009,1074,Italy,4546331.0,Switzerland
+1757,Women,7019,1072,Spain,145217358.0,France
+1758,Women,7023,1072,Japan,2036037.0,Japan
+1759,Women,7024,1072,Bangladesh,145770960.0,United States
+1760,Women,7026,1072,China,46761752.0,China
+1761,Women,7053,1068,Cote d'Ivoire,6952403.0,
+1762,Women,7057,1068,Croatia,5922585.0,Switzerland
+1763,Women,7059,1068,Kenya,4881810.0,
+1764,Women,7062,1068,Poland,2413622.0,Poland
+1765,Women,7086,1064,China,46868778.0,China
+1766,Women,7090,1064,China,2638333.0,Germany
+1767,Women,7091,1064,Italy,8906638.0,Italy
+1768,Women,7093,1064,China,143605587.0,United States
+1769,Women,7099,1062,China,49138727.0,Switzerland
+1770,Women,7103,1062,Argentina,6606506.0,Italy
+1771,Women,7106,1062,Slovakia,4164577.0,France
+1772,Women,7122,1060,Italy,24373701.0,
+1773,Women,7130,1060,Germany,145121734.0,
+1774,Women,7151,1058,Taiwan Province of China,145352876.0,China
+1775,Women,7155,1058,Spain,4119532.0,
+1776,Women,7165,1056,Russian Federation,6062270.0,
+1777,Women,7187,1054,Bulgaria,145038979.0,Russian Federation
+1778,Women,7191,1054,China,12551031.0,Italy
+1779,Women,7194,1054,Italy,4273410.0,Italy
+1780,Women,7213,1052,Indonesia,6884255.0,
+1781,Women,7222,1052,Italy,3167427.0,Italy
+1782,Women,7234,1050,China,74532453.0,United States
+1783,Women,7252,1048,China,71776732.0,United States
+1784,Women,7264,1048,Brazil,145349545.0,Portugal
+1785,Women,7267,1046,French Guiana,15892609.0,South Korea
+1786,Women,7289,1044,China,37887426.0,China
+1787,Women,7307,1042,Italy,2097843.0,Italy
+1788,Women,7310,1042,Japan,3080589.0,Japan
+1789,Women,7313,1042,Canada,1702009.0,
+1790,Women,7315,1042,Mexico,144104671.0,
+1791,Women,7342,1040,China,48630674.0,China
+1792,Women,7349,1038,France,9535148.0,France
+1793,Women,7368,1038,China,49110437.0,China
+1794,Women,7372,1036,Germany,50282346.0,
+1795,Women,7373,1036,Denmark,4763581.0,Denmark
+1796,Women,7375,1036,,21605171.0,
+1797,Women,7379,1036,Germany,2001191.0,Switzerland
+1798,Women,7395,1034,Paraguay,6113992.0,United States
+1799,Women,7401,1034,China,15111152.0,United States
+1800,Women,7407,1032,Japan,143931463.0,France
+1801,Women,7410,1032,Nicaragua,1397325531.0,
+1802,Women,7422,1030,Cote d'Ivoire,47955710.0,Germany
+1803,Women,7435,1030,Portugal,144357345.0,United States
+1804,Women,7440,1028,China,4344584.0,United States
+1805,Women,7450,1028,Slovenia,39956678.0,Switzerland
+1806,Women,7498,1022,South Korea,26067282.0,
+1807,Women,7510,1020,Poland,91997496.0,
+1808,Women,7534,1018,China,145857596.0,United States
+1809,Women,7538,1018,China,145841893.0,United States
+1810,Women,7539,1016,Dominican Republic,31875738.0,
+1811,Women,7547,1016,China,39602740.0,United States
+1812,Women,7551,1016,China,10724805.0,China
+1813,Women,7560,1014,Italy,3092315.0,Italy
+1814,Women,7574,1014,Japan,47018470.0,United Kingdom
+1815,Women,7576,1014,Poland,8225927.0,Poland
+1816,Women,7577,1014,Japan,12484296.0,Japan
+1817,Women,7590,1012,,1382866763.0,France
+1818,Women,7599,1012,Greece,101044877.0,Italy
+1819,Women,7622,1010,Germany,4912661.0,
+1820,Women,7634,1010,China,49608252.0,United Kingdom
+1821,Women,7636,1010,Italy,23802707.0,
+1822,Women,7645,1008,Austria,35455622.0,Belgium
+1823,Women,7648,1008,China,49758237.0,United States
+1824,Women,7654,1008,Finland,2022062.0,Finland
+1825,Women,7660,1008,China,2461523.0,China
+1826,Women,7666,1006,United States,29859559.0,
+1827,Women,7688,1004,India,102800880.0,United States
+1828,Women,7692,1004,Belgium,1403826782.0,Belgium
+1829,Women,7722,1002,Brazil,3851413.0,
+1830,Women,7738,1000,Italy,1401780397.0,Italy
+1831,Women,7754,998,Portugal,96045915.0,United States
+1832,Women,7761,998,Pakistan,4321410.0,United States
+1833,Women,7766,998,Slovenia,4307979.0,Switzerland
+1834,Women,7776,998,Japan,2297212.0,Japan
+1835,Women,7791,998,India,144028630.0,United States
+1836,Women,7792,998,China,51228249.0,China
+1837,Women,7795,998,,150319896.0,France
+1838,Women,7798,998,Italy,6478229.0,Italy
+1839,Women,7807,998,Iran,153297782.0,United States
+1840,Women,7817,998,Lebanon,143971280.0,United States
+1841,Women,7824,998,Switzerland,145032400.0,United States
+1842,Women,7837,998,Argentina,6466691.0,France
+1843,Women,7839,998,Ireland,145863528.0,France
+1844,Women,7843,998,Colombia,46485915.0,Belarus
+1845,Women,7849,998,Slovenia,3968492.0,United States
+1846,Women,7868,998,,1383080013.0,France
+1847,Women,7875,998,Russian Federation,102649365.0,United States
+1848,Women,7880,998,Italy,1388952295.0,United Kingdom
+1849,Women,7892,998,Romania,96143317.0,Italy
+1850,Women,7899,998,Belarus,144469515.0,Germany
+1851,Women,7905,998,Italy,104095144.0,Italy
+1852,Women,7910,998,France,102684222.0,France
+1853,Women,7912,998,Iran,1390426378.0,
+1854,Women,7916,998,United Kingdom,144763586.0,United Kingdom
+1855,Women,7923,998,Bulgaria,4229208.0,Belgium
+1856,Women,7928,998,Germany,102352459.0,Germany
+1857,Women,7937,998,New Zealand,103942706.0,United Kingdom
+1858,Women,7940,996,China,145305154.0,Japan
+1859,Women,7963,994,Japan,2370987.0,Japan
+1860,Women,7966,994,Poland,49522384.0,
+1861,Women,7967,994,Serbia,143686578.0,
+1862,Women,7978,992,Denmark,2781366.0,
+1863,Women,7989,990,Costa Rica,16165588.0,Spain
+1864,Women,8002,990,Germany,14193131.0,
+1865,Women,8003,990,Israel,6164545.0,Italy
+1866,Women,8007,990,Russian Federation,46306311.0,Russian Federation
+1867,Women,8033,988,South Korea,3206776.0,United States
+1868,Women,8037,988,South Korea,144576117.0,
+1869,Women,8038,986,Poland,3669143.0,Poland
+1870,Women,8040,986,Germany,6301529.0,France
+1871,Women,8059,986,China,47003577.0,China
+1872,Women,8061,984,China,8128268.0,China
+1873,Women,8063,984,Poland,6806407.0,
+1874,Women,8074,982,China,145293085.0,United States
+1875,Women,8086,982,China,145820819.0,
+1876,Women,8102,980,Netherlands,2763770.0,United States
+1877,Women,8114,978,Italy,1812176.0,United Kingdom
+1878,Women,8119,978,Netherlands,94893702.0,
+1879,Women,8121,978,Poland,2806214.0,France
+1880,Women,8136,978,Argentina,15275849.0,France
+1881,Women,8159,978,Germany,1382700224.0,Germany
+1882,Women,8171,978,Iran,8561504.0,Egypt
+1883,Women,8202,974,Philippines,1788481.0,Mexico
+1884,Women,8204,974,Taiwan Province of China,144354008.0,China
+1885,Women,8206,974,Switzerland,4852236.0,Italy
+1886,Women,8207,972,France,15735330.0,
+1887,Women,8213,972,France,51970867.0,
+1888,Women,8222,972,Argentina,6044012.0,Italy
+1889,Women,8223,972,Japan,6227296.0,Japan
+1890,Women,8229,970,Ukraine,5483930.0,Russian Federation
+1891,Women,8233,970,Japan,47427738.0,Japan
+1892,Women,8241,970,Germany,32223455.0,Switzerland
+1893,Women,8242,970,China,11619622.0,United States
+1894,Women,8270,966,China,2964618.0,United States
+1895,Women,8274,966,New Zealand,2931286.0,United Kingdom
+1896,Women,8276,966,China,144383740.0,United States
+1897,Women,8288,964,China,1398040167.0,United States
+1898,Women,8306,962,Portugal,6612443.0,
+1899,Women,8307,962,New Zealand,37775731.0,United States
+1900,Women,8323,960,Portugal,3135144.0,United States
+1901,Women,8330,960,Mexico,1397177843.0,
+1902,Women,8335,960,Italy,7812686.0,
+1903,Women,8345,960,Slovenia,4222448.0,United States
+1904,Women,8349,958,China,47825418.0,China
+1905,Women,8369,956,China,49110477.0,China
+1906,Women,8376,956,China,1707706.0,China
+1907,Women,8379,956,China,49164760.0,China
+1908,Women,8413,952,Philippines,93800366.0,
+1909,Women,8419,952,China,40062400.0,United States
+1910,Women,8431,950,China,144605573.0,China
+1911,Women,8432,950,Serbia,66607381.0,
+1912,Women,8435,950,China,50013695.0,United States
+1913,Women,8472,946,Japan,4093202.0,
+1914,Women,8474,946,China,50081729.0,United States
+1915,Women,8475,946,China,47908647.0,
+1916,Women,8482,946,Italy,2958210.0,France
+1917,Women,8489,946,Russian Federation,51412657.0,Russian Federation
+1918,Women,8499,944,SQ,102691725.0,China
+1919,Women,8504,944,Guam,5714381.0,Sweden
+1920,Women,8510,944,Poland,9833874.0,
+1921,Women,8513,944,Colombia,143744933.0,France
+1922,Women,8523,942,China,9453086.0,Japan
+1923,Women,8524,942,China,46584589.0,China
+1924,Women,8528,942,Netherlands,1387465025.0,
+1925,Women,8538,942,Canada,4409514.0,United States
+1926,Women,8545,940,France,4672582.0,
+1927,Women,8546,940,Serbia,9916710.0,Switzerland
+1928,Women,8557,940,China,49469176.0,United States
+1929,Women,8562,938,Taiwan Province of China,143723332.0,China
+1930,Women,8565,938,Japan,2837275.0,Japan
+1931,Women,8570,938,China,47827881.0,China
+1932,Women,8581,938,India,50064125.0,India
+1933,Women,8591,936,Portugal,145362493.0,Brazil
+1934,Women,8598,936,Hong Kong,1412532524.0,United States
+1935,Women,8602,936,Philippines,9922653.0,
+1936,Women,8613,934,Japan,7137855.0,Belgium
+1937,Women,8624,934,China,144078574.0,China
+1938,Women,8638,932,China,51008120.0,China
+1939,Women,8642,932,Italy,145514379.0,Italy
+1940,Women,8649,932,Finland,1399508665.0,
+1941,Women,8651,930,China,47363448.0,China
+1942,Women,8660,930,China,122218456.0,
+1943,Women,8679,928,Italy,8689016.0,Italy
+1944,Women,8688,926,Philippines,50088444.0,United States
+1945,Women,8703,926,Italy,7716425.0,United States
+1946,Women,8704,926,China,48170051.0,United States
+1947,Women,8710,924,Bulgaria,2983070.0,
+1948,Women,8737,922,Iran,1809405.0,United States
+1949,Women,8747,922,Japan,39108402.0,Japan
+1950,Women,8752,920,Italy,6209053.0,
+1951,Women,8794,916,Hungary,4773191.0,Argentina
+1952,Women,8802,916,Italy,66083044.0,
+1953,Women,8807,916,Japan,143809407.0,Japan
+1954,Women,8811,916,Japan,47547004.0,Poland
+1955,Women,8815,916,,1382581862.0,Belgium
+1956,Women,8819,916,Italy,145415208.0,Italy
+1957,Women,8821,916,Japan,47293671.0,Japan
+1958,Women,8823,916,Costa Rica,40582866.0,United States
+1959,Women,8828,914,Argentina,6893053.0,United States
+1960,Women,8836,914,China,145430769.0,China
+1961,Women,8839,914,Algeria,3696906.0,
+1962,Women,8848,912,Japan,1838523.0,Switzerland
+1963,Women,8858,912,Romania,1989294.0,
+1964,Women,8863,910,Taiwan Province of China,8982531.0,Belgium
+1965,Women,8864,910,Italy,9845779.0,Italy
+1966,Women,8867,910,Italy,31800620.0,Italy
+1967,Women,8880,910,Italy,5057760.0,Italy
+1968,Women,8882,910,Australia,8236988.0,
+1969,Women,8898,908,Poland,4947312.0,
+1970,Women,8908,908,Sweden,50547694.0,France
+1971,Women,8925,906,Albania,144760474.0,Italy
+1972,Women,8926,906,China,46448377.0,China
+1973,Women,8934,906,Philippines,47582316.0,United Kingdom
+1974,Women,8951,906,Romania,8661678.0,
+1975,Women,8952,906,Japan,1901949.0,Japan
+1976,Women,8953,906,United States,152122677.0,
+1977,Women,8961,904,China,3096886.0,United States
+1978,Women,8971,904,Mexico,5978744.0,Italy
+1979,Women,8977,902,SQ,49902518.0,China
+1980,Women,8978,902,Portugal,4922578.0,Portugal
+1981,Women,8998,902,,1399843537.0,
+1982,Women,9001,900,China,46813030.0,China
+1983,Women,9002,900,China,50694556.0,China
+1984,Women,9026,898,Russian Federation,39685123.0,Russian Federation
+1985,Women,9029,898,Brazil,5512129.0,Italy
+1986,Women,9043,896,China,46554365.0,South Korea
+1987,Women,9089,894,India,49837444.0,France
+1988,Women,9093,892,Argentina,39790100.0,United States
+1989,Women,9102,892,Serbia,3079226.0,
+1990,Women,9111,892,Czech Republic,5052228.0,
+1991,Women,9116,892,Japan,144930822.0,Japan
+1992,Women,9127,890,Serbia,7020348.0,Croatia
+1993,Women,9130,890,Andorra,4462948.0,France
+1994,Women,9150,890,China,2247227.0,United States
+1995,Women,9153,888,China,1687041.0,United States
+1996,Women,9189,886,,1411052680.0,Sweden
+1997,Women,9191,886,India,122357587.0,United States
+1998,Women,9193,886,Brazil,145760993.0,
+1999,Women,9222,886,Poland,144429569.0,
