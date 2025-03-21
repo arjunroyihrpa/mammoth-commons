@@ -16,7 +16,7 @@ def test_bias_exploration():
         # additional arguements needed for faceX
         target_class = 1
         target_layer = "layer4"
-
+        num_workers = 4
         dataset = env.data_images(
             path=csv_dir,
             image_root_dir=data_dir,
@@ -24,6 +24,7 @@ def test_bias_exploration():
             data_transform_path="./data/xai_images/torch_transform.py",
             batch_size=1,
             shuffle=False,
+            num_workers=num_workers
         )
 
         model = env.model_torch(
