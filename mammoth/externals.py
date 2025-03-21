@@ -57,6 +57,8 @@ def fb_categories(it):
             except Exception:
                 is_numeric = False
                 break
+        # if len(set(v for v in values)) == 2:
+        #    is_numeric = False
         if is_numeric:
             values = fb.v1.tobackend(values)
             mx = values.max()
@@ -65,8 +67,8 @@ def fb_categories(it):
                 mx += 1
             values = fb.v1.tobackend((values - mn) / (mx - mn))
             return {
-                f"fuzzy min": 1 - values,
-                f"fuzzy max": values,
+                f"fuzzy min ({mn:.3f})": 1 - values,
+                f"fuzzy max ({mx:.3f})": values,
             }
         return fb.categories @ iterable
 

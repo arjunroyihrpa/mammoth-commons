@@ -61,26 +61,16 @@ def model_card(
     report_type = (
         fb.reports.pairwise if compare_groups == "Pairwise" else fb.reports.vsall
     )
+
     if labels is not None and hasattr(labels, "columns"):
         labels = labels[labels.columns[0]]
-        """labels = fb.Dimensions({
-            label: labels[label].to_numpy()
-            if hasattr(labels[label], "to_numpy")
-            else labels[label]
-            for label in labels.columns
-        })"""
 
-    if isinstance(labels, dict) and not isinstance(predictions, dict):
-        predictions = fb_categories(predictions)
-    if not isinstance(labels, dict) and isinstance(predictions, dict):
-        labels = fb_categories(labels)
+    if not isinstance(predictions, dict) and isinstance(labels, dict):
+        predictions = {"0": 1 - predictions, "1": predictions}
+
     if isinstance(labels, dict) and isinstance(predictions, dict):
-        for k in labels:
-            if k not in predictions:
-                predictions[k] = labels[k] * 0
-        for k in predictions:
-            if k not in labels:
-                labels[k] = predictions[k] * 0
+        predictions = {f"class {k}": v for k, v in predictions.items()}
+        labels = {f"class {k}": v for k, v in labels.items()}
 
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
     minimum_shown_deviation = float(minimum_shown_deviation)
@@ -101,7 +91,6 @@ def model_card(
             depth=3 if isinstance(predictions, dict) else 2,
         ),
     }
-    # Generate tabbed HTML content
     tab_headers = "".join(
         f'<button class="tablinks" data-tab="{key}">{key}</button>' for key in views
     )
@@ -110,16 +99,7 @@ def model_card(
         for key, value in views.items()
     )
 
-    dataset_desc = ""
-    if hasattr(dataset, "description"):
-        dataset_desc += "<h1>Dataset</h1>"
-        if isinstance(dataset.description, str):
-            dataset_desc += dataset.description + "<br>"
-        elif isinstance(dataset.description, dict):
-            for key, value in dataset.description.items():
-                dataset_desc += f"<h3>{key}</h3>" + value.replace("\n", "<br>") + "<br>"
-        else:
-            raise Exception("Dataset description must be a string or a dictionary.")
+    dataset_desc = dataset.format_description()
 
     html_content = f"""
        <style>

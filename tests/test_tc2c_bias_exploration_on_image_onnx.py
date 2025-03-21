@@ -15,10 +15,6 @@ def test_bias_exploration():
         data_dir = "./data/xai_images/race_per_7000"
         csv_dir = "./data/xai_images/bupt_anno.csv"
 
-        # additional arguements needed for faceX
-        target_class = 1
-        target_layer = "layer4"
-
         dataset = env.data_images(
             path=csv_dir,
             image_root_dir=data_dir,
@@ -34,9 +30,8 @@ def test_bias_exploration():
             input_size=dataset.input_size,
         )
 
-        result = env.model_card(dataset, model, [protected])
-        print(result.text())
-        # html_result.show()
+        result = env.model_card(dataset, model, [protected], minimum_shown_deviation=0)
+        result.show()
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ import setuptools
 
 # Developer self-reminder for uploading in pypi:
 # - install: wheel, twine
+# - build  : python setup.py bdist_wheel
 # - build  : python setup_mai.py bdist_wheel
 # - deploy : twine upload dist/*
 # https://kynan.github.io/blog/2020/05/23/how-to-upload-your-package-to-the-python-package-index-pypi-test-server
@@ -15,7 +16,7 @@ with open("requirements[test].txt") as file:
 
 setuptools.setup(
     name="MAI-Bias",
-    version="0.1.9",
+    version="0.1.12",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Desktop app version of the MAI-Bias toolkit.",
