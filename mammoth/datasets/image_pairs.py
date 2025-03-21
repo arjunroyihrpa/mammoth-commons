@@ -42,7 +42,7 @@ class ImagePairs(Dataset):
             PytorchImagePairsDataset,
         )
         import os 
-
+        import warnings
         if os.name == "nt":  # Windows
             if self.num_workers != 0:
                 warnings.warn(

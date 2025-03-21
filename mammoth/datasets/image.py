@@ -32,7 +32,7 @@ class Image(Dataset):
         from torch.utils.data import DataLoader
         from mammoth.datasets.backend.torch_implementations import PytorchImageDataset
         import os 
-
+        import warnings
         if os.name == "nt":  # Windows
             if self.num_workers != 0:
                 warnings.warn(
