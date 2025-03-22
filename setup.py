@@ -28,7 +28,7 @@ setuptools.setup(
     packages=[
         package
         for package in setuptools.find_packages()
-        if package.startswith("mammoth") or package.startswith("catalogue")
+        if package.startswith("mammoth_commons")
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

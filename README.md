@@ -18,9 +18,9 @@ runs the modules in your local machine.
 
 *Depending on your operating system, replace `python` with `python3` below.*
 
-1. Install Python 3.12 or later. Make **sure** with `python --version`. Prefer a virtual environment.
+1. Install Python 3.12. Make **sure** with `python --version`. Prefer a virtual environment.
 3. Install with `pip install mai-bias`. This will take time as all supported AI tools are installed.
-4. Launch the desktop app with `python -m mai.bias`.
+4. Launch the desktop app with `python -m mai_bias.app`.
 
 <details><summary>Ubuntu: Example of full installation pipeline</summary>
 
