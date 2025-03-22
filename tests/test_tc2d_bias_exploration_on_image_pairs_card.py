@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.image_pairs import data_image_pairs
-from catalogue.model_loaders.pytorch import model_torch
-from catalogue.metrics.model_card import model_card
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.image_pairs import data_image_pairs
+from mai_bias.catalogue.model_loaders.pytorch import model_torch
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_bias_exploration():

@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.custom_csv import data_custom_csv
-from catalogue.model_loaders.no_model import no_model
-from catalogue.metrics.augmentation_report import (
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.custom_csv import data_custom_csv
+from mai_bias.catalogue.model_loaders.no_model import no_model
+from mai_bias.catalogue.metrics.augmentation_report import (
     augmentation_report,
 )
 

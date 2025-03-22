@@ -7,7 +7,7 @@ on:
         required: true
         default: 'warning'
       environment:
-        description: 'Environment mammoth-commons'
+        description: 'Environment mammoth'
         required: false
         default: 'build'
 

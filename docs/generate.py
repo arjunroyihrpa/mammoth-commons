@@ -1,4 +1,4 @@
-from mai.backend.catalogue_loaders import registry
+from mai_bias.backend.catalogue_loaders import registry
 
 # Template prefix with updated styling and centered navbar
 template_prefix = """

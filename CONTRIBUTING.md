@@ -5,7 +5,7 @@ so that they are included in the MAI-BIAS desktop application and server toolkit
 MAMMOTH-commons library's file types types. To contribute to the main
 library (for example, to add data types) see [here](../mammoth-commons/README.md).
 Instructions on how to manually build modules or how to trigger continuous integration
-as a maintainer are provided [here](catalogue/README.md).
+as a maintainer are provided [here](mai_bias/catalogue/README.md).
 
 **The catalogue may be hosted in a different repository in the future.**
 
@@ -73,19 +73,19 @@ Here are some examples of modules:
 <summary>Example metric</summary>
 
 ```python
-from mammoth.datasets import CSV
-from mammoth.models import ONNX
-from mammoth.exports import Markdown
+from mammoth_commons.datasets import CSV
+from mammoth_commons.models import ONNX
+from mammoth_commons.exports import Markdown
 from typing import Dict, List
-from mammoth.integration import metric
+from mammoth_commons.integration import metric
 
 
 @metric(namespace="...", version="v001", python="3.12")
 def new_metric(
-    dataset: CSV,
-    model: ONNX,
-    sensitive: List[str],
-    parameters: Dict[str, any] = None,
+        dataset: CSV,
+        model: ONNX,
+        sensitive: List[str],
+        parameters: Dict[str, any] = None,
 ) -> Markdown:
     """Write your metric's description here.
     """
@@ -99,8 +99,8 @@ def new_metric(
 <summary>Example dataset loader</summary>
 
 ```python
-from mammoth.datasets import CSV
-from mammoth.integration import loader
+from mammoth_commons.datasets import CSV
+from mammoth_commons.integration import loader
 from fairbench import v1 as fb
 from typing import List, Optional
 
@@ -112,9 +112,9 @@ from typing import List, Optional
     packages=("pandas",),
 )
 def categorical_csv(
-    path: str = "",
-    categorical: Optional[List[str]] = None, 
-    label: Optional[str] = None,
+        path: str = "",
+        categorical: Optional[List[str]] = None,
+        label: Optional[str] = None,
 ) -> CSV:
     """Loads a CSV file that contains categorical and predictive data columns.
 
@@ -134,12 +134,13 @@ def categorical_csv(
 <summary>Example model loader</summary>
 
 ```python
-from mammoth.models import ONNX
-from mammoth.integration import loader
+from mammoth_commons.models import ONNX
+from mammoth_commons.integration import loader
+
 
 @loader(namespace="...", version="v001", python="3.12")
 def model_onnx(
-    path: str
+        path: str
 ) -> ONNX:
     """This is an ONNX loader.
     """
@@ -158,14 +159,14 @@ create a context from which you can access the undecorated methods
 like so:
 
 ```Python
-import mammoth
+import mammoth_commons
 from modules import dataloader, modelloader, metric  # import your modules here
 
-with mammoth.testing.Env(dataloader, modelloader, metric) as env:
+with mammoth_commons.testing.Env(dataloader, modelloader, metric) as env:
     data = env.dataloader("data_url", data_kwarg1=..., data_kwarg2=..., ...)
     model = env.dataloader("model_url", model_kwarg1=..., model_kwarg2=..., ...)
     sensitive = ["attr1", "attr2", ...]  # list of sensitive attributes
-    result = env.metric(data, model, sensitive, metric_kwarg1=..., metric_kwarg2=..., ...) 
+    result = env.metric(data, model, sensitive, metric_kwarg1=..., metric_kwarg2=..., ...)
     print(result.text)
 ```
 
@@ -176,7 +177,7 @@ GitHub actions. Everything new is expected to have high
 code coverage (more than 80% right now). Please run the script locally
 to ensure that you did not break anything else.
 
-:bulb: Do not forget to add all requirements to the `requirements[test].txt` file.
+:bulb: Do not forget to add all requirements to the `requirements[all].txt` file.
 Also install the libraries in that file for tests to run locally.
 
 Pull requests will be reviewed manually, so if you plan to create a complex one

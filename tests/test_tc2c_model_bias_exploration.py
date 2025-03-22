@@ -1,9 +1,9 @@
 import os
 
-from mammoth import testing
-from catalogue.dataset_loaders.custom_csv import data_custom_csv
-from catalogue.model_loaders.onnx import model_onnx
-from catalogue.metrics.sklearn_audit import sklearn_audit
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.custom_csv import data_custom_csv
+from mai_bias.catalogue.model_loaders.onnx import model_onnx
+from mai_bias.catalogue.metrics.sklearn_audit import sklearn_audit
 
 
 def test_bias_exploration():

@@ -2,7 +2,7 @@
 # This is so that GitHub action results remain comprehensive and the respective
 # test's developer can see that further action is needed.
 #
-# To run the tests, you need to install all module requirements with `pip install -r requirements[test].txt`
+# To run the tests, you need to install all module requirements with `pip install -r requirements[all].txt`
 #
 # After running the file locally, run  `coverage report` to see a console summary and `coverage html codecov`
 # to generate interactive html for exploring tracked files from the `mammoth/` and `catalogue/` directories.
@@ -49,7 +49,7 @@ def run_tests_in_folder(path):
 if __name__ == "__main__":
     # monkey patch mammoth classes for tests to run quietly
     import matplotlib
-    from mammoth.exports import HTML, Markdown
+    from mammoth_commons.exports import HTML, Markdown
 
     HTML.show = lambda self: self.text()
     Markdown.show = lambda self: self.text()

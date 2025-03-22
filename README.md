@@ -12,7 +12,7 @@ It also hosts a catalogue of dataset loaders, model loaders, and fairness analys
 and mitigation modules. Finally, find ad desktop application that 
 runs the modules in your local machine.
 
-![logo](mai/logo.png)
+![logo](mai_bias/logo.png)
 
 ## 🔬 Run locally
 

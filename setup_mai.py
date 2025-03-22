@@ -11,12 +11,12 @@ import setuptools
 with open("README.md", "r") as file:
     long_description = "This is the desktop version of the MAI-BIAS toolkit.\nFor more information visit the [homepage](https://github.com/mammoth-eu/mammoth-commons)."
 
-with open("requirements[test].txt") as file:
+with open("requirements[all].txt") as file:
     requirements = file.read().splitlines()
 
 setuptools.setup(
     name="MAI-Bias",
-    version="0.1.13",
+    version="0.1.14",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Desktop app version of the MAI-Bias toolkit.",
@@ -29,5 +29,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=requirements,
+    install_requires=requirements+["mammoth[all]"],
 )

@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.graph import data_graph
-from catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
-from catalogue.metrics.model_card import model_card
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.graph import data_graph
+from mai_bias.catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_fair_graph_filtering():

@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
-from catalogue.dataset_loaders.uci_csv import data_uci
-from catalogue.metrics.multi_objective_report import multi_objective_report
+from mammoth_commons import testing
+from mai_bias.catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
+from mai_bias.catalogue.dataset_loaders.uci_csv import data_uci
+from mai_bias.catalogue.metrics.multi_objective_report import multi_objective_report
 
 
 def test_multiobjective_report():

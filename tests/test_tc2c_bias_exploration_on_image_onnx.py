@@ -1,9 +1,9 @@
-from mammoth import testing
-from catalogue.dataset_loaders.images import data_images
-from catalogue.model_loaders.pytorch2onnx import model_torch2onnx
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.images import data_images
+from mai_bias.catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 
-# from catalogue.metrics.interactive_report import interactive_report
-from catalogue.metrics.model_card import model_card
+# from mai_bias.catalogue.metrics.interactive_report import interactive_report
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_bias_exploration():

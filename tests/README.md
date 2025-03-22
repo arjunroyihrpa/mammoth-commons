@@ -33,4 +33,4 @@ pip install torch, torchvision, cvbiasmitigation
 python .\tests\test_tc1_bias_mitigation_cv.py
 ```
 
-:bulb: You can view a summary of modules and dependencies [here](../catalogue/README.md).
+:bulb: You can view a summary of modules and dependencies [here](../mai_bias/catalogue/README.md).
