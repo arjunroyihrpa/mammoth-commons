@@ -4,7 +4,7 @@ from mammoth.datasets import Dataset
 
 class Image(Dataset):
     def __init__(
-        self, path, root_dir, target, data_transform, batch_size, shuffle, cols
+        self, path, root_dir, target, data_transform, batch_size, shuffle, num_workers, cols
     ):
         """
         Args:
@@ -14,6 +14,7 @@ class Image(Dataset):
             data_transform (callable): A function/transform that takes in an image and returns a transformed version.
             batch_size (int): How many samples per batch to load.
             shuffle (bool): Set to True to have the data reshuffled every time they are obtained.
+            num_workers (int): Number of subprocesses to use for data loading.
         """
 
         self.path = path
@@ -24,12 +25,21 @@ class Image(Dataset):
         self.shuffle = shuffle
         self.cols = cols
         self.input_size = self._get_input_size(self.data_transform)
+        self.num_workers = num_workers
 
     def to_torch(self, sensitive: List[str]):
         # dynamic dependencies here to not force a torch dependency on commons from components that don't need it
         from torch.utils.data import DataLoader
         from mammoth.datasets.backend.torch_implementations import PytorchImageDataset
-
+        import os 
+        import warnings
+        if os.name == "nt":  # Windows
+            if self.num_workers != 0:
+                warnings.warn(
+                    "Multi-worker data loading is not supported on Windows. "
+                    "Setting num_workers=0."
+                )
+            self.num_workers = 0
         torch_dataset = PytorchImageDataset(
             csv_path=self.path,
             root_dir=self.root_dir,
@@ -39,7 +49,7 @@ class Image(Dataset):
         )
 
         return DataLoader(
-            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle
+            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle, num_workers=self.num_workers
         )
 
     def to_numpy(self, sensitive: List[str]):

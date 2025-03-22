@@ -11,6 +11,7 @@ class ImagePairs(Dataset):
         data_transform,
         batch_size,
         shuffle,
+        num_workers,
         cols,
     ):
         """
@@ -21,6 +22,7 @@ class ImagePairs(Dataset):
             data_transform (callable): A function/transform that takes in an image and returns a transformed version.
             batch_size (int): How many samples per batch to load.
             shuffle (bool): Set to True to have the data reshuffled every time they are obtained.
+            num_workers (int): Number of subprocesses to use for data loading.
         """
 
         self.path = path
@@ -31,6 +33,7 @@ class ImagePairs(Dataset):
         self.shuffle = shuffle
         self.cols = cols
         self.input_size = self._get_input_size(self.data_transform)
+        self.num_workers = num_workers
 
     def to_torch(self, sensitive: List[str]):
         # dynamic dependencies here to not force a torch dependency on commons from components that don't need it
@@ -38,6 +41,15 @@ class ImagePairs(Dataset):
         from mammoth.datasets.backend.torch_implementations import (
             PytorchImagePairsDataset,
         )
+        import os 
+        import warnings
+        if os.name == "nt":  # Windows
+            if self.num_workers != 0:
+                warnings.warn(
+                    "Multi-worker data loading is not supported on Windows. "
+                    "Setting num_workers=0."
+                )
+            self.num_workers = 0
 
         torch_dataset = PytorchImagePairsDataset(
             csv_path=self.path,
@@ -48,7 +60,7 @@ class ImagePairs(Dataset):
         )
 
         return DataLoader(
-            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle
+            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle, num_workers=self.num_workers
         )
 
     def to_numpy(self, sensitive: List[str]):

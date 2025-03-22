@@ -17,6 +17,7 @@ def data_images(
     shuffle: bool = False,
     data_transform_path: str = "",
     transform_variable: str = "transform",
+    num_workers: int = 0,
     safe_libraries="numpy,torch,torchvision",
 ) -> Image:
     """
@@ -31,11 +32,13 @@ def data_images(
         shuffle: Whether to shuffle the loaded images.
         data_transform_path: A path or implementation of a torchvision data transform. Alternatively, paste the transformation code here.
         transform_variable: The transformation target variable that should be extracted after the namesake code runs.
+        num_workers: Number of subprocesses to use for data loading.
         safe_libraries: A comma-separated list of safe libraries that are allowed in the transformation code. As a safety measure against code injection attacks, an error will be created if libraries other than those are encountered.
     """
     from mammoth.externals import pd_read_csv
 
     batch_size = int(batch_size)
+    num_workers = int(num_workers)
     premature_data = pd_read_csv(path, nrows=1)  # just read one row for verification
 
     data_transform = safeexec(
@@ -51,6 +54,7 @@ def data_images(
         data_transform=data_transform,
         batch_size=batch_size,
         shuffle=shuffle,
+        num_workers=num_workers,
         cols=[col for col in premature_data],
     )
 
