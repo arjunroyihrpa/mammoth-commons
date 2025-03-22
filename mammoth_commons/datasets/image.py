@@ -38,7 +38,9 @@ class Image(Dataset):
     def to_torch(self, sensitive: List[str]):
         # dynamic dependencies here to not force a torch dependency on commons from components that don't need it
         from torch.utils.data import DataLoader
-        from mammoth_commons.datasets.backend.torch_implementations import PytorchImageDataset
+        from mammoth_commons.datasets.backend.torch_implementations import (
+            PytorchImageDataset,
+        )
         import os
         import warnings
 

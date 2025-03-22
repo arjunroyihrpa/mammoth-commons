@@ -1,6 +1,8 @@
 from mammoth_commons import testing
 from mai_bias.catalogue.dataset_loaders.data_researchers import data_researchers
-from mai_bias.catalogue.model_loaders.compute_researcher_ranking import model_mitigation_ranking
+from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
+    model_mitigation_ranking,
+)
 from mai_bias.catalogue.metrics.ranking_fairness import exposure_distance_comparison
 
 

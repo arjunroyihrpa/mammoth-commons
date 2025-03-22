@@ -15,7 +15,9 @@ from mai_bias.catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
 from mai_bias.catalogue.model_loaders.pytorch import model_torch
 from mai_bias.catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 from mai_bias.catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
-from mai_bias.catalogue.model_loaders.compute_researcher_ranking import model_mitigation_ranking
+from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
+    model_mitigation_ranking,
+)
 
 # metrics
 from mai_bias.catalogue.metrics.model_card import model_card
