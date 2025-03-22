@@ -1,9 +1,11 @@
+import pandas as pd
+
 from mammoth.datasets import Dataset
 from mammoth.models import Predictor
 from mammoth.exports import HTML
 from typing import Dict, List
 from mammoth.integration import metric, Options
-from mammoth.externals import fb_categories
+from mammoth.externals import fb_categories, align_predictions_labels
 import fairbench as fb
 
 
@@ -62,16 +64,7 @@ def model_card(
         fb.reports.pairwise if compare_groups == "Pairwise" else fb.reports.vsall
     )
 
-    if labels is not None and hasattr(labels, "columns"):
-        labels = labels[labels.columns[0]]
-
-    if not isinstance(predictions, dict) and isinstance(labels, dict):
-        predictions = {"0": 1 - predictions, "1": predictions}
-
-    if isinstance(labels, dict) and isinstance(predictions, dict):
-        predictions = {f"class {k}": v for k, v in predictions.items()}
-        labels = {f"class {k}": v for k, v in labels.items()}
-
+    predictions, labels = align_predictions_labels(predictions, labels)
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
     minimum_shown_deviation = float(minimum_shown_deviation)
     assert (
@@ -142,15 +135,15 @@ def model_card(
                }}
            }});
        </script>
-       <h1>{f'Report over {len(sensitive.branches())} groups' if minimum_shown_deviation==0 else f'Report over {len(sensitive.branches())} groups for {minimum_shown_deviation:.3f} deviations'}</h1>
+       <h1>{f'Report over {len(sensitive.branches())} groups' if minimum_shown_deviation == 0 else f'Report over {len(sensitive.branches())} groups for {minimum_shown_deviation:.3f} deviations'}</h1>
        <p>A report was computed over several prospective biases. 
        The following {len(sensitive.branches())} protected groups were analysed: <i>{', '.join(sensitive.branches().keys())}</i>.
        </p><p>Several values are computed to paint a broad picture
-       {'; set a minimum shown deviation parameter for this analysis to simplify what is shown.' if minimum_shown_deviation==0 else f', but for simplicity only those that differ at least {minimum_shown_deviation:.3f} from their ideal values are shown; this is the minimum shown deviation parameter of the analysis.'}
+       {'; set a minimum shown deviation parameter for this analysis to simplify what is shown.' if minimum_shown_deviation == 0 else f', but for simplicity only those that differ at least {minimum_shown_deviation:.3f} from their ideal values are shown; this is the minimum shown deviation parameter of the analysis.'}
        Results may not give the full picture, and not all biases may be harmful to the social context. Switch between different views.</p>
        <div>{tab_headers}</div>
-       {tab_contents}
-       {dataset_desc}
+       <div>{tab_contents}</div>
+       <div style="clear: both;">{dataset_desc}</div>
        """
 
     return HTML(html_content)

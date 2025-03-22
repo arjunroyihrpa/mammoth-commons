@@ -30,7 +30,7 @@ def test_bias_exploration():
             data_transform_path="./data/xai_images/torch_transform_fv.py",
             batch_size=1,
             shuffle=False,
-            num_workers=num_workers
+            num_workers=num_workers,
         )
 
         model = env.model_torch(

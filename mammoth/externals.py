@@ -44,6 +44,41 @@ def get_model_layer_list(model):
         return []
 
 
+def align_predictions_labels(predictions, labels):
+    if isinstance(labels, dict) and len(labels) == 1:
+        labels = labels[next(labels.keys().__iter__())]
+
+    if labels is not None and hasattr(labels, "columns") and len(labels.columns) == 1:
+        labels = labels[labels.columns[0]]
+
+    if labels is not None and hasattr(labels, "columns"):
+        labels = {col: labels[col] for col in labels.columns}
+
+    if (
+        labels is not None
+        and not isinstance(predictions, dict)
+        and isinstance(labels, dict)
+    ):
+        if "0" in labels and "1" in labels and len(labels) == 2:
+            predictions = {"0": 1 - predictions, "1": predictions}
+        elif "no" in labels and "yes" in labels and len(labels) == 2:
+            predictions = {"no": 1 - predictions, "yes": predictions}
+        else:
+            raise Exception(
+                f"The selected model creates a vector of predictions but it is unknown how to match this to multiple labels {','.join(labels.keys())}. Make the dataset have 0/1 or no/yes labels to automatically convert the prediction to two columns."
+            )
+
+    if (
+        labels is not None
+        and isinstance(labels, dict)
+        and isinstance(predictions, dict)
+    ):
+        predictions = {f"class {k}": v for k, v in predictions.items()}
+        labels = {f"class {k}": v for k, v in labels.items()}
+
+    return predictions, labels
+
+
 def fb_categories(it):
     import fairbench as fb
 

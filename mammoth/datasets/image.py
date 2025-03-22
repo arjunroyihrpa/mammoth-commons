@@ -4,7 +4,15 @@ from mammoth.datasets import Dataset
 
 class Image(Dataset):
     def __init__(
-        self, path, root_dir, target, data_transform, batch_size, shuffle, num_workers, cols
+        self,
+        path,
+        root_dir,
+        target,
+        data_transform,
+        batch_size,
+        shuffle,
+        num_workers,
+        cols,
     ):
         """
         Args:
@@ -31,8 +39,9 @@ class Image(Dataset):
         # dynamic dependencies here to not force a torch dependency on commons from components that don't need it
         from torch.utils.data import DataLoader
         from mammoth.datasets.backend.torch_implementations import PytorchImageDataset
-        import os 
+        import os
         import warnings
+
         if os.name == "nt":  # Windows
             if self.num_workers != 0:
                 warnings.warn(
@@ -49,7 +58,10 @@ class Image(Dataset):
         )
 
         return DataLoader(
-            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle, num_workers=self.num_workers
+            dataset=torch_dataset,
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            num_workers=self.num_workers,
         )
 
     def to_numpy(self, sensitive: List[str]):

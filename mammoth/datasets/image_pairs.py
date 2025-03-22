@@ -41,8 +41,9 @@ class ImagePairs(Dataset):
         from mammoth.datasets.backend.torch_implementations import (
             PytorchImagePairsDataset,
         )
-        import os 
+        import os
         import warnings
+
         if os.name == "nt":  # Windows
             if self.num_workers != 0:
                 warnings.warn(
@@ -60,7 +61,10 @@ class ImagePairs(Dataset):
         )
 
         return DataLoader(
-            dataset=torch_dataset, batch_size=self.batch_size, shuffle=self.shuffle, num_workers=self.num_workers
+            dataset=torch_dataset,
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            num_workers=self.num_workers,
         )
 
     def to_numpy(self, sensitive: List[str]):
