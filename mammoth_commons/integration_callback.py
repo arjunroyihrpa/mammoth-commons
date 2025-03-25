@@ -1,6 +1,15 @@
-__mammoth_progress_callback = lambda progress, message: print(
-    message + " " + "█" * int(progress * 10), end="\r"
-)
+def default_progress_callback(progress, message):
+    progress = min(1, max(progress, 0))
+    progress_blocks = ["▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"]
+    full_blocks = int(progress * 20)
+    partial_block_index = int((progress * 20 - full_blocks) * len(progress_blocks))
+    bar = "█" * full_blocks
+    if full_blocks < 20:
+        bar += progress_blocks[partial_block_index]
+    print(bar + message, end="\r")
+
+
+__mammoth_progress_callback = default_progress_callback
 __mammoth_progress_end = lambda: print(" " * 80, end="\r")
 
 

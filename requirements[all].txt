@@ -31,3 +31,6 @@ aif360[FACTS]
 aif360[AdversarialDebiasing]
 aif360[Reductions]
 aif360[inFairness]
+readchar
+rich
+html2text
