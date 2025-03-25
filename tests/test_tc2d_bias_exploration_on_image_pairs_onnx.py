@@ -35,7 +35,8 @@ def test_bias_exploration():
         model = env.model_torch2onnx(
             state_path=model_dict,
             model_path=model_path,
-            input_size=dataset.input_size,
+            input_width=dataset.input_size[0],
+            input_height=dataset.input_size[1],
         )
 
         result = env.model_card(dataset, model, [protected])
