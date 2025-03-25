@@ -40,4 +40,4 @@ jobs:
 
     - name: Build with minimal dependencies
       run: |
-        kfp component build . --component-filepattern catalogue/model_loaders/no_model.py --no-push-image
+        kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/no_model.py --no-push-image
