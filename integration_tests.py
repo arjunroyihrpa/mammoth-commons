@@ -17,7 +17,7 @@ RED = "\033[91m"
 RESET = "\033[0m"
 
 # need this as globals passed to execs
-cov = coverage.Coverage(source=["mammoth", "catalogue"])
+cov = coverage.Coverage(source=["mammoth_commons", "mai_bias/catalogue"])
 cov.start()
 
 
