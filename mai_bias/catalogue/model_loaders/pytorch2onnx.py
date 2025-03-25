@@ -12,7 +12,8 @@ def model_torch2onnx(
     state_path: str = "",
     model_path: str = "",
     model_name: str = "model",
-    input_size: tuple[int, int] = (224, 224),
+    input_width: int = 224,
+    input_height: int = 224,
     safe_libraries: str = "numpy, torch, torchvision",
     multiclass_threshold: float = 0,
 ) -> ONNX:
@@ -24,9 +25,14 @@ def model_torch2onnx(
         state_path: The path in which the architecture's state is stored.
         model_path: The path in which the architecture's initialization script resides. Alternatively, you may also just paste the initialization code in this field.
         model_name: The variable in the model path's script to which the architecture is assigned.
+        input_width: The expected width of input images.
+        input_height: The expected heightg of input images.
         safe_libraries: A comma-separated list of libraries that can be imported.
         multiclass_threshold: A decision threshold that treats outputs as separate classes. If this is set to zero (default), a softmax is applied to outputs. For binary classification, this is equivalent to setting the decision threshold at 0.5. Otherwise, each output is thresholded separately.
     """
+
+    input_width = int(input_width)
+    input_height = int(input_height)
 
     multiclass_threshold = float(multiclass_threshold)
     model = safeexec(
@@ -37,7 +43,7 @@ def model_torch2onnx(
 
     model.load_state_dict(torch.load(state_path, map_location="cpu"))
     model.eval()
-    dummy_input = torch.randn(1, 3, *input_size)
+    dummy_input = torch.randn(1, 3, input_width, input_height)
 
     with tempfile.NamedTemporaryFile(suffix=".onnx", delete=False) as temp_file:
         onnx_model_path = temp_file.name
