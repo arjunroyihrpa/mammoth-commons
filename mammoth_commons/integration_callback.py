@@ -6,6 +6,7 @@ def default_progress_callback(progress, message):
     bar = "█" * full_blocks
     if full_blocks < 20:
         bar += progress_blocks[partial_block_index]
+    bar = bar.ljust(20)
     print(bar + message, end="\r")
 
 

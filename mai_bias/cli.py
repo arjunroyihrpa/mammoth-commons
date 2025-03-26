@@ -1,9 +1,14 @@
 import json
-import os
 import re
 import readchar
+import matplotlib
+import os
+import glob
 from datetime import datetime
 from mai_bias.backend.loaders import registry
+from mammoth_commons.externals import pd_read_csv, get_model_layer_list
+
+matplotlib.use("Agg")
 
 tags = {
     key: "<h1>" + key + "</h1>" + module["description"]
@@ -11,6 +16,60 @@ tags = {
         registry.dataset_loaders | registry.model_loaders | registry.analysis_methods
     ).items()
 }
+
+def find_columns(path, delimiter):
+    if path is None:
+        print(colors.fail+f"No previous file in this set of parameters.".rjust(78)+colors.reset)
+        return []
+    if len(path) == 0:
+        print(colors.fail+f"The previous file was not set.".rjust(78)+colors.reset)
+        return []
+    if delimiter is not None and len(delimiter) == 0:
+        print(colors.fail+f"The previous delimiter was not set.".rjust(78)+colors.reset)
+        return []
+    try:
+        if delimiter is None:
+            try:
+                with open(path, "r") as file:
+                    sample = file.read(4096)
+                    sniffer = csv.Sniffer()
+                    delimiter = sniffer.sniff(sample).delimiter
+                    delimiter = str(delimiter)
+            except Exception as e:
+                delimiter = ","
+        df = pd_read_csv(
+            path, nrows=3, on_bad_lines="skip", delimiter=delimiter
+        )
+        return df.columns.tolist()
+    except Exception as e:
+        print(colors.fail+str(e).rjust(78)+colors.reset)
+        return []
+
+
+def remove_first_h1(html):
+    return re.sub(r'<h1\b[^>]*>.*?</h1>', '', html, count=1, flags=re.DOTALL | re.IGNORECASE)
+
+
+def autocomplete_path(partial_path: str) -> list:
+    partial_path = os.path.expanduser(partial_path)
+    if os.path.isdir(partial_path):
+        pattern = os.path.join(partial_path, "*")
+    else:
+        dirname = os.path.dirname(partial_path) or "."
+        basename = os.path.basename(partial_path)
+        pattern = os.path.join(dirname, basename + "*")
+    matches = glob.glob(pattern)
+    matches = [match + "/" if os.path.isdir(match) else match for match in matches]
+    return matches
+
+
+def common_starts(paths):
+    if not paths:
+        return ""
+    try:
+        return os.path.commonprefix(paths)
+    except ValueError:
+        return ""
 
 
 def now():
@@ -92,6 +151,7 @@ class colors:
 
 class Preview:
     def __init__(self, results, base_state, title):
+        results = remove_first_h1(results)
         self.base_state = base_state
         self.title = title
         self.selection = 0
@@ -230,12 +290,28 @@ class Select:
         del self.runs[self.reference]
         self.cancel()
 
-    def edit(self):
-        run = self.runs[self.reference]
+    def variation(self):
+        new_run = self.runs[self.reference].copy()
+        new_run["status"] = "new"
+        new_run["timestamp"] = now()
+        self.runs.append(new_run)
+        self.reference = len(self.runs)-1
         loaders = [loader for loader, values in registry.dataset_loaders.items()]
         self.next = Step(
             loaders,
-            self,
+            self.base_state,
+            colors.warn + "1/3 Dataset loader" + colors.reset,
+            new_run,
+        )
+
+    def edit(self):
+        run = self.runs.pop(self.reference)
+        self.runs.append(run)
+        self.reference = len(self.runs)-1
+        loaders = [loader for loader, values in registry.dataset_loaders.items()]
+        self.next = Step(
+            loaders,
+            self.base_state,
             colors.warn + "1/3 Dataset loader" + colors.reset,
             run,
         )
@@ -256,13 +332,41 @@ class Step:
         self.selected_module = 0
         self.input_character = ""
         self.module_discovery = module_discovery
+        if module_discovery == "dataset":
+            self.registry = registry.dataset_loaders
+        elif module_discovery == "model":
+            self.registry = registry.model_loaders
+        else:
+            self.registry = registry.analysis_methods
         for i, module in enumerate(modules):
             if module == run.get(module_discovery, dict()).get("module", ""):
                 self.next.selected_module = i
 
     def cancel(self):
+        save_all_runs("history.json", self.base_state.runs)
         self.next = self.base_state
         self.next.next = self.next
+
+    def find_delimiter(self, path, default):
+        if path is None:
+            print(colors.fail + "There is nor previous file".rjust(78) + colors.reset)
+            return default
+        try:
+            import csv
+
+            with open(path, "r") as file:
+                sample = file.read(4096)
+                sniffer = csv.Sniffer()
+                delimiter = sniffer.sniff(sample).delimiter
+                delimiter = str(delimiter)
+                return delimiter
+        except Exception as e:
+            print(
+                colors.fail
+                + f"Could not read the previous file".rjust(78)
+                + colors.reset
+            )
+            return default
 
     def show(self):
 
@@ -271,7 +375,7 @@ class Step:
         print("─" * 80)
 
         module_name = self.modules[self.selected_module]
-        module = registry.dataset_loaders[module_name]
+        module = self.registry[module_name]
 
         if self.selection < -2:
             self.selection = -2
@@ -284,7 +388,7 @@ class Step:
                 self.selected_module = 0
 
             module_name = self.modules[self.selected_module]
-            module = registry.dataset_loaders[module_name]
+            module = self.registry[module_name]
             if self.module_discovery in self.run:
                 self.run[self.module_discovery]["module"] = module_name
 
@@ -295,21 +399,24 @@ class Step:
                         tags[module_name]
                         if module_name in tags
                         else "No description available."
-                    ),
+                    )
+                    + "<br><br><i>This appeared because you pressed [enter] during module selection. "
+                    + "Use left/right arrows to change the selection.</i>",
                     self,
                     colors.warn
                     + "Info: "
                     + format_name(module_name)
                     + ""
-                    + colors.reset
-                    + "\nThis appeared because you pressed [enter] during module selection."
-                    + "\nUse left/right arrows to change the selection.",
+                    + colors.reset,
                 )
         elif self.selection == -2 and self.modifying:
             self.cancel()
+            self.modifying = False
         else:
-            if self.selection >= len(module["parameters"]):
-                self.selection = len(module["parameters"]) - 1
+            stricter = 2 if self.module_discovery == "analysis" else 0
+            if self.selection >= len(module["parameters"])-stricter:
+                self.selection = len(module["parameters"])-stricter
+        stricter = 2 if self.module_discovery == "analysis" else 0
 
         coloring = colorsbg if -2 == state.selection else colors
         print(f"{coloring.warn}{'Cancel'.ljust(80)}{colors.reset}")
@@ -318,60 +425,366 @@ class Step:
             f"{coloring.element}{'Loader'.ljust(30)} {"← "+format_name(module_name).center(44)+" → "}{colors.reset}"
         )
 
-        if "dataset" not in self.run:
-            self.run["dataset"] = {"module": module_name, "params": dict()}
+        if self.module_discovery  not in self.run:
+            self.run[self.module_discovery] = {"module": module_name, "params": dict()}
         i = 0
         for name, param_type, default, description in module["parameters"]:
+            if name == "model" or name == "dataset":
+                continue
             if self.modifying and i == self.selection:
                 self.modifying = False
                 self.next = Preview(
-                    description,
+                    description
+                    + "<br><br><i>This appeared because you pressed [enter] on a selected parameter. "
+                    + "Use left/right arrows, [tab] for aid, or type to change parameter values.</i>",
                     self,
                     colors.warn
                     + "Info: "
                     + format_name(name)
                     + ""
                     + colors.reset
-                    + "\nThis appeared because you pressed [enter] during parameter selection."
-                    + "\nUse left/right arrows, [tab] for autocomplete, or type to modify the parameter.",
                 )
 
             coloring = colorsbg if i == self.selection else colors
-            if name not in self.run["dataset"]["params"]:
-                self.run["dataset"]["params"][name] = (
+            if name not in self.run[self.module_discovery]["params"]:
+                self.run[self.module_discovery]["params"][name] = (
                     "" if default is None or default == "None" else str(default)
                 )
-            if self.input_character == readchar.key.BACKSPACE:
-                self.run["dataset"]["params"][name] = self.run["dataset"]["params"][
-                    name
-                ][:-1]
-            if (
-                i == self.selection
-                and len(self.input_character) == 1
-                and self.input_character.isprintable()
-            ):
-                self.run["dataset"]["params"][name] += self.input_character
 
-            if param_type == "bool":
+            param_options = module.get("parameter_options", {}).get(
+                name, []
+            )
+
+            if isinstance(self.run[self.module_discovery]["params"][name], list):
+                self.run[self.module_discovery]["params"][name] = ", ".join(self.run[self.module_discovery]["params"][name])
+
+            if len(param_options) == 0 and param_type != "bool":
+                if i == self.selection and self.input_character == readchar.key.BACKSPACE:
+                    self.run[self.module_discovery]["params"][name] = self.run[self.module_discovery]["params"][
+                        name
+                    ][:-1]
+                elif (
+                    i == self.selection
+                    and len(self.input_character) == 1
+                    and self.input_character.isprintable()
+                ):
+                    self.run[self.module_discovery]["params"][name] += self.input_character
+
+            if param_options:
+                option_position = 0
+                for j, option in enumerate(param_options):
+                    if self.run[self.module_discovery]["params"][name] == option:
+                        option_position = j
+                if self.modifying_pos !=0 and i==self.selection:
+                    option_position += self.modifying_pos
+                    if option_position < 0:
+                        option_position = len(param_options)-1
+                    if option_position >= len(param_options):
+                        option_position = 0
+                self.run[self.module_discovery]["params"][name] = param_options[option_position]
+                print(
+                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run[self.module_discovery]["params"][name].center(44)+" → "}{colors.reset}"
+                )
+            elif param_type == "bool":
                 if self.modifying_pos != 0 and i == self.selection:
-                    self.run["dataset"]["params"][name] = (
+                    self.run[self.module_discovery]["params"][name] = (
                         "True"
-                        if self.run["dataset"]["params"][name] == "False"
+                        if self.run[self.module_discovery]["params"][name] == "False"
                         else "False"
                     )
                 print(
-                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run["dataset"]["params"][name].center(44)+" → "}{colors.reset}"
+                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run[self.module_discovery]["params"][name].center(44)+" → "}{colors.reset}"
                 )
             else:
                 print(
-                    f'{coloring.neutral}{format_name(name).ljust(30)} {self.run["dataset"]["params"][name].ljust(49)}{colors.reset}'
+                    f'{coloring.neutral}{format_name(name).ljust(30)} {self.run[self.module_discovery]["params"][name].ljust(49)}{colors.reset}'
                 )
             # print(param_type)
             i += 1
+
+        coloring = (
+            colorsbg
+            if self.selection == len(module["parameters"])-stricter == state.selection
+            else colors
+        )
+        print(f"{coloring.element}{'Next'.ljust(80)}{colors.reset}")
+
         print("─" * 80)
+
+        i = 0
+        last_url = None
+        last_delimiter = None
+        for name, param_type, default, description in module["parameters"]:
+            if name == "model" or name == "dataset":
+                continue
+            lower_name = name.lower()
+            if "delimiter" in lower_name:
+                last_delimiter = self.run[self.module_discovery]["params"][name]
+            if i == self.selection and self.input_character == readchar.key.TAB:
+                self.modifying_pos = 0
+                self.input_character = ""
+                if "layer" in lower_name:
+                    paths = get_model_layer_list(
+                        self.run.get("model", dict()).get("return", None)
+                    )
+                    if len(paths) <= 5:
+                        self.show()
+                        print(
+                            colors.warn
+                            + f"Suggesting {len(paths)} {format_name(name)} layers".rjust(
+                                78
+                            )
+                            + colors.reset
+                        )
+                        i = 0
+                        for path in paths:
+                            print(path.rjust(78))
+                            i += 1
+                    else:
+                        self.next = Preview(
+                            "\n<br>".join(paths),
+                            self,
+                            colors.warn
+                            + f"Suggesting {len(paths)} {format_name(name)} layers"
+                            + colors.reset,
+                        )
+                elif "delimiter" in lower_name:
+                    prev = self.run[self.module_discovery]["params"][name]
+                    self.run[self.module_discovery]["params"][name] = self.find_delimiter(
+                        last_url, prev
+                    )
+                    if self.run[self.module_discovery]["params"][name] != prev:
+                        self.show()
+                        print(
+                            colors.fail
+                            + "Successfully detected delimiter".rjust(78)
+                            + colors.reset
+                        )
+                elif (
+                    "numeric" in lower_name
+                    or "categorical" in lower_name
+                    or "label" in lower_name
+                    or "target" in lower_name
+                    or "ignored" in lower_name
+                    or "attribute" in lower_name
+                    or "sensitive" in lower_name
+                ):
+                    if "sensitive" == lower_name:
+                        paths = self.run["dataset"]["return"]
+                        paths = (
+                            [""]
+                            if paths is None or not hasattr(paths, "cols")
+                            else paths.cols
+                        )
+                    else:
+                        paths = find_columns(last_url, last_delimiter)
+                    if len(paths) <= 5:
+                        self.show()
+                        print(
+                            colors.warn
+                            + f"Suggesting {len(paths)} {format_name(name)} options".rjust(
+                                78
+                            )
+                            + colors.reset
+                        )
+                        i = 0
+                        for path in paths:
+                            print(path.rjust(78))
+                            i += 1
+                    else:
+                        self.next = Preview(
+                            "\n<br>".join(paths),
+                            self,
+                            colors.warn
+                            + f"Suggesting {len(paths)} {format_name(name)} options"
+                            + colors.reset,
+                        )
+                elif param_type == "url" or "path" in lower_name or "dir" in lower_name:
+                    paths = autocomplete_path(self.run[self.module_discovery]["params"][name])
+                    if len(paths) == 0:
+                        print(
+                            colors.fail
+                            + "No path starting this way exists".rjust(78)
+                            + colors.reset
+                        )
+                    elif len(paths) == 1:
+                        self.run[self.module_discovery]["params"][name] = paths[0]
+                        self.show()
+                        print(colors.ok + "Path autocompleted".rjust(78) + colors.reset)
+                    else:
+                        prev = self.run[self.module_discovery]["params"][name]
+                        self.run[self.module_discovery]["params"][name] = common_starts(paths)
+                        if prev not in self.run[self.module_discovery]["params"][name]:
+                            print(self.run[self.module_discovery]["params"][name], prev)
+                            self.run[self.module_discovery]["params"][name] = prev
+                        elif len(paths) <= 5:
+                            self.show()
+                            print(
+                                colors.warn
+                                + f"Could not fully autocomplete due to {len(paths)} options".rjust(
+                                    78
+                                )
+                                + colors.reset
+                            )
+                            i = 0
+                            for path in paths:
+                                print(path.rjust(78))
+                                i += 1
+                        else:
+                            self.next = Preview(
+                                "\n<br>".join(paths),
+                                self,
+                                colors.warn
+                                + f"Could not fully autocomplete due to {len(paths)} options"
+                                + colors.reset,
+                            )
+
+            if param_type == "url":
+                last_url = self.run[self.module_discovery]["params"][name]
+            i += 1
 
         self.modifying_pos = 0
         self.input_character = ""
+
+        if self.selection == len(module["parameters"])-stricter and self.modifying:
+            self.modifying = False
+            if self.module_discovery == "dataset":
+                try:
+                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"]}
+                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    self.run[self.module_discovery]["params"] = params
+                    loaders = [
+                        loader
+                        for loader, values in registry.model_loaders.items()
+                        if module_name in values["compatible"]
+                    ]
+                    self.next = Step(
+                        loaders,
+                        self.base_state,
+                        colors.warn + "2/3 Model loader" + colors.reset,
+                        self.run,
+                        "model"
+                    )
+                except Exception as e:
+                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                save_all_runs("history.json", self.base_state.runs)
+            elif self.module_discovery == "model":
+                try:
+                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"]}
+                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    self.run[self.module_discovery]["params"] = params
+                    compatible_methods = [
+                        method
+                        for method, entries in registry.analysis_methods.items()
+                        if issubclass(
+                            registry.parameters_to_class[self.run["dataset"]["module"]]["return"],
+                            registry.parameters_to_class[method][entries["parameters"][0][0]],
+                        )
+                           and issubclass(
+                            registry.parameters_to_class[self.run["model"]["module"]]["return"],
+                            registry.parameters_to_class[method][entries["parameters"][1][0]],
+                        )
+                    ]
+                    self.next = Step(
+                        compatible_methods,
+                        self.base_state,
+                        colors.warn + "3/3 Analysis method" + colors.reset,
+                        self.run,
+                        "analysis"
+                    )
+                except Exception as e:
+                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                save_all_runs("history.json", self.base_state.runs)
+            elif self.module_discovery == "analysis":
+                try:
+                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"] if param[0]!="model" and param[0]!="dataset"}
+                    params["dataset"] = self.run["dataset"]["return"]
+                    params["model"] = self.run["model"]["return"]
+                    sensitive = params.get("sensitive", "")
+                    if "," in sensitive:
+                        sensitive = sensitive.split(",")
+                    elif sensitive == "":
+                        sensitive = []
+                    else:
+                        sensitive = [sensitive]
+                    sensitive = [s.strip() for s in sensitive]
+                    params["sensitive"] = sensitive
+                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    del params["model"]
+                    del params["dataset"]
+                    self.run["status"] = "completed"
+                    self.run[self.module_discovery]["params"] = params
+                    self.run[self.module_discovery]["return"] = self.run[self.module_discovery]["return"].all()
+
+                    run = self.run
+                    description = run["description"]
+                    if not description:
+                        description = "..."
+                    description = description.ljust(20)
+                    title = extract_title(run)
+                    title = title.replace("<span>", "").replace("</span>", "").ljust(40)
+                    time = run.get("timestamp", "").ljust(18)
+                    select = Select(
+                        [
+                            (
+                                lambda col: getattr(col, "warn") + "Cancel".ljust(80),
+                                "cancel",
+                            ),
+                            (
+                                lambda col: getattr(col, "element")
+                                            + "Console preview".ljust(80),
+                                "results",
+                            ),
+                            (
+                                lambda col: getattr(col, "element") + "Show html".ljust(80),
+                                "html",
+                            ),
+                            (
+                                lambda col: getattr(col, "element")
+                                            + "New variation".ljust(80),
+                                "variation",
+                            ),
+                            (
+                                lambda col: getattr(col, "neutral")
+                                            + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
+                                    80
+                                ),
+                                "data_loader",
+                            ),
+                            (
+                                lambda col: getattr(col, "neutral")
+                                            + f"Info: {run.get("model", dict()).get("module", "No model loader")}".ljust(
+                                    80
+                                ),
+                                "model_loader",
+                            ),
+                            (
+                                lambda col: getattr(col, "neutral")
+                                            + f"Info: {run.get("analysis", dict()).get("module", "No analysis method")}".ljust(
+                                    80
+                                ),
+                                "analysis_method",
+                            ),
+                            (
+                                lambda col: getattr(col, "fail")
+                                            + "Edit (loses results)".ljust(80),
+                                "edit",
+                            ),
+                            (
+                                lambda col: getattr(col, "fail") + "Delete".ljust(80),
+                                "delete",
+                            ),
+                        ],
+                        self.base_state,
+                        f"{colors.warn}{description} {time} {title}{colors.reset}",
+                        self.base_state.runs,
+                        -1,
+                    )
+                    self.next = select
+                    self.next.next = self.next
+                except Exception as e:
+                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                save_all_runs("history.json", self.base_state.runs)
 
 
 class Dashboard:
