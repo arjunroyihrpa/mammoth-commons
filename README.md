@@ -19,8 +19,8 @@ runs the modules in your local machine.
 *Depending on your operating system, replace `python` with `python3` below.*
 
 1. Install Python 3.12. Make **sure** with `python --version`. Prefer a virtual environment.
-3. Run `pip install mai-bias`. This will take time as all supported AI tools are installed.
-4. Launch the desktop app with `python -m mai_bias.app`.
+2. Run `pip install mai-bias`. This will take time as all supported AI tools are installed.
+3. Launch the desktop app with `python -m mai_bias.app`.
 
 <details><summary>Ubuntu: Example of full installation pipeline</summary>
 
@@ -101,6 +101,16 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 }
 ``` 
 </details>
+
+
+## 🖥️ Run in the terminal
+
+Follow the previous instructions, with the difference that the command line interface
+module is launched at the end. In particular:
+
+1. Install Python 3.12. Make **sure** with `python --version`. Prefer a virtual environment.
+2. Run `pip install mai-bias`. This will take time as all supported AI tools are installed.
+3. Launch the desktop app with `python -m mai_bias.cli`.
  
 ## ☁️ [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
 

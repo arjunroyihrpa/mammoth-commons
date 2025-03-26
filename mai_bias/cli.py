@@ -4,6 +4,7 @@ import readchar
 import matplotlib
 import os
 import glob
+import shutil
 from datetime import datetime
 from mai_bias.backend.loaders import registry
 from mammoth_commons.externals import pd_read_csv, get_model_layer_list
@@ -188,6 +189,9 @@ class Preview:
         print("─" * 80)
         print(colorsbg.fail + f"Close".ljust(80) + colors.reset)
         print("─" * 80)
+
+        width, height = shutil.get_terminal_size()
+        self.height = max(15, height - 10)
 
         if self.selection >= len(self.results) - self.height:
             self.selection = len(self.results) - self.height
