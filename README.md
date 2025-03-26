@@ -114,7 +114,7 @@ Follow the previous instructions, with the difference that the command line inte
 module is launched at the last step per `python -m mai_bias.cli`. This has equivalent
 functionality to the desktop app but does not leave the terminal.
 
-![Terminal demo](docs/terminal_demo.webm)
+![Terminal demo](docs/terminal_demo.gif)
  
 ## ☁️ [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
 
