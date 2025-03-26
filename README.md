@@ -107,6 +107,8 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 ``` 
 </details>
 
+![App demo](docs/app_demo.gif)
+
 
 ## 🖥️ Run in terminal
 
