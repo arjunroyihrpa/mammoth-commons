@@ -6,21 +6,26 @@
 
 *Quickly develop and locally run MAI-BIAS toolkit modules.*
 
-This repository holds the mammoth-commons library with supporting
-datatypes and decorators shared by various toolkit modules.
-It also hosts a catalogue of dataset loaders, model loaders, and fairness analysis 
-and mitigation modules. Finally, find ad desktop application that 
-runs the modules in your local machine.
+This repository holds the mammoth-commons library, which contains 
+supporting datatypes and decorators for developing fairness modules.
+It also hosts a catalogue of 20+ modules. 
+Finally, find desktop and terminal applications that 
+run those modules in your local machine.
 
 ![logo](mai_bias/logo.png)
 
 ## 🔬 Run locally
 
-*Depending on your operating system, replace `python` with `python3` below.*
+1. Make **sure** you are on Python 3.12.
+2. Install the *mai-bias* package. This will take time due to supporting many AI tools.
+3. Launch the desktop app.
 
-1. Install Python 3.12. Make **sure** with `python --version`. Prefer a virtual environment.
-2. Run `pip install mai-bias`. This will take time as all supported AI tools are installed.
-3. Launch the desktop app with `python -m mai_bias.app`.
+```bash
+# may need to replace python with python3
+python --version
+pip install mai-bias
+python -m mai_bias.app
+```
 
 <details><summary>Ubuntu: Example of full installation pipeline</summary>
 
@@ -33,7 +38,7 @@ sudo apt install python3.12-venv
 python3 -m venv venv
 source venv/bin/activate
 python3 install mai-bias
-python3 -m mai.bias
+python3 -m mai_bias.app
 ```
 </details>
 
@@ -103,14 +108,13 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 </details>
 
 
-## 🖥️ Run in the terminal
+## 🖥️ Run in terminal
 
 Follow the previous instructions, with the difference that the command line interface
-module is launched at the end. In particular:
+module is launched at the last step per `python -m mai_bias.cli`. This has equivalent
+functionality to the desktop app but does not leave the terminal.
 
-1. Install Python 3.12. Make **sure** with `python --version`. Prefer a virtual environment.
-2. Run `pip install mai-bias`. This will take time as all supported AI tools are installed.
-3. Launch the desktop app with `python -m mai_bias.cli`.
+![Terminal demo](docs/terminal_demo.webm)
  
 ## ☁️ [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
 
