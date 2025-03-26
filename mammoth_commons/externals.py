@@ -201,10 +201,12 @@ def pd_read_csv(url, **kwargs):
 
     if "delimiter" in kwargs:
         return pd.read_csv(path, **kwargs)
-
-    with open(path, "r") as file:
-        sample = file.read(1024)
-        sniffer = csv.Sniffer()
-        delimiter = sniffer.sniff(sample).delimiter
-        delimiter = str(delimiter)
+    try:
+        with open(path, "r") as file:
+            sample = file.read(1024)
+            sniffer = csv.Sniffer()
+            delimiter = sniffer.sniff(sample).delimiter
+            delimiter = str(delimiter)
+    except Exception:
+        delimiter = None
     return pd.read_csv(path, delimiter=delimiter, **kwargs)
