@@ -29,7 +29,7 @@ The decorator works as a buffer between
 your code and various interfaces. Here are some details: 
 
 1. *Type dependencies.* Import the necessary dataset or model classes
-from the `mammoth.datasets` and `mammoth.models` namespace respectively. 
+from `mammoth_commons.datasets` and `mammoth_commons.models` respectively. 
 Use them to annotate your method's argument
 and return types. *Type annotations are mandatory for 
 all arguments.*
@@ -45,7 +45,7 @@ what information to give to the users working with your module. Use the substrin
 to have a loading dialog in MAI-BIAS, *delimiter* to enable automatic detection of delimiters,
 as well as one of *numeric*, *categorical*, *attribute*, *ignored*, or *target*
 to indicate to the UI that it should try to select among CSV column names in provided data by
-peaking at them. Delimiters and column names are recognized to 
+peeking at them. Delimiters and column names are recognized to 
 correspond to the last previous path.
 
 3. You must also create
@@ -85,9 +85,11 @@ def new_metric(
         dataset: CSV,
         model: ONNX,
         sensitive: List[str],
-        parameters: Dict[str, any] = None,
+        threshold: 0.5
 ) -> Markdown:
     """Write your metric's description here.
+    Args:
+        threshold: This is some user-provided threshold.
     """
     return Markdown("#Results\nThese are the results.")
 
@@ -101,7 +103,7 @@ def new_metric(
 ```python
 from mammoth_commons.datasets import CSV
 from mammoth_commons.integration import loader
-from fairbench import v1 as fb
+from mammoth_commons.externals import pd_read_csv
 from typing import List, Optional
 
 
@@ -113,8 +115,8 @@ from typing import List, Optional
 )
 def categorical_csv(
         path: str = "",
-        categorical: Optional[List[str]] = None,
-        label: Optional[str] = None,
+        categorical: List[str] = None,
+        label: str = None,
 ) -> CSV:
     """Loads a CSV file that contains categorical and predictive data columns.
 
@@ -123,7 +125,7 @@ def categorical_csv(
         categorical: A list of column names that hold categorical data.
         label: The name of the categorical column that holds predictive label for each data sample.
     """
-    import pandas as pd  # safe import here
+    dataset = pd_read_csv(...) # helper method to load a pandas dataset from various sources
     ...
     return CSV(...)
 ```
@@ -143,6 +145,8 @@ def model_onnx(
         path: str
 ) -> ONNX:
     """This is an ONNX loader.
+    Args:
+        path: The path from which to retrieve the loader's data.
     """
     return ONNX(path)
 

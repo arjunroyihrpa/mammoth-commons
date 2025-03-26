@@ -7,11 +7,9 @@ or create new repositories for those modules.
 
 :warning: If you need new data types to represent
 the outcomes of loaders, these datatypes should be integrated
-within the core of the MAMMOth-commons package. This way,
-they can be imported from the `mammoth` module once
-the package is installed within docker containers, which
-in turn facilitates communication between loaders and 
-metrics by referencing the same data types.
+within the `mammoth_commons` module. This way,
+loaders and metrics can communicate within docker containers
+by referencing the same data types.
 
 There are three subdirectories in which you can find
 and place modules of respective types:
@@ -20,8 +18,8 @@ and place modules of respective types:
 - `model_loaders/` contains components for loading various types of machine learning or other AI models.
 - `metrics/` contains components that take as inputs a dataset loader and a model loader, perform some type of analysis using those, and output HTML or markdown.
 
-All modules should be registered in the `dmonstrator/backend/loaders.py` and
-`dmonstrator/backend/catalogue_loaders.py` files, 
+All modules should be registered in the `mai_bias/backend/loaders.py` and
+`mai_bias/backend/catalogue_loaders.py` files, 
 at which point continuous integration adds them to the online
 [catalogue website](https://mammoth-eu.github.io/mammoth-commons/).
 For more instructions on how to contrivute new modules to this repository
@@ -30,7 +28,7 @@ For more instructions on how to contrivute new modules to this repository
 
 ## Creating and deploying an external module
 
-**Installation:** Install the latest version of `MAMMOth-commons`
+**Installation:** Install the latest version of MAMMOth-commons
 and the `docker` package in your virtual environment:
 
 *If you are working in your own repository:*
