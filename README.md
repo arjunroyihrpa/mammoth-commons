@@ -12,7 +12,7 @@ It also hosts a catalogue of 20+ modules.
 Finally, find desktop and terminal applications that 
 run those modules in your local machine.
 
-![logo](mai_bias/logo.png)
+<img src="mai_bias/logo.png" alt="logo" style="width: 65%;" />
 
 ## 🔬 Run locally
 
@@ -26,6 +26,8 @@ python --version
 pip install mai-bias
 python -m mai_bias.app
 ```
+
+![App demo](docs/app_demo.gif)
 
 <details><summary>Ubuntu: Example of full installation pipeline</summary>
 
@@ -107,16 +109,7 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 ``` 
 </details>
 
-![App demo](docs/app_demo.gif)
-
-
-## 🖥️ Run in terminal
-
-Follow the previous instructions, with the difference that the command line interface
-module is launched at the last step per `python -m mai_bias.cli`. This has equivalent
-functionality to the desktop app but does not leave the terminal.
-
-![Terminal demo](docs/terminal_demo.gif)
+## 🖥️ [Run in terminal](README_terminal.md)
  
 ## ☁️ [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
 
