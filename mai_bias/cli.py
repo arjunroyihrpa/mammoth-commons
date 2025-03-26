@@ -17,15 +17,24 @@ tags = {
     ).items()
 }
 
+
 def find_columns(path, delimiter):
     if path is None:
-        print(colors.fail+f"No previous file in this set of parameters.".rjust(78)+colors.reset)
+        print(
+            colors.fail
+            + f"No previous file in this set of parameters.".rjust(78)
+            + colors.reset
+        )
         return []
     if len(path) == 0:
-        print(colors.fail+f"The previous file was not set.".rjust(78)+colors.reset)
+        print(colors.fail + f"The previous file was not set.".rjust(78) + colors.reset)
         return []
     if delimiter is not None and len(delimiter) == 0:
-        print(colors.fail+f"The previous delimiter was not set.".rjust(78)+colors.reset)
+        print(
+            colors.fail
+            + f"The previous delimiter was not set.".rjust(78)
+            + colors.reset
+        )
         return []
     try:
         if delimiter is None:
@@ -37,17 +46,17 @@ def find_columns(path, delimiter):
                     delimiter = str(delimiter)
             except Exception as e:
                 delimiter = ","
-        df = pd_read_csv(
-            path, nrows=3, on_bad_lines="skip", delimiter=delimiter
-        )
+        df = pd_read_csv(path, nrows=3, on_bad_lines="skip", delimiter=delimiter)
         return df.columns.tolist()
     except Exception as e:
-        print(colors.fail+str(e).rjust(78)+colors.reset)
+        print(colors.fail + str(e).rjust(78) + colors.reset)
         return []
 
 
 def remove_first_h1(html):
-    return re.sub(r'<h1\b[^>]*>.*?</h1>', '', html, count=1, flags=re.DOTALL | re.IGNORECASE)
+    return re.sub(
+        r"<h1\b[^>]*>.*?</h1>", "", html, count=1, flags=re.DOTALL | re.IGNORECASE
+    )
 
 
 def autocomplete_path(partial_path: str) -> list:
@@ -295,7 +304,7 @@ class Select:
         new_run["status"] = "new"
         new_run["timestamp"] = now()
         self.runs.append(new_run)
-        self.reference = len(self.runs)-1
+        self.reference = len(self.runs) - 1
         loaders = [loader for loader, values in registry.dataset_loaders.items()]
         self.next = Step(
             loaders,
@@ -307,7 +316,7 @@ class Select:
     def edit(self):
         run = self.runs.pop(self.reference)
         self.runs.append(run)
-        self.reference = len(self.runs)-1
+        self.reference = len(self.runs) - 1
         loaders = [loader for loader, values in registry.dataset_loaders.items()]
         self.next = Step(
             loaders,
@@ -414,8 +423,8 @@ class Step:
             self.modifying = False
         else:
             stricter = 2 if self.module_discovery == "analysis" else 0
-            if self.selection >= len(module["parameters"])-stricter:
-                self.selection = len(module["parameters"])-stricter
+            if self.selection >= len(module["parameters"]) - stricter:
+                self.selection = len(module["parameters"]) - stricter
         stricter = 2 if self.module_discovery == "analysis" else 0
 
         coloring = colorsbg if -2 == state.selection else colors
@@ -425,7 +434,7 @@ class Step:
             f"{coloring.element}{'Loader'.ljust(30)} {"← "+format_name(module_name).center(44)+" → "}{colors.reset}"
         )
 
-        if self.module_discovery  not in self.run:
+        if self.module_discovery not in self.run:
             self.run[self.module_discovery] = {"module": module_name, "params": dict()}
         i = 0
         for name, param_type, default, description in module["parameters"]:
@@ -438,11 +447,7 @@ class Step:
                     + "<br><br><i>This appeared because you pressed [enter] on a selected parameter. "
                     + "Use left/right arrows, [tab] for aid, or type to change parameter values.</i>",
                     self,
-                    colors.warn
-                    + "Info: "
-                    + format_name(name)
-                    + ""
-                    + colors.reset
+                    colors.warn + "Info: " + format_name(name) + "" + colors.reset,
                 )
 
             coloring = colorsbg if i == self.selection else colors
@@ -451,37 +456,44 @@ class Step:
                     "" if default is None or default == "None" else str(default)
                 )
 
-            param_options = module.get("parameter_options", {}).get(
-                name, []
-            )
+            param_options = module.get("parameter_options", {}).get(name, [])
 
             if isinstance(self.run[self.module_discovery]["params"][name], list):
-                self.run[self.module_discovery]["params"][name] = ", ".join(self.run[self.module_discovery]["params"][name])
+                self.run[self.module_discovery]["params"][name] = ", ".join(
+                    self.run[self.module_discovery]["params"][name]
+                )
 
             if len(param_options) == 0 and param_type != "bool":
-                if i == self.selection and self.input_character == readchar.key.BACKSPACE:
-                    self.run[self.module_discovery]["params"][name] = self.run[self.module_discovery]["params"][
-                        name
-                    ][:-1]
+                if (
+                    i == self.selection
+                    and self.input_character == readchar.key.BACKSPACE
+                ):
+                    self.run[self.module_discovery]["params"][name] = self.run[
+                        self.module_discovery
+                    ]["params"][name][:-1]
                 elif (
                     i == self.selection
                     and len(self.input_character) == 1
                     and self.input_character.isprintable()
                 ):
-                    self.run[self.module_discovery]["params"][name] += self.input_character
+                    self.run[self.module_discovery]["params"][
+                        name
+                    ] += self.input_character
 
             if param_options:
                 option_position = 0
                 for j, option in enumerate(param_options):
                     if self.run[self.module_discovery]["params"][name] == option:
                         option_position = j
-                if self.modifying_pos !=0 and i==self.selection:
+                if self.modifying_pos != 0 and i == self.selection:
                     option_position += self.modifying_pos
                     if option_position < 0:
-                        option_position = len(param_options)-1
+                        option_position = len(param_options) - 1
                     if option_position >= len(param_options):
                         option_position = 0
-                self.run[self.module_discovery]["params"][name] = param_options[option_position]
+                self.run[self.module_discovery]["params"][name] = param_options[
+                    option_position
+                ]
                 print(
                     f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run[self.module_discovery]["params"][name].center(44)+" → "}{colors.reset}"
                 )
@@ -504,7 +516,7 @@ class Step:
 
         coloring = (
             colorsbg
-            if self.selection == len(module["parameters"])-stricter == state.selection
+            if self.selection == len(module["parameters"]) - stricter == state.selection
             else colors
         )
         print(f"{coloring.element}{'Next'.ljust(80)}{colors.reset}")
@@ -550,8 +562,8 @@ class Step:
                         )
                 elif "delimiter" in lower_name:
                     prev = self.run[self.module_discovery]["params"][name]
-                    self.run[self.module_discovery]["params"][name] = self.find_delimiter(
-                        last_url, prev
+                    self.run[self.module_discovery]["params"][name] = (
+                        self.find_delimiter(last_url, prev)
                     )
                     if self.run[self.module_discovery]["params"][name] != prev:
                         self.show()
@@ -600,7 +612,9 @@ class Step:
                             + colors.reset,
                         )
                 elif param_type == "url" or "path" in lower_name or "dir" in lower_name:
-                    paths = autocomplete_path(self.run[self.module_discovery]["params"][name])
+                    paths = autocomplete_path(
+                        self.run[self.module_discovery]["params"][name]
+                    )
                     if len(paths) == 0:
                         print(
                             colors.fail
@@ -613,7 +627,9 @@ class Step:
                         print(colors.ok + "Path autocompleted".rjust(78) + colors.reset)
                     else:
                         prev = self.run[self.module_discovery]["params"][name]
-                        self.run[self.module_discovery]["params"][name] = common_starts(paths)
+                        self.run[self.module_discovery]["params"][name] = common_starts(
+                            paths
+                        )
                         if prev not in self.run[self.module_discovery]["params"][name]:
                             print(self.run[self.module_discovery]["params"][name], prev)
                             self.run[self.module_discovery]["params"][name] = prev
@@ -646,12 +662,17 @@ class Step:
         self.modifying_pos = 0
         self.input_character = ""
 
-        if self.selection == len(module["parameters"])-stricter and self.modifying:
+        if self.selection == len(module["parameters"]) - stricter and self.modifying:
             self.modifying = False
             if self.module_discovery == "dataset":
                 try:
-                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"]}
-                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    params = {
+                        param[0]: self.run[self.module_discovery]["params"][param[0]]
+                        for param in module["parameters"]
+                    }
+                    self.run[self.module_discovery]["return"] = (
+                        registry.name_to_runnable[module_name](**params)
+                    )
                     self.run[self.module_discovery]["params"] = params
                     loaders = [
                         loader
@@ -663,26 +684,39 @@ class Step:
                         self.base_state,
                         colors.warn + "2/3 Model loader" + colors.reset,
                         self.run,
-                        "model"
+                        "model",
                     )
                 except Exception as e:
-                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                    print(colors.fail + str(e).rjust(78) + colors.reset)
                 save_all_runs("history.json", self.base_state.runs)
             elif self.module_discovery == "model":
                 try:
-                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"]}
-                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    params = {
+                        param[0]: self.run[self.module_discovery]["params"][param[0]]
+                        for param in module["parameters"]
+                    }
+                    self.run[self.module_discovery]["return"] = (
+                        registry.name_to_runnable[module_name](**params)
+                    )
                     self.run[self.module_discovery]["params"] = params
                     compatible_methods = [
                         method
                         for method, entries in registry.analysis_methods.items()
                         if issubclass(
-                            registry.parameters_to_class[self.run["dataset"]["module"]]["return"],
-                            registry.parameters_to_class[method][entries["parameters"][0][0]],
+                            registry.parameters_to_class[self.run["dataset"]["module"]][
+                                "return"
+                            ],
+                            registry.parameters_to_class[method][
+                                entries["parameters"][0][0]
+                            ],
                         )
-                           and issubclass(
-                            registry.parameters_to_class[self.run["model"]["module"]]["return"],
-                            registry.parameters_to_class[method][entries["parameters"][1][0]],
+                        and issubclass(
+                            registry.parameters_to_class[self.run["model"]["module"]][
+                                "return"
+                            ],
+                            registry.parameters_to_class[method][
+                                entries["parameters"][1][0]
+                            ],
                         )
                     ]
                     self.next = Step(
@@ -690,14 +724,18 @@ class Step:
                         self.base_state,
                         colors.warn + "3/3 Analysis method" + colors.reset,
                         self.run,
-                        "analysis"
+                        "analysis",
                     )
                 except Exception as e:
-                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                    print(colors.fail + str(e).rjust(78) + colors.reset)
                 save_all_runs("history.json", self.base_state.runs)
             elif self.module_discovery == "analysis":
                 try:
-                    params = {param[0]: self.run[self.module_discovery]["params"][param[0]] for param in module["parameters"] if param[0]!="model" and param[0]!="dataset"}
+                    params = {
+                        param[0]: self.run[self.module_discovery]["params"][param[0]]
+                        for param in module["parameters"]
+                        if param[0] != "model" and param[0] != "dataset"
+                    }
                     params["dataset"] = self.run["dataset"]["return"]
                     params["model"] = self.run["model"]["return"]
                     sensitive = params.get("sensitive", "")
@@ -709,12 +747,16 @@ class Step:
                         sensitive = [sensitive]
                     sensitive = [s.strip() for s in sensitive]
                     params["sensitive"] = sensitive
-                    self.run[self.module_discovery]["return"] = registry.name_to_runnable[module_name](**params)
+                    self.run[self.module_discovery]["return"] = (
+                        registry.name_to_runnable[module_name](**params)
+                    )
                     del params["model"]
                     del params["dataset"]
                     self.run["status"] = "completed"
                     self.run[self.module_discovery]["params"] = params
-                    self.run[self.module_discovery]["return"] = self.run[self.module_discovery]["return"].all()
+                    self.run[self.module_discovery]["return"] = self.run[
+                        self.module_discovery
+                    ]["return"].all()
 
                     run = self.run
                     description = run["description"]
@@ -732,42 +774,43 @@ class Step:
                             ),
                             (
                                 lambda col: getattr(col, "element")
-                                            + "Console preview".ljust(80),
+                                + "Console preview".ljust(80),
                                 "results",
                             ),
                             (
-                                lambda col: getattr(col, "element") + "Show html".ljust(80),
+                                lambda col: getattr(col, "element")
+                                + "Show html".ljust(80),
                                 "html",
                             ),
                             (
                                 lambda col: getattr(col, "element")
-                                            + "New variation".ljust(80),
+                                + "New variation".ljust(80),
                                 "variation",
                             ),
                             (
                                 lambda col: getattr(col, "neutral")
-                                            + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
+                                + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
                                     80
                                 ),
                                 "data_loader",
                             ),
                             (
                                 lambda col: getattr(col, "neutral")
-                                            + f"Info: {run.get("model", dict()).get("module", "No model loader")}".ljust(
+                                + f"Info: {run.get("model", dict()).get("module", "No model loader")}".ljust(
                                     80
                                 ),
                                 "model_loader",
                             ),
                             (
                                 lambda col: getattr(col, "neutral")
-                                            + f"Info: {run.get("analysis", dict()).get("module", "No analysis method")}".ljust(
+                                + f"Info: {run.get("analysis", dict()).get("module", "No analysis method")}".ljust(
                                     80
                                 ),
                                 "analysis_method",
                             ),
                             (
                                 lambda col: getattr(col, "fail")
-                                            + "Edit (loses results)".ljust(80),
+                                + "Edit (loses results)".ljust(80),
                                 "edit",
                             ),
                             (
@@ -783,7 +826,7 @@ class Step:
                     self.next = select
                     self.next.next = self.next
                 except Exception as e:
-                    print(colors.fail+str(e).rjust(78)+colors.reset)
+                    print(colors.fail + str(e).rjust(78) + colors.reset)
                 save_all_runs("history.json", self.base_state.runs)
 
 
