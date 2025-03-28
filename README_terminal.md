@@ -6,13 +6,14 @@
 
 *Quickly develop and locally run MAI-BIAS toolkit modules.*
 
-This repository holds the mammoth-commons library, which contains 
+This repository is created by the [MAMMOth](https://mammoth-ai.eu/)
+project and holds the mammoth-commons library, which contains 
 supporting datatypes and decorators for developing fairness modules.
 It also hosts a catalogue of 20+ modules. 
 Finally, find desktop and terminal applications that 
 run those modules in your local machine.
 
-![logo](mai_bias/logo.png)
+<img src="mai_bias/logo.png" alt="logo" style="width: 50%;" />
 
 ## 🔬 [Run locally](README.md)
 
