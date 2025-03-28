@@ -1,6 +1,6 @@
 from mai_bias.backend.catalogue_loaders import registry
 
-# Template prefix with updated styling and centered navbar
+
 template_prefix = """
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +97,6 @@ template_prefix = """
             <div class="container">
 """
 
-# Template postfix remains the same
 template_postfix = """
             </div>
         </div>
@@ -135,9 +134,7 @@ template_postfix = """
 """
 
 
-# Updated `prepare` function to return both sidebar and main content as a tuple
 def prepare(catalogue, page_title):
-    # Sidebar content with links to each h2 section
     sidebar_content = ""
     # sidebar_content = f"<h4 class='text-center'><a href='index.html'>Catalogue</a></h4>\n"
 
@@ -146,9 +143,7 @@ def prepare(catalogue, page_title):
 
     # Loop through each loader and create a sidebar link and main section
     for loader in catalogue:
-        loader_id = loader.replace(
-            " ", "-"
-        ).lower()  # create a URL-friendly id for each section
+        loader_id = loader.replace(" ", "-").lower()
         sidebar_content += f"<a href='#{loader_id}'>{loader}</a>\n"
         main_content += f"<h2 id='{loader_id}'>{loader}</h2>\n"
         main_content += f"<p>{catalogue[loader]['description']}</p>\n"
@@ -180,12 +175,11 @@ for page, (catalogue, page_title) in {
     with open(f"docs/{page}", "w") as file:
         file.write(full_content)
 
-# Create an index page
 index_content = """
 <h1 class='display-4 text-center my-4'>MAMMOth Catalogue</h1>
 <p class='lead text-center'>Explore the core modules of the MAMMOth toolkit and demonstrator.</p>
-<p>This catalogue gathers all MAMMOth modules provided by the demonstrator and toolkit.
-These hold project research results and third-party libraries to perform various kinds of fairness assessment.
+<p>This catalogue gathers all MAI-BIAS modules developed by the <a href=https://mammoth-ai.eu/>MAMMOth</a> project.
+These hold research results and third-party libraries to perform various kinds of fairness assessment.
 Some will also guide you on how to apply mitigation strategies. 
 The documentation found here is the same as the one shown by the respective tools. However, by organizing
 everything in one place, it becomes easier to understand all available options for the toolkit.
