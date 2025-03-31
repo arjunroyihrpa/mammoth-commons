@@ -1,6 +1,6 @@
 echo "Building components"
 
-pip install --upgrade -r requirements\[test\].txt
+pip install --upgrade -r requirements_gh_build.txt
 pip install -e .
 
 kfp component build . --component-filepattern mai_bias/catalogue/dataset_loaders/auto_csv.py
@@ -37,15 +37,13 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/pytorch2onnx.py
 docker system prune -a --force --volumes
 
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/augmentation_report.py
+docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/bias_scan.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/image_bias_analysis.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/interactive_report.py
-docker system prune -a --force --volumes
-kfp component build . --component-filepattern mai_bias/catalogue/metrics/interactive_augmentation_report.py
-docker system prune -a --force --volumes
-kfp component build . --component-filepattern mai_bias/catalogue/metrics/interactive_sklearn_report.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/model_card.py
 docker system prune -a --force --volumes
@@ -54,6 +52,8 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/optimal_transport.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/ranking_fairness.py
+docker system prune -a --force --volumes
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/sklearn_audit.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/xai_analysis_embeddings.py
 docker system prune -a --force --volumes
