@@ -31,7 +31,7 @@ def sklearn_audit(
     compare_groups: Options("Pairwise", "To the total population") = None,
     problematic_deviation: float = 0.1,
     show_non_problematic: bool = False,
-    top_recommendations: int = 3
+    top_recommendations: int = 3,
 ) -> HTML:
     """
     <p>One way to evaluate the fairness of a dataset is by testing for biases using simple models with limited
@@ -140,11 +140,11 @@ def sklearn_audit(
         labels=y_test.to_numpy(),
         scores=scores,
         sensitive=sensitive,
-        top=top_recommendations
+        top=top_recommendations,
     )
     problematic_deviation = float(problematic_deviation)
     assert (
-            0 <= problematic_deviation <= 1
+        0 <= problematic_deviation <= 1
     ), "Minimum problematic deviation should be in the range [0,1]"
     if problematic_deviation != 0:
         report = report.filter(

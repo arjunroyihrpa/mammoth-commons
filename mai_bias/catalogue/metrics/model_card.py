@@ -71,7 +71,7 @@ def model_card(
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
     problematic_deviation = float(problematic_deviation)
     assert (
-            0 <= problematic_deviation <= 1
+        0 <= problematic_deviation <= 1
     ), "Problematic deviation should be in the range [0,1]"
     if problematic_deviation != 0:
         report = report.filter(
@@ -81,9 +81,7 @@ def model_card(
         )
 
     views = {
-        "Summary": report.show(
-            env=fb.export.HtmlTable(view=False, filename=None)
-        ),
+        "Summary": report.show(env=fb.export.HtmlTable(view=False, filename=None)),
         "Stamps": report.filter(fb.investigate.Stamps).show(
             env=fb.export.Html(view=False, filename=None),
             depth=2 if isinstance(predictions, dict) else 1,

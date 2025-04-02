@@ -31,7 +31,7 @@ def test_bias_exploration():
             input_height=dataset.input_size[1],
         )
 
-        result = env.model_card(dataset, model, [protected], minimum_shown_deviation=0)
+        result = env.model_card(dataset, model, [protected], problematic_deviation=0)
         result.show()
 
 

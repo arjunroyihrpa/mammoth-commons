@@ -46,7 +46,7 @@ class Options:
         self.values = list(args)
 
     def __call__(self):
-        # the existence of this method introduces comptability with typehints for Python 3.10 or earlier
+        # the existence of this method introduces compatibility with typehints for Python 3.10 or earlier
         pass
 
 
