@@ -187,8 +187,6 @@ class Preview:
         print("\x1b[2J\x1b[H")
         print(self.title)
         print("─" * 80)
-        print(colorsbg.fail + f"Close".ljust(80) + colors.reset)
-        print("─" * 80)
 
         width, height = shutil.get_terminal_size()
         self.height = max(15, height - 10)
@@ -200,6 +198,9 @@ class Preview:
         selection_end = min(len(self.results), self.selection + self.height)
         results = self.results[self.selection : selection_end]
         print("\n".join(results))
+        #print("─" * 80)
+
+        print(colorsbg.fail + f"Close".ljust(80) + colors.reset)
         print("─" * 80)
 
         if self.modifying:
@@ -232,8 +233,15 @@ class Select:
             print("─" * 80)
         else:
             self.base_state.show()
+
+        width, height = shutil.get_terminal_size()
+        height = max(15, height - 10)
+        selection_end = min(len(self.options), self.selection + height)
+
         for i, option in enumerate(self.options):
-            coloring = colorsbg if i == state.selection else colors
+            if i<selection_end-height or i>=selection_end:
+                continue
+            coloring = colorsbg if i == self.selection else colors
             print(f"{option[0](coloring)}{colors.reset}")
         print("─" * 80)
 
@@ -241,7 +249,12 @@ class Select:
             self.modifying = False
             for i, option in enumerate(self.options):
                 if i == state.selection:
-                    getattr(self, option[1])()
+                    funcname = option[1]
+                    if isinstance(funcname, str):
+                        getattr(self, option[1])()
+                    else:
+                        funcname[0][funcname[1]] = funcname[2]
+                        self.cancel()
 
     def data_loader(self):
         run = self.runs[self.reference]
@@ -413,8 +426,9 @@ class Step:
                         if module_name in tags
                         else "No description available."
                     )
-                    + "<br><br><i>This appeared because you pressed [enter] during module selection. "
-                    + "Use left/right arrows to change the selection.</i>",
+                    #+ "<br><br><i>This appeared because you pressed [enter] during module selection. "
+                    #+ "Use left/right arrows to change the selection.</i>"
+                    ,
                     self,
                     colors.warn
                     + "Info: "
@@ -448,8 +462,9 @@ class Step:
                 self.modifying = False
                 self.next = Preview(
                     description
-                    + "<br><br><i>This appeared because you pressed [enter] on a selected parameter. "
-                    + "Use left/right arrows, [tab] for aid, or type to change parameter values.</i>",
+                    #+ "<br><h3>What's this?</h3><i>The above description appeared because you pressed [enter] on a parameter. "
+                    #+ "Depending on the type of the parameter, use left/right arrows to change a selection, [tab] for autocomplete, or type in a string value.</i>"
+                    ,
                     self,
                     colors.warn + "Info: " + format_name(name) + "" + colors.reset,
                 )
@@ -509,11 +524,11 @@ class Step:
                         else "False"
                     )
                 print(
-                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run[self.module_discovery]["params"][name].center(44)+" → "}{colors.reset}"
+                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+str(self.run[self.module_discovery]["params"][name]).center(44)+" → "}{colors.reset}"
                 )
             else:
                 print(
-                    f'{coloring.neutral}{format_name(name).ljust(30)} {self.run[self.module_discovery]["params"][name].ljust(49)}{colors.reset}'
+                    f'{coloring.neutral}{format_name(name).ljust(30)} {str(self.run[self.module_discovery]["params"][name]).ljust(49)}{colors.reset}'
                 )
             # print(param_type)
             i += 1
@@ -536,6 +551,86 @@ class Step:
             lower_name = name.lower()
             if "delimiter" in lower_name:
                 last_delimiter = self.run[self.module_discovery]["params"][name]
+            if i == self.selection and self.input_character != readchar.key.TAB:
+                if "layer" in lower_name:
+                    print(
+                        colors.warn
+                        + f"[tab] to autodetect".rjust(
+                            78
+                        )
+                        + colors.reset
+                    )
+                elif "delimiter" in lower_name:
+                    print(
+                        colors.warn
+                        + f"[tab] to autodetect".rjust(
+                            78
+                        )
+                        + colors.reset
+                    )
+                elif (
+                    "numeric" in lower_name
+                    or "categorical" in lower_name
+                    or "label" in lower_name
+                    or "target" in lower_name
+                    or "ignored" in lower_name
+                    or "attribute" in lower_name
+                    or "sensitive" in lower_name
+                ):
+                    print(
+                        colors.warn
+                        + f"[tab] to see a list of options".rjust(
+                            78
+                        )
+                        + colors.reset
+                    )
+                elif param_type == "url" or "path" in lower_name or "dir" in lower_name:
+                    paths = autocomplete_path(
+                        self.run[self.module_discovery]["params"][name]
+                    )
+                    if len(paths) == 0:
+                        print(
+                            colors.fail
+                            + "No path starting this way exists".rjust(78)
+                            + colors.reset
+                        )
+                    elif len(paths) == 1 and os.path.exists(self.run[self.module_discovery]["params"][name]):
+                        print(
+                            colors.ok
+                            + "Path found".rjust(78)
+                            + colors.reset
+                        )
+                    elif len(paths) == 1:
+                        print(
+                            colors.warn
+                            + "[tab] to autocomplete".rjust(78)
+                            + colors.reset
+                        )
+                    elif len(paths) <= 5:
+                        print(
+                            colors.warn
+                            + f"[tab] to choose from {len(paths)} paths".rjust(
+                                78
+                            )
+                            + colors.reset
+                        )
+                        for path in paths:
+                            print(path.rjust(78))
+                        print()
+                    else:
+                        print(
+                            colors.warn
+                            + f"[tab] to choose from {len(paths)} paths".rjust(
+                                78
+                            )
+                            + colors.reset
+                        )
+                        for path in paths[:4]:
+                            print(path.rjust(78))
+                        print("...".rjust(78))
+                        print()
+
+
             if i == self.selection and self.input_character == readchar.key.TAB:
                 self.modifying_pos = 0
                 self.input_character = ""
@@ -543,27 +638,20 @@ class Step:
                     paths = get_model_layer_list(
                         self.run.get("model", dict()).get("return", None)
                     )
-                    if len(paths) <= 5:
-                        self.show()
-                        print(
-                            colors.warn
-                            + f"Suggesting {len(paths)} {format_name(name)} layers".rjust(
-                                78
-                            )
-                            + colors.reset
-                        )
-                        i = 0
-                        for path in paths:
-                            print(path.rjust(78))
-                            i += 1
-                    else:
-                        self.next = Preview(
-                            "\n<br>".join(paths),
-                            self,
-                            colors.warn
-                            + f"Suggesting {len(paths)} {format_name(name)} layers"
-                            + colors.reset,
-                        )
+                    self.next = Select(
+                        [(
+                            lambda col: getattr(col, "warn") + "Cancel".ljust(80),
+                            "cancel",
+                        )] + [
+                            (lambda col, path=path: getattr(col, "neutral") + path.ljust(80),
+                             (self.run[self.module_discovery]["params"], name, path))
+                            for path in paths
+                        ],
+                        self,
+                        colors.warn
+                        + f"Select from {len(paths)} {format_name(name)} layers"
+                        + colors.reset,
+                    )
                 elif "delimiter" in lower_name:
                     prev = self.run[self.module_discovery]["params"][name]
                     self.run[self.module_discovery]["params"][name] = (
@@ -630,34 +718,18 @@ class Step:
                         self.show()
                         print(colors.ok + "Path autocompleted".rjust(78) + colors.reset)
                     else:
-                        prev = self.run[self.module_discovery]["params"][name]
-                        self.run[self.module_discovery]["params"][name] = common_starts(
-                            paths
-                        )
-                        if prev not in self.run[self.module_discovery]["params"][name]:
-                            print(self.run[self.module_discovery]["params"][name], prev)
-                            self.run[self.module_discovery]["params"][name] = prev
-                        elif len(paths) <= 5:
-                            self.show()
-                            print(
-                                colors.warn
-                                + f"Could not fully autocomplete due to {len(paths)} options".rjust(
-                                    78
-                                )
-                                + colors.reset
-                            )
-                            i = 0
-                            for path in paths:
-                                print(path.rjust(78))
-                                i += 1
-                        else:
-                            self.next = Preview(
-                                "\n<br>".join(paths),
-                                self,
-                                colors.warn
-                                + f"Could not fully autocomplete due to {len(paths)} options"
-                                + colors.reset,
-                            )
+                        self.next = Select(
+                            [(
+                                lambda col: getattr(col, "warn") + "Cancel".ljust(80),
+                                "cancel",
+                            )] + [
+                                (lambda col, path=path: getattr(col, "neutral") + path.ljust(80), (self.run[self.module_discovery]["params"], name, path))
+                                for path in paths
+                            ],
+                            self,
+                            colors.warn
+                            + f"Could not fully autocomplete due to {len(paths)} options"
+                            + colors.reset)
 
             if param_type == "url":
                 last_url = self.run[self.module_discovery]["params"][name]
@@ -974,7 +1046,7 @@ if __name__ == "__main__":
     runs = load_all_runs("history.json")
     state = Dashboard(runs)
     state.show()
-    print("Use arrows to navigate, page up/down is faster, [enter] to select".rjust(78))
+    print("Arrows navigate, page up/down is faster, [enter] selects".rjust(78))
     while state is not None:
         c = readchar.readkey()
         if c == readchar.key.UP:
@@ -1001,8 +1073,4 @@ if __name__ == "__main__":
         if state is None:
             print("Exiting...".rjust(78))
         else:
-            print(
-                "Use arrows to navigate, page up/down is faster, [enter] to select".rjust(
-                    78
-                )
-            )
+            print("Arrows navigate, page up/down is faster, [enter] selects".rjust(78))
