@@ -1,9 +1,15 @@
-from pathlib import Path
+import urllib.request
+import urllib.parse
 import os
+from mammoth_commons.integration_callback import notify_progress, notify_end
+import zipfile
+import bz2
+import pathlib
+import shutil
 
 
 def get_import_list(code):
-    code = Path(code).read_text() if code.endswith(".py") else code
+    code = pathlib.Path(code).read_text() if code.endswith(".py") else code
     found_imports = list()
     for line in code.splitlines():
         line = line.strip()
@@ -21,7 +27,7 @@ def get_import_list(code):
 
 
 def safeexec(code: str, out: str = "commons", whitelist: list[str] = None):
-    code = Path(code).read_text() if code.endswith(".py") else code
+    code = pathlib.Path(code).read_text() if code.endswith(".py") else code
     whitelist = () if whitelist is None else set(whitelist)
     for module_name in get_import_list(code):
         assert (
@@ -110,48 +116,31 @@ def fb_categories(it):
     return categories @ it
 
 
-def _download(url, path=None):
-    import urllib.request
-    import os
-
-    # Get the file name from the URL
-    if path is None:
-        file_name = os.path.basename(url)
-    else:
-        file_name = path
-
-    try:
-        with urllib.request.urlopen(url) as response:
-            total_size = response.getheader("Content-Length")
-            total_size = int(total_size) if total_size else None
-
-            with open(file_name, "wb") as out_file:
-                chunk_size = 1024
-                downloaded = 0
-
-                while True:
-                    chunk = response.read(chunk_size)
-                    if not chunk:
-                        break
-                    out_file.write(chunk)
-                    downloaded += len(chunk)
-
-                    # Print progress if total size is known
-                    if total_size:
-                        done = int(50 * downloaded / total_size)
-                        print(
-                            f'\rDownloading {url} [{"=" * done}{" " * (50 - done)}] {downloaded / 1024:.2f} KB',
-                            end="",
-                        )
-
-        print(f"Downloaded {url}" + " " * 50)
-    except Exception as e:
-        print(f"Error downloading file: {e}")
+def _download(url, path):
+    if os.path.exists(path):
+        return path
+    pathlib.Path(path).parent.mkdir(parents=True, exist_ok=True)
+    if os.path.isfile(url):
+        shutil.copyfile(url, path)
+        return path
+    with urllib.request.urlopen(url) as response:
+        total_size = response.getheader("Content-Length")
+        total_size = int(total_size) if total_size else None
+        with open(path, "wb") as out_file:
+            chunk_size = 1024
+            downloaded = 0
+            chunk = True
+            while chunk:
+                chunk = response.read(chunk_size)
+                out_file.write(chunk)
+                downloaded += len(chunk)
+                if total_size:
+                    notify_progress(downloaded / total_size, f"Downloading {url}")
+    notify_end()
+    return path
 
 
 def _extract_nested_zip(file, folder):
-    import zipfile
-
     os.makedirs(folder, exist_ok=True)
     with zipfile.ZipFile(file, "r") as zfile:
         zfile.extractall(path=folder)
@@ -164,41 +153,51 @@ def _extract_nested_zip(file, folder):
                 )
 
 
+def _autoextract(path):
+    if path.endswith(".bz2"):
+        extract_to = path[:-4]
+        if not os.path.exists(extract_to):
+            with bz2.BZ2File(path, "rb") as bz2_file:
+                with open(extract_to, "wb") as out_file:
+                    out_file.write(bz2_file.read())
+        return _autoextract(extract_to)
+    return path
+
+
+def _toextract(path):
+    if path.endswith(".bz2"):
+        return True
+    return False
+
+
+def prepare(url, cache=".cache"):
+    url = url.replace("\\", "/")
+    if ".zip/" in url:
+        url, path = url.split(".zip/", 1)
+        extract_to = os.path.join(cache, os.path.basename(url))
+        path = os.path.join(cache, os.path.basename(url), path)
+        url += ".zip"
+        temp = os.path.join(cache, os.path.basename(url))
+        if not os.path.exists(path):
+            _download(url, temp)
+            _extract_nested_zip(temp, extract_to)
+        url = path
+
+    path = (
+        url
+        if os.path.exists(url) and not _toextract(url)
+        else _download(url, os.path.join(cache, os.path.basename(url)))
+    )
+    path = _autoextract(path)
+
+    return path
+
+
 def pd_read_csv(url, **kwargs):
     import pandas as pd
     import csv
 
-    url = url.replace("\\", "/")
-    if ".zip/" in url:
-        url, path = url.split(".zip/", 1)
-        extract_to = "data/"
-        if "/" not in path:
-            extract_to += url.split("/")[-1]
-            path = os.path.join(url.split("/")[-1], path)
-        path = os.path.join("data", path)
-        url += ".zip"
-        temp = "data/" + url.split("/")[-1]
-        if not os.path.exists(path):
-            os.makedirs(os.path.join(*path.split("/")[:-1]), exist_ok=True)
-            _download(url, temp)
-            _extract_nested_zip(temp, extract_to)
-    elif os.path.exists(url):  # or url.startswith("http:") or url.startswith("https:"):
-        path = url
-    else:
-        shortened = "/".join(url.split("/")[-4:])  # TODO: be more clever here
-        path = "data/" + shortened
-        if not os.path.exists(path):
-            os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
-            _download(url, path)
-
-    if path.endswith("bz2"):
-        import bz2
-
-        with bz2.BZ2File(path, "rb") as bz2_file:
-            with open(path[:-4], "wb") as out_file:
-                out_file.write(bz2_file.read())
-        path = path[:-4]
-
+    path = prepare(url)
     if "delimiter" in kwargs:
         return pd.read_csv(path, **kwargs)
     try:
@@ -209,4 +208,5 @@ def pd_read_csv(url, **kwargs):
             delimiter = str(delimiter)
     except Exception:
         delimiter = None
+    print(kwargs)
     return pd.read_csv(path, delimiter=delimiter, **kwargs)

@@ -99,10 +99,17 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
             }
         },
         {
-            "name": "Demonstrator",
+            "name": "MAI-BIAS Desktop",
             "type": "debugpy",
             "request": "launch",
-            "module": "demonstrator.app",
+            "module": "mai_bias.app",
+            "justMyCode": false
+        },
+        {
+            "name": "MAI-BIAS Terminal",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mai_bias.cli",
             "justMyCode": false
         }
     ]

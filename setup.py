@@ -21,7 +21,7 @@ setuptools.setup(
     version="0.0.56",  # DON'T FORGET TO CHANGE THIS IN integration.py
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
-    description="Component interfaces of the MAMMOth fairness toolkit.",
+    description="Component interfaces of the MAI-BIAS toolkit.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mammoth-eu/mammoth-commons",
