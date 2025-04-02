@@ -21,7 +21,8 @@ def model_card(
     sensitive: List[str],
     intersectional: bool = False,
     compare_groups: Options("Pairwise", "To the total population") = None,
-    minimum_shown_deviation: float = 0.1,
+    problematic_deviation: float = 0.1,
+    show_non_problematic: bool = False,
 ) -> HTML:
     """
     <p>Generates a fairness and bias report using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
@@ -48,10 +49,12 @@ def model_card(
     Args:
         intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
-        minimum_shown_deviation: Show only results where the deviation from ideal values exceeds the given threshold. If nothing is shown, fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no set ideal value.
+        problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
+        show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify problematic values as red.
     """
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
+    reject = not bool(show_non_problematic)
     predictions = model.predict(dataset, sensitive)
     labels = dataset.labels
     sensitive = fb.Dimensions(
@@ -66,15 +69,21 @@ def model_card(
 
     predictions, labels = align_predictions_labels(predictions, labels)
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
-    minimum_shown_deviation = float(minimum_shown_deviation)
+    problematic_deviation = float(problematic_deviation)
     assert (
-        0 <= minimum_shown_deviation <= 1
-    ), "Minimum shown deviation should be in the range [0,1]"
-    if minimum_shown_deviation != 0:
-        report = report.filter(fb.investigate.DeviationsOver(minimum_shown_deviation))
+            0 <= problematic_deviation <= 1
+    ), "Problematic deviation should be in the range [0,1]"
+    if problematic_deviation != 0:
+        report = report.filter(
+            fb.investigate.DeviationsOver(
+                problematic_deviation, action="keep" if reject else "colorize"
+            )
+        )
 
     views = {
-        "Summary": report.show(env=fb.export.HtmlTable(view=False, filename=None)),
+        "Summary": report.show(
+            env=fb.export.HtmlTable(view=False, filename=None)
+        ),
         "Stamps": report.filter(fb.investigate.Stamps).show(
             env=fb.export.Html(view=False, filename=None),
             depth=2 if isinstance(predictions, dict) else 1,
@@ -135,12 +144,21 @@ def model_card(
                }}
            }});
        </script>
-       <h1>{f'Report over {len(sensitive.branches())} groups' if minimum_shown_deviation == 0 else f'Report over {len(sensitive.branches())} groups for {minimum_shown_deviation:.3f} deviations'}</h1>
-       <p>A report was computed over several prospective biases. 
-       The following {len(sensitive.branches())} protected groups were analysed: <i>{', '.join(sensitive.branches().keys())}</i>.
-       </p><p>Several values are computed to paint a broad picture
-       {'; set a minimum shown deviation parameter for this analysis to simplify what is shown.' if minimum_shown_deviation == 0 else f', but for simplicity only those that differ at least {minimum_shown_deviation:.3f} from their ideal values are shown; this is the minimum shown deviation parameter of the analysis.'}
-       Results may not give the full picture, and not all biases may be harmful to the social context. Switch between different views.</p>
+       <h1>{f'Report over {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'Report over {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <p>A report was generated over several prospective biases to paint a broad picture
+       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f', but for simplicity only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
+       Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
+       </p>
+       <p>
+       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
+       Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
+       Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
+       literature definitions alongside caveats and recommendations.
+       </p>
+       <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
+       <details><summary>Summary of measures. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'measure' in key.role) + '</table>'}</i><br></details>
+       <details><summary>Summary of reductions. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'reduction' in key.role) + '</table>'}</i><br></details>
+       <br>
        <div>{tab_headers}</div>
        <div>{tab_contents}</div>
        <div style="clear: both;">{dataset_desc}</div>

@@ -29,7 +29,9 @@ def sklearn_audit(
     predictor: Options("Logistic regression", "Gaussian naive Bayes") = None,
     intersectional: bool = False,
     compare_groups: Options("Pairwise", "To the total population") = None,
-    minimum_shown_deviation: float = 0.1,
+    problematic_deviation: float = 0.1,
+    show_non_problematic: bool = False,
+    top_recommendations: int = 3
 ) -> HTML:
     """
     <p>One way to evaluate the fairness of a dataset is by testing for biases using simple models with limited
@@ -38,7 +40,7 @@ def sklearn_audit(
     The second half is then used as test data to assess predictive performance and detect classification
     or scoring biases.</p>
 
-    <p>Test data are used to generate a fairness and bias report using the
+    <p>Test data are used to generate a fairness and bias report with the
     <a href="https://fairbench.readthedocs.io/">FairBench</a> library. If strong biases appear in the simple models
     that are explored, they may also persist in more complex models trained on the same data. To focus on the most
     significant biases, adjust the minimum shown deviation parameter.
@@ -65,9 +67,12 @@ def sklearn_audit(
         predictor: Which simple model should be used.
         intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
-        minimum_shown_deviation: Show only results where the deviation from ideal values exceeds the given threshold. If nothing is shown, fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no set ideal value.
+        problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
+        show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify non-problematic values as green and the rest as either orange or red.
+        top_recommendations: The number of top recommendations in evaluation that emulates showing the respective data samples to users when querying the trained model to give examples for each class in the dataset. Common values in the literature are 1,3,5,10.
     """
     assert len(sensitive) != 0, "Set at least one sensitive attribute"
+    reject = not bool(show_non_problematic)
     X = dataset.to_features(sensitive)
     y = dataset.labels
     if isinstance(y, dict):
@@ -135,13 +140,18 @@ def sklearn_audit(
         labels=y_test.to_numpy(),
         scores=scores,
         sensitive=sensitive,
+        top=top_recommendations
     )
-    minimum_shown_deviation = float(minimum_shown_deviation)
+    problematic_deviation = float(problematic_deviation)
     assert (
-        0 <= minimum_shown_deviation <= 1
-    ), "Minimum shown deviation should be in the range [0,1]"
-    if minimum_shown_deviation != 0:
-        report = report.filter(fb.investigate.DeviationsOver(minimum_shown_deviation))
+            0 <= problematic_deviation <= 1
+    ), "Minimum problematic deviation should be in the range [0,1]"
+    if problematic_deviation != 0:
+        report = report.filter(
+            fb.investigate.DeviationsOver(
+                problematic_deviation, action="keep" if reject else "colorize"
+            )
+        )
 
     views = {
         "Summary": report.show(env=fb.export.HtmlTable(view=False, filename=None)),
@@ -217,13 +227,29 @@ def sklearn_audit(
                }}
            }});
        </script>
-       <h1>{f'Audit of {len(sensitive.branches())} groups' if minimum_shown_deviation==0 else f'Audit of {len(sensitive.branches())} groups for {minimum_shown_deviation:.3f} deviations'}</h1>
-       <p>A report was computed over several prospective biases
-       when a {predictor} model is trained. 
-       The following {len(sensitive.branches())} protected groups were analysed: <i>{', '.join(sensitive.branches().keys())}</i>.
-       </p><p>Several values are computed to paint a broad picture
-       {'; set a minimum shown deviation parameter for this analysis to simplify what is shown.' if minimum_shown_deviation==0 else f', but for simplicity only those that differ at least {minimum_shown_deviation:.3f} from their ideal values are shown; this is the minimum shown deviation parameter of the analysis.'}
-       Results may not give the full picture, and not all biases may be harmful to the social context. Switch between different views.</p>
+       <h1>{f'Audit of {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'Audit of {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <p>
+       The analysis shown here has trained and assessed a {predictor} model on the provided dataset. This is a deliberately weak
+       model of limited expressive power, because it aims to reveal prominent correlations. Expect better models, such as
+       neural networks, to pick up similar or even worse biases. The trained model is assessed in terms of both classification
+       and recommendation capabilities. When it matters, the top {top_recommendations} recommendations for retrieving class members are assessed.
+       </p>
+       <p>
+       A report was generated over several prospective biases to paint a broad picture
+       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f', but for simplicity only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
+       Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
+       </p>
+       <p>
+       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
+       Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
+       Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
+       literature definitions alongside caveats and recommendations.
+       </p>
+       
+       <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
+       <details><summary>Summary of measures. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'measure' in key.role) + '</table>'}</i><br></details>
+       <details><summary>Summary of reductions. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'reduction' in key.role) + '</table>'}</i><br></details>
+       <br>
        <div>{tab_headers}</div>
        {tab_contents}
        {dataset_desc}

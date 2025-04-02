@@ -208,5 +208,4 @@ def pd_read_csv(url, **kwargs):
             delimiter = str(delimiter)
     except Exception:
         delimiter = None
-    print(kwargs)
     return pd.read_csv(path, delimiter=delimiter, **kwargs)
