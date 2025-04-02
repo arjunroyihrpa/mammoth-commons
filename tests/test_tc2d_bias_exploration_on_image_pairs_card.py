@@ -38,7 +38,7 @@ def test_bias_exploration():
         )
 
         html_result = env.model_card(
-            dataset, model, [protected], minimum_shown_deviation=0
+            dataset, model, [protected], problematic_deviation=0
         )
         html_result.show()
 
