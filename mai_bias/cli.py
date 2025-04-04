@@ -198,7 +198,7 @@ class Preview:
         selection_end = min(len(self.results), self.selection + self.height)
         results = self.results[self.selection : selection_end]
         print("\n".join(results))
-        #print("─" * 80)
+        # print("─" * 80)
 
         print(colorsbg.fail + f"Close".ljust(80) + colors.reset)
         print("─" * 80)
@@ -239,7 +239,7 @@ class Select:
         selection_end = min(len(self.options), self.selection + height)
 
         for i, option in enumerate(self.options):
-            if i<selection_end-height or i>=selection_end:
+            if i < selection_end - height or i >= selection_end:
                 continue
             coloring = colorsbg if i == self.selection else colors
             print(f"{option[0](coloring)}{colors.reset}")
@@ -426,8 +426,8 @@ class Step:
                         if module_name in tags
                         else "No description available."
                     )
-                    #+ "<br><br><i>This appeared because you pressed [enter] during module selection. "
-                    #+ "Use left/right arrows to change the selection.</i>"
+                    # + "<br><br><i>This appeared because you pressed [enter] during module selection. "
+                    # + "Use left/right arrows to change the selection.</i>"
                     ,
                     self,
                     colors.warn
@@ -462,8 +462,8 @@ class Step:
                 self.modifying = False
                 self.next = Preview(
                     description
-                    #+ "<br><h3>What's this?</h3><i>The above description appeared because you pressed [enter] on a parameter. "
-                    #+ "Depending on the type of the parameter, use left/right arrows to change a selection, [tab] for autocomplete, or type in a string value.</i>"
+                    # + "<br><h3>What's this?</h3><i>The above description appeared because you pressed [enter] on a parameter. "
+                    # + "Depending on the type of the parameter, use left/right arrows to change a selection, [tab] for autocomplete, or type in a string value.</i>"
                     ,
                     self,
                     colors.warn + "Info: " + format_name(name) + "" + colors.reset,
@@ -553,21 +553,9 @@ class Step:
                 last_delimiter = self.run[self.module_discovery]["params"][name]
             if i == self.selection and self.input_character != readchar.key.TAB:
                 if "layer" in lower_name:
-                    print(
-                        colors.warn
-                        + f"[tab] to autodetect".rjust(
-                            78
-                        )
-                        + colors.reset
-                    )
+                    print(colors.warn + f"[tab] to autodetect".rjust(78) + colors.reset)
                 elif "delimiter" in lower_name:
-                    print(
-                        colors.warn
-                        + f"[tab] to autodetect".rjust(
-                            78
-                        )
-                        + colors.reset
-                    )
+                    print(colors.warn + f"[tab] to autodetect".rjust(78) + colors.reset)
                 elif (
                     "numeric" in lower_name
                     or "categorical" in lower_name
@@ -579,9 +567,7 @@ class Step:
                 ):
                     print(
                         colors.warn
-                        + f"[tab] to see a list of options".rjust(
-                            78
-                        )
+                        + f"[tab] to see a list of options".rjust(78)
                         + colors.reset
                     )
                 elif param_type == "url" or "path" in lower_name or "dir" in lower_name:
@@ -594,12 +580,10 @@ class Step:
                             + "No path starting this way exists".rjust(78)
                             + colors.reset
                         )
-                    elif len(paths) == 1 and os.path.exists(self.run[self.module_discovery]["params"][name]):
-                        print(
-                            colors.ok
-                            + "Path found".rjust(78)
-                            + colors.reset
-                        )
+                    elif len(paths) == 1 and os.path.exists(
+                        self.run[self.module_discovery]["params"][name]
+                    ):
+                        print(colors.ok + "Path found".rjust(78) + colors.reset)
                     elif len(paths) == 1:
                         print(
                             colors.warn
@@ -609,9 +593,7 @@ class Step:
                     elif len(paths) <= 5:
                         print(
                             colors.warn
-                            + f"[tab] to choose from {len(paths)} paths".rjust(
-                                78
-                            )
+                            + f"[tab] to choose from {len(paths)} paths".rjust(78)
                             + colors.reset
                         )
                         for path in paths:
@@ -620,16 +602,13 @@ class Step:
                     else:
                         print(
                             colors.warn
-                            + f"[tab] to choose from {len(paths)} paths".rjust(
-                                78
-                            )
+                            + f"[tab] to choose from {len(paths)} paths".rjust(78)
                             + colors.reset
                         )
                         for path in paths[:4]:
                             print(path.rjust(78))
                         print("...".rjust(78))
                         print()
-
 
             if i == self.selection and self.input_character == readchar.key.TAB:
                 self.modifying_pos = 0
@@ -639,12 +618,18 @@ class Step:
                         self.run.get("model", dict()).get("return", None)
                     )
                     self.next = Select(
-                        [(
-                            lambda col: getattr(col, "warn") + "Cancel".ljust(80),
-                            "cancel",
-                        )] + [
-                            (lambda col, path=path: getattr(col, "neutral") + path.ljust(80),
-                             (self.run[self.module_discovery]["params"], name, path))
+                        [
+                            (
+                                lambda col: getattr(col, "warn") + "Cancel".ljust(80),
+                                "cancel",
+                            )
+                        ]
+                        + [
+                            (
+                                lambda col, path=path: getattr(col, "neutral")
+                                + path.ljust(80),
+                                (self.run[self.module_discovery]["params"], name, path),
+                            )
                             for path in paths
                         ],
                         self,
@@ -719,17 +704,30 @@ class Step:
                         print(colors.ok + "Path autocompleted".rjust(78) + colors.reset)
                     else:
                         self.next = Select(
-                            [(
-                                lambda col: getattr(col, "warn") + "Cancel".ljust(80),
-                                "cancel",
-                            )] + [
-                                (lambda col, path=path: getattr(col, "neutral") + path.ljust(80), (self.run[self.module_discovery]["params"], name, path))
+                            [
+                                (
+                                    lambda col: getattr(col, "warn")
+                                    + "Cancel".ljust(80),
+                                    "cancel",
+                                )
+                            ]
+                            + [
+                                (
+                                    lambda col, path=path: getattr(col, "neutral")
+                                    + path.ljust(80),
+                                    (
+                                        self.run[self.module_discovery]["params"],
+                                        name,
+                                        path,
+                                    ),
+                                )
                                 for path in paths
                             ],
                             self,
                             colors.warn
                             + f"Could not fully autocomplete due to {len(paths)} options"
-                            + colors.reset)
+                            + colors.reset,
+                        )
 
             if param_type == "url":
                 last_url = self.run[self.module_discovery]["params"][name]
@@ -842,27 +840,16 @@ class Step:
                     title = extract_title(run)
                     title = title.replace("<span>", "").replace("</span>", "").ljust(40)
                     time = run.get("timestamp", "").ljust(18)
+
+                    options = list()
+                    options.append((lambda col: getattr(col, "warn") + "Cancel".ljust(80), "cancel"))
+                    if run.get("analysis", dict()).get("return", ""):
+                        options.append((lambda col: getattr(col, "element")+ "Console preview".ljust(80), "results"))
+                        options.append((lambda col: getattr(col, "element")+ "Show html".ljust(80), "html"))
+                        options.append((lambda col: getattr(col, "element")+ "New variation".ljust(80), "variation"))
+
                     select = Select(
-                        [
-                            (
-                                lambda col: getattr(col, "warn") + "Cancel".ljust(80),
-                                "cancel",
-                            ),
-                            (
-                                lambda col: getattr(col, "element")
-                                + "Console preview".ljust(80),
-                                "results",
-                            ),
-                            (
-                                lambda col: getattr(col, "element")
-                                + "Show html".ljust(80),
-                                "html",
-                            ),
-                            (
-                                lambda col: getattr(col, "element")
-                                + "New variation".ljust(80),
-                                "variation",
-                            ),
+                        options + [
                             (
                                 lambda col: getattr(col, "neutral")
                                 + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
@@ -983,27 +970,14 @@ class Dashboard:
                 title = title.replace("<span>", "").replace("</span>", "").ljust(40)
                 time = run.get("timestamp", "").ljust(18)
 
+                options = list()
+                options.append((lambda col: getattr(col, "warn") + "Cancel".ljust(80), "cancel"))
+                if run.get("analysis", dict()).get("return", ""):
+                    options.append((lambda col: getattr(col, "element") + "Console preview".ljust(80), "results"))
+                    options.append((lambda col: getattr(col, "element") + "Show html".ljust(80), "html"))
+                    options.append((lambda col: getattr(col, "element") + "New variation".ljust(80), "variation"))
                 select = Select(
-                    [
-                        (
-                            lambda col: getattr(col, "warn") + "Cancel".ljust(80),
-                            "cancel",
-                        ),
-                        (
-                            lambda col: getattr(col, "element")
-                            + "Console preview".ljust(80),
-                            "results",
-                        ),
-                        (
-                            lambda col: getattr(col, "element") + "Show html".ljust(80),
-                            "html",
-                        ),
-                        (
-                            lambda col: getattr(col, "element")
-                            + "New variation".ljust(80),
-                            "variation",
-                        ),
-                        (
+                        options + [(
                             lambda col: getattr(col, "neutral")
                             + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
                                 80

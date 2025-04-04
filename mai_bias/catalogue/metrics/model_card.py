@@ -1,5 +1,3 @@
-import pandas as pd
-
 from mammoth_commons.datasets import Dataset
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
@@ -76,7 +74,7 @@ def model_card(
     if problematic_deviation != 0:
         report = report.filter(
             fb.investigate.DeviationsOver(
-                problematic_deviation, action="keep" if reject else "colorize"
+                problematic_deviation, prune=reject
             )
         )
 

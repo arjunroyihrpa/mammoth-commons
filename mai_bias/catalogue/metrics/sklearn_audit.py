@@ -149,7 +149,7 @@ def sklearn_audit(
     if problematic_deviation != 0:
         report = report.filter(
             fb.investigate.DeviationsOver(
-                problematic_deviation, action="keep" if reject else "colorize"
+                problematic_deviation, prune=reject
             )
         )
 
