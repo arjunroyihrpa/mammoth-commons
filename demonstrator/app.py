@@ -1,5 +1,14 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 import sys
+
+
+import os
+
+print(f"cwd {os.getcwd()}")
+print(f"executable: {sys.executable}")
+print(f"path: {sys.path}")
+
+
 from states.dashboard import Dashboard
 from states.step import load_all_runs
 from states.steps.dataset import SelectDataset

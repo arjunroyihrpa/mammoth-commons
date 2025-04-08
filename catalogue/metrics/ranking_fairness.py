@@ -9,6 +9,7 @@ from mammoth.datasets.graph_csh import Graph_CSH
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import seaborn as sns
 from io import BytesIO
 import base64
@@ -70,7 +71,7 @@ def Exposure_distance(
     return EDr
 
 
-def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable):
+def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable, title=None):
     # Set figure size based on number of categories
     n_categories = len(dataframe[y_variable].unique())
     height = min(7, max(4, n_categories * 0.5))  # Adaptive height
@@ -104,6 +105,9 @@ def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable):
         ax.legend(bbox_to_anchor=(0.5, -0.15), loc="upper center", ncol=2)
 
     ax.yaxis.grid(True, linestyle="--", alpha=0.7)
+
+    if title:
+        ax.set_title(title, fontsize=12, fontweight="bold", pad=10)
 
     plt.margins(y=0.02)
 
@@ -582,6 +586,10 @@ def plot_network(
     amplyfing_size_nodes=2,
     division_size_edges=100,
     size_edges=1,
+    dict_color_nodes=None, 
+    color_categories=None,
+    label_nodes = None,
+    node_colors = None
 ):
     degree = dict(G.degree(weight="weight"))
     weights = [G[u][v]["weight"] for u, v in G.edges()]
@@ -601,31 +609,41 @@ def plot_network(
         seed=10,
         dim=2,
     )
-    ncols = 1
-    nrows = 1
 
-    fig, axes = plt.subplots(ncols=ncols, nrows=nrows, figsize=(10, 10))
-
-    nx.draw_networkx(
-        G,
-        with_labels=False,
-        pos=pos,
-        node_color=(255 / 256, 102 / 256, 102 / 256, 0.7),
-        node_size=[i * amplyfing_size_nodes + 1 for i in list(degree.values())],
-        edge_color="lightgray",
-        width=np.array(weights) / division_size_edges + size_edges,
-        arrowsize=3,
-        ax=axes,
-    )
+    ncols=1
+    nrows=1
+    fig, axes = plt.subplots(ncols=ncols, nrows=nrows,figsize=(10,10))
+    if dict_color_nodes==None:
+        nx.draw_networkx(G, with_labels = False,
+                         pos=pos, node_color=(255/256, 102/256, 102/256,0.7),
+                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
+                         edge_color = 'lightgray',
+                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
+                         ax=axes)
+    else:
+         nx.draw_networkx(G, with_labels = False,
+                         pos=pos, node_color=dict_color_nodes,
+                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
+                         edge_color = 'lightgray',
+                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
+                         ax=axes)
+         #nx.draw_networkx_labels(G,pos,label_nodes,font_size=10,font_color='r')
+         pos_text=1000
+         for i,v in color_categories.items():
+            plt.scatter(1200,pos_text,s=50, c=v)
+            plt.text(1250,pos_text-25,i)
+            pos_text-=100
+    plt.text(0,0.85,'Numbers of nodes: '+str(G.number_of_nodes()),transform=axes.transAxes)
+    plt.text(0,0.81,'Numbers of edges: '+str(G.number_of_edges()),transform=axes.transAxes)
+    plt.text(0,0.77,'Density: ' + str(np.round(nx.density(G),3)),transform=axes.transAxes)
     if directed == False:
         Connected_componets = sorted(nx.connected_components(G), key=len, reverse=True)
     else:
-        Connected_componets = sorted(
-            nx.weakly_connected_components(G), key=len, reverse=True
-        )
-
-    plt.title(title, fontweight="bold", fontsize=20)
-    for axis in ["top", "bottom", "left", "right"]:
+        Connected_componets = sorted(nx.weakly_connected_components(G), key=len, reverse=True)
+    plt.text(0,0.72,'LCC: ' + str(np.round(len(Connected_componets[0])/G.number_of_nodes(),2)),transform=axes.transAxes)
+    plt.text(0,0.68,'CC: ' + str(len(Connected_componets)),transform=axes.transAxes)
+    plt.title(title, fontweight='bold',fontsize=20)
+    for axis in ['top','bottom','left','right']:
         axes.spines[axis].set_linewidth(0)
 
     # Save and encode
@@ -663,17 +681,6 @@ def exposure_distance_comparison(
         model_baseline = model.baseline_rank
 
         researchers_graph = dataset.G
-
-        # Plot the network if it is small enough
-        if len(researchers_graph.nodes) < 2500:
-            network_image = plot_network(
-                G=researchers_graph,
-                title=" Co-authorship network",
-                name_plot="Co-authorship_network.pdf",
-            )
-        else:
-            network_image = image_to_base64("./data/researchers/network.png")
-
         Dataframe_nodes = {"id": []}
         for i in researchers_graph.nodes():
             Dataframe_nodes["id"] += [i]
@@ -684,6 +691,28 @@ def exposure_distance_comparison(
                     Dataframe_nodes[k] = [v]
 
         data = pd.DataFrame(Dataframe_nodes)
+
+        # Plot the network if it is small enough
+        attribute_color_nodes = sampling_attribute
+        Dict_attribute = {data['id'][i]: data[attribute_color_nodes][i] for i in data.index}
+
+        color_nodes = [str(Dict_attribute[n]) for n in researchers_graph.nodes()]
+        np.random.seed(40)
+        color = list(np.random.choice(range(256), size=len(set(color_nodes))))
+        color_categories = {list(set(color_nodes))[i]:cm.viridis(color[i]) if list(set(color_nodes))[i] !='nan' else  'lightgrey' for i in range(len(set(color_nodes))) }
+        color_nodes = [color_categories[n] for n in color_nodes ]
+        print(f"{color_nodes=}")
+
+        if len(researchers_graph.nodes) < 2500:
+            network_image = plot_network(
+                G=researchers_graph,
+                title=" Co-authorship network",
+                name_plot="Co-authorship_network.pdf",
+                dict_color_nodes=color_nodes,
+                color_categories=color_categories,
+            )
+        else:
+            network_image = image_to_base64("./data/researchers/network.png")
 
         # Only consider those rows where the sampling attribute is not missing
         dataframe_sampling = data[~data[sampling_attribute].isnull()]
@@ -759,7 +788,6 @@ def exposure_distance_comparison(
             numeric_cols = all_runs_df.select_dtypes(include=[np.number]).columns
             mean_ranking_df = all_runs_df[numeric_cols].groupby(level=0).mean()
 
-            # If you need non-numeric columns, take the first occurrence (e.g., string columns remain unchanged)
             non_numeric_df = (
                 all_runs_df.select_dtypes(exclude=[np.number]).groupby(level=0).first()
             )
@@ -777,6 +805,7 @@ def exposure_distance_comparison(
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
+            title="Distribution Across Categories"
         )
 
         distribution_image = boxplots_rankings(
@@ -784,6 +813,7 @@ def exposure_distance_comparison(
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
+            title="Post-Mitigation distribution Across Categories"
         )
 
         mitigation_strategies_image = boxplots_mitigation_strategies_pretty(
