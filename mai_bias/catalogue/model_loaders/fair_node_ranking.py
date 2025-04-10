@@ -2,7 +2,7 @@ from mammoth_commons.models import NodeRanking
 from mammoth_commons.integration import loader, Options
 
 
-@loader(namespace="mammotheu", version="v0038", python="3.12", packages=("pygrank",))
+@loader(namespace="mammotheu", version="v0039", python="3.12", packages=("pygrank",))
 def model_fair_node_ranking(
     diffusion: float = 0.85,
     redistribution: Options("none", "uniform", "original") = "original",

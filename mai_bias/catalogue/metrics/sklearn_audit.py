@@ -11,7 +11,7 @@ from mammoth_commons.externals import fb_categories
 
 @metric(
     namespace="mammotheu",
-    version="v0038",
+    version="v0039",
     python="3.12",
     packages=(
         "fairbench",

@@ -6,7 +6,7 @@ import pickle
 
 
 _default_python = "3.12"
-_default_packages = ()  # appended to ["mammoth[deployment]"]
+_default_packages = ()  # appended to ["mammoth_commons[deployment]"]
 
 
 def unpack_optionals(arg_type):
@@ -64,7 +64,7 @@ def metric(namespace, version, python=_default_python, packages=_default_package
             true_func=method,
             base_image=base_image,
             target_image=target_image,
-            packages_to_install=["mammoth[deployment]"] + list(packages),
+            packages_to_install=["mammoth_commons[deployment]"] + list(packages),
         )
 
         # find signature and check that we can obtain the integration type from the returned type
@@ -216,7 +216,7 @@ def loader(
             true_func=method,
             base_image=base_image,
             target_image=target_image,
-            packages_to_install=["mammoth[deployment]"] + list(packages),
+            packages_to_install=["mammoth_commons[deployment]"] + list(packages),
         )
 
         # Find signature and check that we can obtain the integration type from the returned type
