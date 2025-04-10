@@ -10,7 +10,7 @@ from facex.component import run_embeddings_mammoth
 
 @metric(
     namespace="mammotheu",
-    version="v0039",
+     version="v0040",
     python="3.12",
     packages=("torch", "torchvision", "timm", "facextool"),
 )

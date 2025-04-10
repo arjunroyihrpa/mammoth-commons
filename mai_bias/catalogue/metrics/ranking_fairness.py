@@ -637,7 +637,7 @@ def plot_network(
     return enc_str
 
 
-@metric(namespace="mammotheu", version="v0039", python="3.12")
+@metric(namespace="mammotheu",  version="v0040", python="3.12")
 def exposure_distance_comparison(
     dataset: Graph_CSH,
     model: ResearcherRanking,

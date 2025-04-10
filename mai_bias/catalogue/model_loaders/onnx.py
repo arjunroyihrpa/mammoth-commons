@@ -5,7 +5,7 @@ import os
 
 
 @loader(
-    namespace="mammotheu", version="v0039", python="3.12", packages=("onnxruntime",)
+    namespace="mammotheu",  version="v0040", python="3.12", packages=("onnxruntime",)
 )
 def model_onnx(path: str = "") -> ONNX:
     """Loads an inference model stored in <a href="https://onnx.ai/">ONNx</a> format.

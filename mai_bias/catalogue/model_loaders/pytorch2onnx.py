@@ -7,7 +7,7 @@ import torch
 import tempfile
 
 
-@loader(namespace="mammotheu", version="v0039", python="3.12")
+@loader(namespace="mammotheu",  version="v0040", python="3.12")
 def model_torch2onnx(
     state_path: str = "",
     model_path: str = "",

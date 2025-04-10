@@ -172,7 +172,7 @@ def _toextract(path):
 
 def prepare(url, cache=".cache"):
     url = url.replace("\\", "/")
-    if ".zip/" in url:
+    if ".zip/" in url:  # we will never unzip full zips (preparing is for one file each time)
         url, path = url.split(".zip/", 1)
         extract_to = os.path.join(cache, os.path.basename(url))
         path = os.path.join(cache, os.path.basename(url), path)

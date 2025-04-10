@@ -1,12 +1,13 @@
 from mammoth_commons.models import ONNX, ONNXEnsemble
 from mammoth_commons.integration import loader
+from mammoth_commons.externals import prepare
 import re
 import numpy as np
 import zipfile
 
 
 @loader(
-    namespace="mammotheu", version="v0039", python="3.12", packages=("onnxruntime",)
+    namespace="mammotheu",  version="v0040", python="3.12", packages=("onnxruntime",)
 )
 def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
     """<p>This ONNX Ensemble Module enables predictions using a <a href="https://scikit-learn.org/stable/modules/ensemble.html" target="_blank">boosting ensemble</a> mechanism, ideal for combining multiple weak learners to improve prediction accuracy. Boosting, a powerful technique in machine learning, focuses on training a series of simple models (weak learners) – often single-depth <a href="https://scikit-learn.org/stable/modules/tree.html#classification" target="_blank">decision trees</a> – and combining them into a strong ensemble model.</p>
@@ -27,7 +28,7 @@ def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
         return int(re.findall(r"[+-]?\d+", name)[0])
 
     # Read the zip file
-    with zipfile.ZipFile(path) as myzip:
+    with zipfile.ZipFile(prepare(path)) as myzip:
         # Extract and load the weights file
         for file_name in myzip.namelist():
             if file_name.endswith(".npy"):
