@@ -148,9 +148,7 @@ def sklearn_audit(
     ), "Minimum problematic deviation should be in the range [0,1]"
     if problematic_deviation != 0:
         report = report.filter(
-            fb.investigate.DeviationsOver(
-                problematic_deviation, prune=reject
-            )
+            fb.investigate.DeviationsOver(problematic_deviation, prune=reject)
         )
 
     views = {

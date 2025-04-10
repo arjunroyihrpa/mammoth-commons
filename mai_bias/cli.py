@@ -842,14 +842,38 @@ class Step:
                     time = run.get("timestamp", "").ljust(18)
 
                     options = list()
-                    options.append((lambda col: getattr(col, "warn") + "Cancel".ljust(80), "cancel"))
+                    options.append(
+                        (
+                            lambda col: getattr(col, "warn") + "Cancel".ljust(80),
+                            "cancel",
+                        )
+                    )
                     if run.get("analysis", dict()).get("return", ""):
-                        options.append((lambda col: getattr(col, "element")+ "Console preview".ljust(80), "results"))
-                        options.append((lambda col: getattr(col, "element")+ "Show html".ljust(80), "html"))
-                        options.append((lambda col: getattr(col, "element")+ "New variation".ljust(80), "variation"))
+                        options.append(
+                            (
+                                lambda col: getattr(col, "element")
+                                + "Console preview".ljust(80),
+                                "results",
+                            )
+                        )
+                        options.append(
+                            (
+                                lambda col: getattr(col, "element")
+                                + "Show html".ljust(80),
+                                "html",
+                            )
+                        )
+                        options.append(
+                            (
+                                lambda col: getattr(col, "element")
+                                + "New variation".ljust(80),
+                                "variation",
+                            )
+                        )
 
                     select = Select(
-                        options + [
+                        options
+                        + [
                             (
                                 lambda col: getattr(col, "neutral")
                                 + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
@@ -971,13 +995,34 @@ class Dashboard:
                 time = run.get("timestamp", "").ljust(18)
 
                 options = list()
-                options.append((lambda col: getattr(col, "warn") + "Cancel".ljust(80), "cancel"))
+                options.append(
+                    (lambda col: getattr(col, "warn") + "Cancel".ljust(80), "cancel")
+                )
                 if run.get("analysis", dict()).get("return", ""):
-                    options.append((lambda col: getattr(col, "element") + "Console preview".ljust(80), "results"))
-                    options.append((lambda col: getattr(col, "element") + "Show html".ljust(80), "html"))
-                    options.append((lambda col: getattr(col, "element") + "New variation".ljust(80), "variation"))
+                    options.append(
+                        (
+                            lambda col: getattr(col, "element")
+                            + "Console preview".ljust(80),
+                            "results",
+                        )
+                    )
+                    options.append(
+                        (
+                            lambda col: getattr(col, "element") + "Show html".ljust(80),
+                            "html",
+                        )
+                    )
+                    options.append(
+                        (
+                            lambda col: getattr(col, "element")
+                            + "New variation".ljust(80),
+                            "variation",
+                        )
+                    )
                 select = Select(
-                        options + [(
+                    options
+                    + [
+                        (
                             lambda col: getattr(col, "neutral")
                             + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
                                 80

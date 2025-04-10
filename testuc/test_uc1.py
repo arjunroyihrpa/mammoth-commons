@@ -5,7 +5,6 @@ from mai_bias.catalogue.metrics.sklearn_audit import sklearn_audit
 from mai_bias.catalogue.model_loaders.no_model import no_model
 
 
-
 @dsl.pipeline(name="financial-data-exploration")
 def pipeline(data_auto_csv__params: Dict, sensitive: List, sklearn_audit__params: Dict):
     data_auto_csv_task = data_auto_csv(data_auto_csv__params=data_auto_csv__params)
