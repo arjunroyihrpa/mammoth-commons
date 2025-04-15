@@ -1,4 +1,5 @@
 import torchvision.transforms as transforms
+from PIL import Image as PILImage
 
 
 # Function to convert RGB to BGR
@@ -10,11 +11,17 @@ def to_bgr(img):
     else:
         raise ValueError(f"Unexpected image shape: {img.shape}")
 
+def img_loader(img_path):
+    if not isinstance(img_path, str):
+        return img_path
+    image = PILImage.open(img_path).convert("RGB")
+    return image
 
 # Important note: make sure that your transforms have resize and normalize!
 # Transformation pipeline
 transform = transforms.Compose(
     [
+        transforms.Lambda(img_loader),
         transforms.Resize(
             (112, 112), interpolation=transforms.InterpolationMode.NEAREST
         ),  # Resize image to 112x112
