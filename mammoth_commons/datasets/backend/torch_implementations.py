@@ -39,11 +39,13 @@ class PytorchImageDataset(Dataset):
     def __getitem__(self, idx):
         img_name = self.data.iloc[idx, 0]
         img_path = os.path.join(self.root_dir, img_name)
-        image = PILImage.open(img_path).convert("RGB")
+        
         target = self.data.iloc[idx][self.target]
         protected = [self.data.iloc[idx][attr] for attr in self.sensitive]
         if self.data_transform is not None:
-            image = self.data_transform(image)
+            image = self.data_transform(img_path)
+        else:
+            image = PILImage.open(img_path).convert("RGB")
         notify_progress(
             (idx + 1) / len(self), f"Processing image {int(idx)+1}/{len(self)}"
         )
@@ -87,14 +89,16 @@ class PytorchImagePairsDataset(Dataset):
         id1_image_path = os.path.join(self.root_dir, img1_name)
         id2_image_path = os.path.join(self.root_dir, img2_name)
 
-        image1 = PILImage.open(id1_image_path).convert("RGB")
-        image2 = PILImage.open(id2_image_path).convert("RGB")
+
 
         target = self.data.iloc[idx][self.target]
         protected = [self.data.iloc[idx][attr] for attr in self.sensitive]
         if self.data_transform is not None:
-            image1 = self.data_transform(image1)
-            image2 = self.data_transform(image2)
+            image1 = self.data_transform(id1_image_path)
+            image2 = self.data_transform(id2_image_path)
+        else:
+            image1 = PILImage.open(id1_image_path).convert("RGB")
+            image2 = PILImage.open(id2_image_path).convert("RGB")
         notify_progress(
             (idx + 1) / len(self), f"Processing image pair {int(idx)+1}/{len(self)}"
         )
