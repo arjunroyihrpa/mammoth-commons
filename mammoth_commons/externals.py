@@ -124,7 +124,7 @@ def _download(url, path):
         shutil.copyfile(url, path)
         return path
     with urllib.request.urlopen(url) as response:
-        total_size = response.getheader("Content-Length")
+        total_size = response.getheader("Content-Length") if hasattr(response, "getheader") else None
         total_size = int(total_size) if total_size else None
         with open(path, "wb") as out_file:
             chunk_size = 1024
