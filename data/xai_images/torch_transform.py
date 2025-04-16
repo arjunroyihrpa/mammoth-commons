@@ -1,11 +1,13 @@
 import torchvision.transforms as transforms
 from PIL import Image as PILImage
 
+
 def img_loader(img_path):
     if not isinstance(img_path, str):
         return img_path
     image = PILImage.open(img_path).convert("RGB")
     return image
+
 
 transform = transforms.Compose(
     [

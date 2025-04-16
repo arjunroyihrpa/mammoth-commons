@@ -6,7 +6,7 @@ from mammoth_commons.externals import pd_read_csv
 
 @loader(
     namespace="mammotheu",
-     version="v0040",
+    version="v0040",
     python="3.12",
     packages=("pandas",),
 )

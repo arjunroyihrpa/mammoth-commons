@@ -45,7 +45,9 @@ categorical = [
     "poutcome",
 ]
 sensitive = ["marital"]
-dataset_uri = "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip/bank/bank.csv"
+dataset_uri = (
+    "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip/bank/bank.csv"
+)
 
 
 pipeline(

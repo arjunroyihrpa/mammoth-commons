@@ -39,7 +39,7 @@ class PytorchImageDataset(Dataset):
     def __getitem__(self, idx):
         img_name = self.data.iloc[idx, 0]
         img_path = os.path.join(self.root_dir, img_name)
-        
+
         target = self.data.iloc[idx][self.target]
         protected = [self.data.iloc[idx][attr] for attr in self.sensitive]
         if self.data_transform is not None:
@@ -88,8 +88,6 @@ class PytorchImagePairsDataset(Dataset):
 
         id1_image_path = os.path.join(self.root_dir, img1_name)
         id2_image_path = os.path.join(self.root_dir, img2_name)
-
-
 
         target = self.data.iloc[idx][self.target]
         protected = [self.data.iloc[idx][attr] for attr in self.sensitive]

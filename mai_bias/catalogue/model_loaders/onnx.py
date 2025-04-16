@@ -1,11 +1,10 @@
 from mammoth_commons.models import ONNX
 from mammoth_commons.integration import loader
-import urllib
-import os
+from mammoth_commons.externals import prepare
 
 
 @loader(
-    namespace="mammotheu",  version="v0040", python="3.12", packages=("onnxruntime",)
+    namespace="mammotheu", version="v0040", python="3.12", packages=("onnxruntime",)
 )
 def model_onnx(path: str = "") -> ONNX:
     """Loads an inference model stored in <a href="https://onnx.ai/">ONNx</a> format.
@@ -29,12 +28,8 @@ def model_onnx(path: str = "") -> ONNX:
     </ul>
 
     Args:
-        path: A local path or url pointing to the loaded file. The loader checks for the existence of the local path, and if it does not exist the `urllib.request` module reads the model's bytes from a URL.
+        path: A local path or url pointing to the ONNX file. The loader checks for the existence of the local path, and if it does not exist downloads it locally from the provided URL before loading.
     """
-    if os.path.exists(path):
-        with open(path, "rb") as f:
-            model_bytes = f.read()
-    else:
-        with urllib.request.urlopen(path) as f:
-            model_bytes = f.read()
+    with open(prepare(path), "rb") as f:
+        model_bytes = f.read()
     return ONNX(model_bytes)

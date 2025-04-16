@@ -11,11 +11,13 @@ def to_bgr(img):
     else:
         raise ValueError(f"Unexpected image shape: {img.shape}")
 
+
 def img_loader(img_path):
     if not isinstance(img_path, str):
         return img_path
     image = PILImage.open(img_path).convert("RGB")
     return image
+
 
 # Important note: make sure that your transforms have resize and normalize!
 # Transformation pipeline
