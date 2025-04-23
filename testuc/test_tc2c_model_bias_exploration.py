@@ -45,8 +45,10 @@ categorical = [
     "poutcome",
 ]
 sensitive = ["marital", "age"]
-dataset_uri = "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip/bank/bank.csv"
-        
+dataset_uri = (
+    "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip/bank/bank.csv"
+)
+
 
 pipeline(
     data_custom_csv__params={
@@ -60,8 +62,5 @@ pipeline(
         "path": "https://github.com/mammoth-eu/mammoth-commons/raw/refs/heads/dev/data/model.onnx",
     },
     sensitive=sensitive,
-    sklearn_audit__params={        
-        "predictor": "Logistic regression"
-    },
+    sklearn_audit__params={"predictor": "Logistic regression"},
 )
-

@@ -43,7 +43,5 @@ pipeline(
         "path": "citeseer",
     },
     sensitive=sensitive,
-    model_card__params={        
-        "compare_groups": "Pairwise"
-    },
+    model_card__params={"compare_groups": "Pairwise"},
 )

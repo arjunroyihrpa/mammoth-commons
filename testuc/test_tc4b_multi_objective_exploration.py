@@ -12,10 +12,10 @@ def pipeline(
     sensitive: List,
     multi_objective_report__params: Dict,
 ):
-    data_uci_task = data_uci(
-        data_uci__params=data_uci__params
+    data_uci_task = data_uci(data_uci__params=data_uci__params)
+    model_onnx_ensemble_task = model_onnx_ensemble(
+        model_onnx_ensemble__params=model_onnx_ensemble__params
     )
-    model_onnx_ensemble_task = model_onnx_ensemble(model_onnx_ensemble__params=model_onnx_ensemble__params)
     multi_objective_report_task = multi_objective_report(
         multi_objective_report__params=multi_objective_report__params,
         sensitive=sensitive,
@@ -47,5 +47,3 @@ pipeline(
     sensitive=sensitive,
     multi_objective_report__params={},
 )
-
-
