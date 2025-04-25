@@ -2,7 +2,7 @@ from mammoth_commons.models import NodeRanking
 from mammoth_commons.integration import loader, Options
 
 
-@loader(namespace="mammotheu", version="v0041", python="3.12", packages=("pygrank",))
+@loader(namespace="mammotheu", version="v0042", python="3.12", packages=("pygrank",))
 def model_fair_node_ranking(
     diffusion: float = 0.85,
     redistribution: Options("none", "uniform", "original") = "original",
@@ -45,10 +45,4 @@ def model_fair_node_ranking(
     assert diffusion >= 0, "The diffusion should be non-negative"
     assert diffusion < 1, "The diffusion should be <1"  # careful not to allow 1
 
-    params = {"alpha": diffusion, "tol": 1.0e-9, "max_iters": 3000}
-    ranker = (
-        pg.PageRank(**params)
-        if redistribution == "none"
-        else pg.LFPR(redistributor=redistribution, **params)
-    )
-    return NodeRanking(ranker >> pg.Normalize("max"))
+    return NodeRanking(redistribution=redistribution)

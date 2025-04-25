@@ -9,7 +9,7 @@ import fairbench as fb
 
 @metric(
     namespace="mammotheu",
-    version="v0041",
+    version="v0042",
     python="3.12",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )

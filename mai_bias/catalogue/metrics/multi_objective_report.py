@@ -40,7 +40,7 @@ def create_3d_plot(x=None, y=None, z=None):
 
 @metric(
     namespace="mammotheu",
-    version="v0041",
+    version="v0042",
     python="3.12",
     packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )

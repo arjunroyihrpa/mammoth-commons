@@ -8,7 +8,7 @@ from cvbiasmitigation.suggest import analysis
 
 @metric(
     namespace="mammotheu",
-    version="v0041",
+    version="v0042",
     python="3.12",
     packages=("torch", "torchvision", "cvbiasmitigation"),
 )
