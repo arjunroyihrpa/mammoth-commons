@@ -2,12 +2,13 @@ from mammoth_commons.models.predictor import Predictor
 
 
 class NodeRanking(Predictor):
-    def __init__(self, diffusion: float=0.9, redistribution: str="none"):
+    def __init__(self, diffusion: float = 0.9, redistribution: str = "none"):
         self.redistribution = redistribution
         self.params = {"alpha": diffusion, "tol": 1.0e-9, "max_iters": 3000}
 
     def _run(self, x, **kwargs):
         import pygrank as pg
+
         ranker = (
             pg.PageRank(**self.params)
             if self.redistribution == "none"
