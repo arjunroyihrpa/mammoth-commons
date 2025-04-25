@@ -20,7 +20,7 @@ from aif360.sklearn.metrics import ot_distance
         "onnxruntime",
         "ucimlrepo",
         "pygrank",
-        "scikit-image"
+        "scikit-image",
     ),
 )
 def optimal_transport(
