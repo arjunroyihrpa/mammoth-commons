@@ -71,6 +71,16 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 
 </details>
 
+<details><summary>MAC: Illegal hardware instruction</summary> 
+
+We have encountered this error in at least one M2 machine.
+This is likely due to a mismatch between Python's x86-x64 vs arm64e
+choice. Please make sure that you have a matching architecture
+between the system and python. Ideally install the latter
+through *brew*.
+
+</details>
+
 <details><summary>VSCode launch profile</summary>  
 
 ```json 
