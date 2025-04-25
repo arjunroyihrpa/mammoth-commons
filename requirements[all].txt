@@ -34,3 +34,4 @@ aif360[inFairness]
 readchar
 rich
 html2text
+scikit-image

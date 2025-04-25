@@ -11,7 +11,7 @@ from aif360.sklearn.metrics import ot_distance
 
 @metric(
     namespace="mammotheu",
-    version="v0040",
+    version="v0041",
     python="3.12",
     packages=(
         "aif360",
@@ -20,6 +20,7 @@ from aif360.sklearn.metrics import ot_distance
         "onnxruntime",
         "ucimlrepo",
         "pygrank",
+        "scikit-image"
     ),
 )
 def optimal_transport(
