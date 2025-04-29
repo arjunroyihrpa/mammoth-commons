@@ -21,6 +21,7 @@ from PySide6.QtCore import (
     QPoint,
     Signal,
 )
+from PySide6.QtGui import QColor
 
 """from PySide6.QtGui import QSurfaceFormat
 from PySide6.QtWebEngineCore import QWebEngineSettings
@@ -75,6 +76,11 @@ class SlidingStackedWidget(QStackedWidget):
         self.m_pnow = QPoint(0, 0)
         self.m_active = False
         self.invert = False
+
+        self.setAutoFillBackground(True)
+        palette = self.palette()
+        palette.setColor(self.backgroundRole(), QColor("#ccc"))
+        self.setPalette(palette)
 
     def slideInNext(self) -> bool:
         now = self.currentIndex()

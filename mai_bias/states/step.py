@@ -76,7 +76,7 @@ class Step(Styled):
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.label = QLabel(step_name, self)
-        self.label.setStyleSheet("font-size: 30px; font-weight: bold;")
+        self.label.setStyleSheet("font-size: 50px; font-weight: bold")
         layout.addWidget(self.label)
 
         self.dataset_selector = QComboBox(self)
@@ -93,9 +93,7 @@ class Step(Styled):
             openExternalLinks=True,
         )
         self.description_label.setWordWrap(True)
-        self.description_label.setStyleSheet(
-            "font-size: 14px; color: #555; margin-top: 5px;"
-        )
+        self.description_label.setStyleSheet("font-size: 14px; margin-top: 5px;")
         layout.addWidget(self.description_label)
 
         separator = QFrame()
@@ -149,6 +147,7 @@ class Step(Styled):
 
         self.description_input = QLineEdit(self)
         self.description_input.setPlaceholderText("Describe your analysis (optional)")
+        self.description_input.setStyleSheet("background-color: #ddd")
         layout.addWidget(self.description_input)
         layout.addLayout(button_layout)
         self.setLayout(layout)
@@ -280,6 +279,7 @@ class Step(Styled):
     ):
         """Create an appropriate input widget based on the parameter type."""
         param_layout = QHBoxLayout()
+        param_layout.setContentsMargins(0, 0, 0, 0)
 
         helper = None
         preview = None
@@ -553,7 +553,23 @@ class Step(Styled):
             input_widget = QLineEdit(self)
             input_widget.setText(str(default) if default != "None" else "")
 
-        self.param_inputs[name] = input_widget  # Store reference to input field
+        if input_widget is not None:
+            input_widget.setStyleSheet(
+                """
+                QLineEdit {
+                    background-color: #ccc;
+                    border: 1px solid #ccc;
+                }
+                QLineEdit:hover {
+                    border: 1px solid #999;
+                }
+                QLineEdit:focus {
+                    border: 1px solid #444;
+                }
+                """
+            )
+
+        self.param_inputs[name] = input_widget
 
         label = QLabel(format_name(name))
         label.setFixedSize(150, 20)

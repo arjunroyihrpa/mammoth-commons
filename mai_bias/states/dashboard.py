@@ -13,11 +13,34 @@ from datetime import datetime
 from .step import save_all_runs
 from .style import Styled
 import re
+import calendar
 from functools import partial
 
 
 def now():
     return datetime.now().strftime("%y-%m-%d %H:%M")
+
+
+ENGLISH_MONTHS = [
+    "",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+]
+
+
+def convert_to_readable(date_str):
+    dt = datetime.strptime(date_str, "%y-%m-%d %H:%M")
+    return f"{dt.day} {ENGLISH_MONTHS[dt.month]} {dt.year} - {dt.strftime('%H:%M')}"
 
 
 class Dashboard(Styled):
@@ -30,7 +53,7 @@ class Dashboard(Styled):
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.label = QLabel("MAI-Bias", self)
-        self.label.setStyleSheet("font-size: 50px; font-weight: bold;")
+        self.label.setStyleSheet("font-size: 50px; font-weight: bold; color: black")
         self.main_layout.addWidget(self.label)
 
         new_button = self.create_icon_button(
@@ -39,8 +62,8 @@ class Dashboard(Styled):
         new_button.setFixedSize(36, 36)
 
         search_field = QLineEdit(self)
-        search_field.setPlaceholderText("Search...")
-        search_field.setFixedSize(200, 36)
+        search_field.setPlaceholderText("Search for title, module, or time...")
+        search_field.setFixedSize(200, 30)
         search_field.textChanged.connect(
             self.filter_runs
         )  # Connect to filtering method
@@ -54,6 +77,21 @@ class Dashboard(Styled):
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.scroll_area.setStyleSheet(
+            """
+            QScrollArea {
+                border: none;
+                background: transparent;
+            }
+            QScrollArea QWidget {
+                background: transparent;
+            }
+            QScrollBar:vertical, QScrollBar:horizontal {
+                border: none;
+                background: transparent;
+            }
+        """
+        )
 
         # Content Widget
         self.content_widget = QWidget()
@@ -81,7 +119,7 @@ class Dashboard(Styled):
                 continue
             if text.lower() in run.get("analysis", dict()).get("module", "").lower():
                 continue
-            if text.lower() in format_run(run).lower():
+            if text.lower() in get_special_title(run).lower():
                 continue
             self.invisible_runs.add(index)
         # refresh but only if something changed
@@ -105,7 +143,7 @@ class Dashboard(Styled):
             reply = QMessageBox.question(
                 self,
                 "Edit?",
-                f"You can change modules and modify parameters of {format_run(self.runs[index])}. "
+                f"You can change modules and modify parameters. "
                 "However, this will also remove its results. Consider creating a variation if you want to preserve current results.",
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                 QMessageBox.StandardButton.No,
@@ -161,80 +199,130 @@ class Dashboard(Styled):
     def refresh_dashboard(self):
         self.clear_layout(self.layout)
         visual_pos = -1
-        sorted_items = list(
-            sorted(
-                enumerate(self.runs),
-                key=lambda x: x[1]["description"]
-                + x[1].get("dataset", dict()).get("module", "")
-                + x[1].get("model", dict()).get("module", "")
-                + x[1].get("analysis", dict()).get("module", "")
-                + x[1]["status"]
-                + x[1]["timestamp"],
-            )
+        sorted_items = sorted(
+            (
+                (i, run)
+                for i, run in enumerate(self.runs)
+                if i not in self.invisible_runs
+            ),
+            key=lambda x: x[1]["description"]
+                          + x[1].get("dataset", {}).get("module", "")
+                          + x[1].get("model", {}).get("module", "")
+                          + x[1].get("analysis", {}).get("module", "")
+                          + x[1]["status"]
+                          + x[1]["timestamp"],
         )
-        sorted_items = [
-            (index, run)
-            for index, run in sorted_items
-            if index not in self.invisible_runs
-        ]
 
-        prev_has_same_next_tags = False
+        current_group_key = None
+        group_layout = None
+        button_rows = []
+        tags_to_show = []
+
         for index, run in sorted_items:
             visual_pos += 1
-
-            tags = []
-            if "dataset" in run:
-                tags.append(run["dataset"]["module"])
-            if "model" in run:
-                tags.append(run["model"]["module"])
-            if "analysis" in run:
-                tags.append(run["analysis"]["module"])
-            has_same_next_tags = False
-            if visual_pos < len(sorted_items) - 1 and run["status"] == "completed":
-                next_tags = []
-                next_run = sorted_items[visual_pos + 1][1]
-                if "dataset" in next_run:
-                    next_tags.append(next_run["dataset"]["module"])
-                if "model" in next_run:
-                    next_tags.append(next_run["model"]["module"])
-                if "analysis" in next_run:
-                    next_tags.append(next_run["analysis"]["module"])
-                has_same_next_tags = (
-                    next_run["status"] == run["status"]
-                    and next_run["description"] == run["description"]
-                    and len(set(tags) - set(next_tags)) == 0
-                    and len(set(next_tags) - set(tags)) == 0
-                )
-
-            formatted = format_run(run, simpler=True).lower()
-            button_color = (
-                (
-                    "#ffbbbb"
-                    if "fail" in formatted or "bias" in formatted
-                    else (
-                        "#ddddff"
-                        if "report" in formatted
-                        or "audit" in formatted
-                        or "scan" in formatted
-                        or "analysis" in formatted
-                        or "explanation" in formatted
-                        else "#bbffbb"
-                    )
-                )
-                if run["status"] == "completed"
-                else "#ffffbb"
+            group_key = (
+                run["description"],
+                run.get("dataset", {}).get("module", ""),
+                run.get("model", {}).get("module", ""),
+                run.get("analysis", {}).get("module", ""),
             )
+
+            if group_key != current_group_key:
+                if group_layout:
+                    for row in button_rows:
+                        group_layout.addLayout(row)
+
+                    if last_run["description"] or tags_to_show:
+                        title_and_tags_layout = QHBoxLayout()
+                        title_and_tags_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+                        if last_run["status"] == "completed":
+                            title_and_tags_layout.addWidget(
+                                self.create_icon_button(
+                                    "➕",
+                                    "#007bff",
+                                    "New variation",
+                                    partial(lambda i=last_index: self.create_variation(i)),
+                                )
+                            )
+
+                        title_and_tags_layout.addWidget(
+                            self.create_icon_button(
+                                "🗑",
+                                "#dc3545",
+                                "Delete",
+                                partial(lambda i=last_index: self.delete_item(i)),
+                            )
+                        )
+
+                        for tag in tags_to_show:
+                            tag_btn = self.create_tag_button(
+                                f" {tag} ",
+                                "Module info",
+                                partial(lambda t=tag: self.show_tag_description(t)),
+                            )
+                            title_and_tags_layout.addWidget(tag_btn)
+
+                        if last_run["description"]:
+                            title_label = QLabel(" " + last_run["description"], self)
+                            title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+                            title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+                            title_and_tags_layout.addWidget(title_label)
+
+                        group_layout.addLayout(title_and_tags_layout)
+                        group_layout.addSpacing(20)
+
+                    self.layout.addLayout(group_layout)
+
+                current_group_key = group_key
+                group_layout = QVBoxLayout()
+                group_layout.addSpacing(20)
+                button_rows = []
+                tags_to_show = []
+
+            # Create run button
+            button_color = (
+                "#ffbbbb"
+                if "fail" in get_special_title(run).lower()
+                   or "bias" in get_special_title(run).lower()
+                else (
+                    "#aaccff"
+                    if any(
+                        word in get_special_title(run).lower()
+                        for word in [
+                            "report",
+                            "audit",
+                            "scan",
+                            "analysis",
+                            "explanation",
+                        ]
+                    )
+                    else "#bbffbb"
+                )
+            )
+            if run["status"] != "completed":
+                button_color = "#ffffbb"
+
             run_button = QPushButton(self)
-            run_button.setFixedHeight(75)
-            button_label = QLabel(
-                format_run(run, simpler=has_same_next_tags or prev_has_same_next_tags),
+            label = QLabel(
+                (
+                    "<b>"
+                    + get_special_title(run).split(" ")[0]
+                    + "</b><br>"
+                    + convert_to_readable(run["timestamp"])
+                    if run["status"] == "completed"
+                    else "<b>Creating</b><br>" + convert_to_readable(run["timestamp"])
+                ),
                 run_button,
             )
-            button_label.setTextFormat(Qt.TextFormat.RichText)
-            button_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            button_label.setWordWrap(True)
+            label.setTextFormat(Qt.TextFormat.RichText)
+            label.setAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+            )
+            label.setWordWrap(True)
             button_layout = QVBoxLayout(run_button)
-            button_layout.addWidget(button_label)
+            button_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+            button_layout.addWidget(label)
             button_layout.setContentsMargins(5, 5, 5, 5)
             run_button.setStyleSheet(
                 f"""
@@ -264,67 +352,82 @@ class Dashboard(Styled):
                     )
                 )
             )
+            run_button.setFixedSize(120, 42)
 
-            # Stack button and tags in a vertical layout
-            button_with_tags_layout = QVBoxLayout()
+            widget_width = self.scroll_area.viewport().width() or 600
+            margin = 5
+            current_row = button_rows[-1] if button_rows else QHBoxLayout()
+            current_row_width = sum(
+                child.widget().width() + margin
+                for i in range(current_row.count())
+                if (child := current_row.itemAt(i)) and child.widget()
+            )
 
-            if not prev_has_same_next_tags and has_same_next_tags:
-                button_with_tags_layout = QVBoxLayout()
-                label = QLabel(run["description"], self)
-                label.setStyleSheet("font-size: 26px; font-weight: bold;")
-                label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-                button_with_tags_layout.addWidget(label)
+            if current_row_width + 120 + margin > widget_width:
+                current_row = QHBoxLayout()
+                current_row.setAlignment(Qt.AlignmentFlag.AlignLeft)
+                button_rows.append(current_row)
 
-            button_with_tags_layout.addWidget(run_button)
-            if not has_same_next_tags:
-                # Create a container for tags
-                tag_container = QHBoxLayout()
-                tag_container.setAlignment(Qt.AlignmentFlag.AlignLeft)
-                tag_container.setContentsMargins(
-                    0, -30, 0, 10
-                )  # Slight overlap with button, space below
-                for tag in tags:
-                    tag_container.addWidget(
-                        self.create_tag_button(
-                            f" {tag} ",
-                            "Module info",
-                            partial(lambda t=tag: self.show_tag_description(t)),
-                        )
-                    )
-                if run["status"] == "completed":
-                    tag_container.addWidget(
+            if not button_rows:
+                current_row.setAlignment(Qt.AlignmentFlag.AlignLeft)
+                button_rows.append(current_row)
+
+            current_row.addWidget(run_button)
+
+            for key in ["dataset", "model", "analysis"]:
+                mod = run.get(key, {}).get("module", "")
+                if mod and mod not in tags_to_show:
+                    tags_to_show.append(mod)
+
+            last_run = run
+            last_index = index
+
+        # Final group
+        if group_layout:
+            for row in button_rows:
+                group_layout.addLayout(row)
+
+            if last_run["description"] or tags_to_show:
+                title_and_tags_layout = QHBoxLayout()
+                title_and_tags_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+                if last_run["status"] == "completed":
+                    title_and_tags_layout.addWidget(
                         self.create_icon_button(
                             "➕",
                             "#007bff",
                             "New variation",
-                            partial(lambda i=index: self.create_variation(i)),
+                            partial(lambda i=last_index: self.create_variation(i)),
                         )
                     )
-                tag_container.addWidget(
+
+                title_and_tags_layout.addWidget(
                     self.create_icon_button(
                         "🗑",
                         "#dc3545",
                         "Delete",
-                        partial(lambda i=index: self.delete_item(i)),
+                        partial(lambda i=last_index: self.delete_item(i)),
                     )
                 )
-                button_with_tags_layout.addLayout(tag_container)
 
-            if has_same_next_tags or prev_has_same_next_tags:
-                run_button.setContentsMargins(0, 0, 0, 0)
-                run_button.setFixedHeight(35)
+                for tag in tags_to_show:
+                    tag_btn = self.create_tag_button(
+                        f" {tag} ",
+                        "Module info",
+                        partial(lambda t=tag: self.show_tag_description(t)),
+                    )
+                    title_and_tags_layout.addWidget(tag_btn)
 
-            # button_with_tags_layout.setSpacing(-5)  # Reduce spacing for overlap effect
-            button_with_tags_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+                if last_run["description"]:
+                    title_label = QLabel(" " + last_run["description"], self)
+                    title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+                    title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+                    title_and_tags_layout.addWidget(title_label)
 
-            # Main row layout with full width
-            row_layout = QHBoxLayout()
-            row_layout.addLayout(button_with_tags_layout)
-            row_layout.setContentsMargins(0, 0, 0, 0)
-            row_layout.setSpacing(0)
+                group_layout.addLayout(title_and_tags_layout)
+                group_layout.addSpacing(10)
 
-            self.layout.addLayout(row_layout)
-            prev_has_same_next_tags = has_same_next_tags
+            self.layout.addLayout(group_layout)
 
         self.content_widget.adjustSize()
 
@@ -336,8 +439,7 @@ class Dashboard(Styled):
         msg.exec()
 
 
-def format_run(run, simpler=False):
-    # this function is a mess because it's easier to try things out this way
+def get_special_title(run):
     try:
         match = re.search(
             r"<h1\b[^>]*>.*?</h1>",
@@ -345,22 +447,7 @@ def format_run(run, simpler=False):
             re.DOTALL,
         )
         if match:
-            match = match.group().replace("h1", "span")
-        else:
-            match = ""
+            return match.group().replace("h1", "span")
     except Exception:
-        match = ""
-    if simpler:
-        return f"""
-        <div style="font-size: 20px;">
-            <span style="font-size: 14px;">{run["timestamp"]}</span>&nbsp;&nbsp;&nbsp;
-            {match}
-        </div>
-        """
-    return f"""
-        <h1 style="margin: 0px;">{run["description"] or "..."}</h1>
-        <div style="font-size: 20px;">
-            <span style="font-size: 14px;">{run["timestamp"]}</span>&nbsp;&nbsp;&nbsp;
-            {match}
-        </div>
-        """
+        pass
+    return ""

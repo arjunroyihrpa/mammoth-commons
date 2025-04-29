@@ -21,6 +21,7 @@ from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
 
 # metrics
 from mai_bias.catalogue.metrics.model_card import model_card
+from mai_bias.catalogue.metrics.specific_concerns import specific_concerns
 from mai_bias.catalogue.metrics.interactive_report import interactive_report
 from mai_bias.catalogue.metrics.sklearn_audit import sklearn_audit
 from mai_bias.catalogue.metrics.image_bias_analysis import image_bias_analysis
@@ -67,6 +68,7 @@ registry.model(model_fair_node_ranking, compatible=[data_graph])
 registry.model(model_mitigation_ranking, compatible=[data_csv_rankings])
 
 registry.analysis(model_card)
+registry.analysis(specific_concerns)
 registry.analysis(interactive_report)
 registry.analysis(sklearn_audit)
 registry.analysis(optimal_transport)
