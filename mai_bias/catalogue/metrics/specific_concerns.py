@@ -82,7 +82,7 @@ def specific_concerns(
         "Weighted mean": "wmean",
         "Max difference": "maxdiff" if compare_groups != "vsall" else "largestmaxdiff",
         "Max relative difference": (
-            "maxreldiff" if compare_groups != "vsall" else "largestmaxreldiff"
+            "maxrel" if compare_groups != "vsall" else "largestmaxrel"
         ),
         "Max betweeness area": (
             "maxbarea" if compare_groups != "vsall" else "largestmaxbarea"
@@ -117,6 +117,12 @@ def specific_concerns(
     )
 
     dataset_desc = dataset.format_description()
+    if problematic_deviation == 0:
+        outcome = "Report"
+    else:
+        outcome = (
+            "Fair" if report.flatten(True)[0] < problematic_deviation else "Biased"
+        )
 
     html_content = f"""
        <style>
@@ -159,7 +165,7 @@ def specific_concerns(
                }}
            }});
        </script>
-       <h1>Report {f'{metric_name} over {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'{metric_name} over {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <h1>{outcome} {f'{metric_name} over {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'{metric_name} over {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
        <p>A report was generated for the generated bias assessment,
        which combines a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
        Differences at least {problematic_deviation:.3f} away from their ideal values are colored red, otherwise green. 

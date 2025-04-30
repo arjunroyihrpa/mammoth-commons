@@ -10,10 +10,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from datetime import datetime
+
+from mammoth_commons.externals import prepare
 from .step import save_all_runs
 from .style import Styled
 import re
-import calendar
+from PySide6.QtGui import QPixmap
 from functools import partial
 
 
@@ -52,8 +54,11 @@ class Dashboard(Styled):
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.label = QLabel("MAI-Bias", self)
-        self.label.setStyleSheet("font-size: 50px; font-weight: bold; color: black")
+        self.label = QLabel(self)
+        pixmap = QPixmap(prepare("https://raw.githubusercontent.com/mammoth-eu/mammoth-commons/dev/mai_bias/logo.png"))
+        pixmap = pixmap.scaled(400, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        self.label.setPixmap(pixmap)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # optional: center the image
         self.main_layout.addWidget(self.label)
 
         new_button = self.create_icon_button(
@@ -62,11 +67,9 @@ class Dashboard(Styled):
         new_button.setFixedSize(36, 36)
 
         search_field = QLineEdit(self)
-        search_field.setPlaceholderText("Search for title, module, or time...")
+        search_field.setPlaceholderText("Search for title or module...")
         search_field.setFixedSize(200, 30)
-        search_field.textChanged.connect(
-            self.filter_runs
-        )  # Connect to filtering method
+        search_field.textChanged.connect(self.filter_runs)
 
         button_layout = QHBoxLayout()
         button_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -206,11 +209,11 @@ class Dashboard(Styled):
                 if i not in self.invisible_runs
             ),
             key=lambda x: x[1]["description"]
-                          + x[1].get("dataset", {}).get("module", "")
-                          + x[1].get("model", {}).get("module", "")
-                          + x[1].get("analysis", {}).get("module", "")
-                          + x[1]["status"]
-                          + x[1]["timestamp"],
+            + x[1].get("dataset", {}).get("module", "")
+            + x[1].get("model", {}).get("module", "")
+            + x[1].get("analysis", {}).get("module", "")
+            + x[1]["status"]
+            + x[1]["timestamp"],
         )
 
         current_group_key = None
@@ -242,7 +245,9 @@ class Dashboard(Styled):
                                     "➕",
                                     "#007bff",
                                     "New variation",
-                                    partial(lambda i=last_index: self.create_variation(i)),
+                                    partial(
+                                        lambda i=last_index: self.create_variation(i)
+                                    ),
                                 )
                             )
 
@@ -265,18 +270,20 @@ class Dashboard(Styled):
 
                         if last_run["description"]:
                             title_label = QLabel(" " + last_run["description"], self)
-                            title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+                            title_label.setStyleSheet(
+                                "font-size: 20px; font-weight: bold;"
+                            )
                             title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
                             title_and_tags_layout.addWidget(title_label)
 
                         group_layout.addLayout(title_and_tags_layout)
-                        group_layout.addSpacing(20)
+                        group_layout.addSpacing(10)
 
                     self.layout.addLayout(group_layout)
 
                 current_group_key = group_key
                 group_layout = QVBoxLayout()
-                group_layout.addSpacing(20)
+                group_layout.addSpacing(10)
                 button_rows = []
                 tags_to_show = []
 
@@ -284,7 +291,7 @@ class Dashboard(Styled):
             button_color = (
                 "#ffbbbb"
                 if "fail" in get_special_title(run).lower()
-                   or "bias" in get_special_title(run).lower()
+                or "bias" in get_special_title(run).lower()
                 else (
                     "#aaccff"
                     if any(
@@ -304,10 +311,11 @@ class Dashboard(Styled):
                 button_color = "#ffffbb"
 
             run_button = QPushButton(self)
+            special = get_special_title(run)
             label = QLabel(
                 (
                     "<b>"
-                    + get_special_title(run).split(" ")[0]
+                    + special.split(" ")[0]
                     + "</b><br>"
                     + convert_to_readable(run["timestamp"])
                     if run["status"] == "completed"
@@ -319,6 +327,7 @@ class Dashboard(Styled):
             label.setAlignment(
                 Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
             )
+            label.setToolTip(special)
             label.setWordWrap(True)
             button_layout = QVBoxLayout(run_button)
             button_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
