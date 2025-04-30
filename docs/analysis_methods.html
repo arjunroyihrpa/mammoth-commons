@@ -86,6 +86,7 @@
     <!-- Side Menu -->
     <div class="side-menu">
         <a href='#card'>Card</a>
+<a href='#specific-concerns'>Specific concerns</a>
 <a href='#interactive-report'>Interactive report</a>
 <a href='#sklearn-audit'>Sklearn audit</a>
 <a href='#optimal-transport'>Optimal transport</a>
@@ -149,6 +150,64 @@
                           data-name="Show non problematic"
                           onclick="showDescriptionModal(this)">
                           <i class="bi bi-info-circle"></i> Show non problematic
+                        </button>
+<br>
+<h2 id='specific-concerns'>Specific concerns</h2>
+<p><p>Computes a fairness or bias measure that matches a specific type of numerical evaluation using the <a href="https://github.com/mever-team/FairBench">FairBench</a> library. The measure is built by combining simpler options to form more than 300 valid alternatives. The assessment is conducted over sensitive attributes like gender, age, and race. Each attribute can have multiple values, such as several genders or races. Numeric attributes, like age, are normalized to the range [0,1] and treated as fuzzy values, where 0 indicates membership to a fuzzy group of "small" values, and 1 indicates membership to a fuzzy group of "large" values. A separate set of fairness metrics is calculated for each prediction label.</p>  <p>If intersectional subgroup analysis is enabled, separate subgroups are created for each combination of sensitive attribute values. However, if there are too many attributes, some groups will be small or empty. Empty groups are ignored in the analysis. The report may also include information about built-in datasets.</p> </p>
+<b>Parameters</b><br><button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected."
+                          data-description=" Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected."
+                          data-name="Intersectional"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Intersectional
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" A base measure of algorithmic performance to be computed on each group."
+                          data-description=" A base measure of algorithmic performance to be computed on each group."
+                          data-name="Base measure"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Base measure
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" Whether to compare groups pairwise, or each group to the behavior of the whole population."
+                          data-description=" Whether to compare groups pairwise, or each group to the behavior of the whole population."
+                          data-name="Compare groups"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Compare groups
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" The strategy with which to reduce all measure comparisons to one value."
+                          data-description=" The strategy with which to reduce all measure comparisons to one value."
+                          data-name="Reduction"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Reduction
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value."
+                          data-description=" Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value."
+                          data-name="Problematic deviation"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Problematic deviation
                         </button>
 <br>
 <h2 id='interactive-report'>Interactive report</h2>
