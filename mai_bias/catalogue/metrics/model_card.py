@@ -138,7 +138,7 @@ def model_card(
                }}
            }});
        </script>
-       <h1>{f'Report over {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'Report over {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <h1>Report for {len(sensitive.branches())} groups</h1>
        <p>A report was generated over several prospective biases to paint a broad picture
        {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f', but for simplicity only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
        Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.

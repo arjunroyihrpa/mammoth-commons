@@ -11,11 +11,11 @@ class Styled(QWidget):
                 color: white; 
                 border-radius: 5px;
                 font-size: 15px;
-                border: 2px solid black;
+                border: 1px solid black;
                 font-weight: bold;
             }}
             QPushButton:hover {{
-                border: 4px solid black;
+                border: 2px solid black;
                 background-color: {self.highlight_color(color)};
             }}
         """
@@ -34,12 +34,12 @@ class Styled(QWidget):
             QPushButton {
                 background-color: #3A3A3A;
                 color: white;
-                border-radius: 5px;
+                border-radius: 2px;
                 font-size: 12px;
-                border: 2px solid black;
+                border: 1px solid black;
             }
             QPushButton:hover {
-                border: 4px solid black;
+                border: 2px solid black;
                 background-color: #5A5A5A;
             }
             QPushButton:pressed {
@@ -47,7 +47,7 @@ class Styled(QWidget):
             }
         """
         )
-        button.setFixedHeight(30)
+        button.setFixedHeight(20)
 
         button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         button.setToolTip(tooltip)
@@ -63,4 +63,13 @@ class Styled(QWidget):
         r = min(r + 22, 255)
         g = min(g + 22, 255)
         b = min(b + 22, 255)
+        return f"#{r:02x}{g:02x}{b:02x}"
+
+    def darker_color(self, color):
+        if color.startswith("#"):
+            color = color[1:]
+        r, g, b = int(color[:2], 16), int(color[2:4], 16), int(color[4:6], 16)
+        r = max(r - 64, 0)
+        g = max(g - 64, 0)
+        b = max(b - 64, 0)
         return f"#{r:02x}{g:02x}{b:02x}"

@@ -66,7 +66,7 @@ def facex_embeddings(
     )
     html = (
         """
-        <h1>Image Explanations</h1>
+        <h1>Image explanations</h1>
         <p>FaceX analysed 19 facial regions and accessories to provide explanations. In the two illustrations below,
         left are face regions and right are hat and glasses. Blue are the least important regions and red the most
         important ones that are taken into account. Based on the outputs, try to the question of “where does a model

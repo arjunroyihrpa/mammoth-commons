@@ -225,7 +225,7 @@ def sklearn_audit(
                }}
            }});
        </script>
-       <h1>{f'Audit of {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'Audit of {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <h1>Audit of {len(sensitive.branches())} groups</h1>
        <p>
        The analysis shown here has trained and assessed a {predictor} model on the provided dataset. This is a deliberately weak
        model of limited expressive power, because it aims to reveal prominent correlations. Expect better models, such as

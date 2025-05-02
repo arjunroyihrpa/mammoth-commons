@@ -54,28 +54,71 @@ class Dashboard(Styled):
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.label = QLabel(self)
-        pixmap = QPixmap(prepare("https://raw.githubusercontent.com/mammoth-eu/mammoth-commons/dev/mai_bias/logo.png"))
-        pixmap = pixmap.scaled(400, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-        self.label.setPixmap(pixmap)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # optional: center the image
-        self.main_layout.addWidget(self.label)
+        top_row_layout = QHBoxLayout()
+        top_row_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        new_button = self.create_icon_button(
-            "➕", "#007bff", "New analysis", self.create_new_item
+        logo_button = QPushButton(self)
+        logo_pixmap = QPixmap(
+            prepare(
+                "https://raw.githubusercontent.com/mammoth-eu/mammoth-commons/dev/mai_bias/logo.png"
+            )
         )
-        new_button.setFixedSize(36, 36)
+        logo_pixmap = logo_pixmap.scaled(
+            270,
+            135,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
 
+        logo_button.setIcon(logo_pixmap)
+        logo_button.setIconSize(logo_pixmap.size())
+        logo_button.setFixedSize(
+            logo_pixmap.width() + 15, logo_pixmap.height() + 15
+        )  # accommodate padding
+        logo_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        logo_button.setToolTip("New analysis")
+        logo_button.clicked.connect(self.create_new_item)
+
+        logo_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 10px;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            QPushButton:hover {
+                border: 2px solid black;
+            }
+        """
+        )
+
+        top_row_layout.addWidget(logo_button, alignment=Qt.AlignmentFlag.AlignTop)
+
+        # Spacer to push buttons to the right
+        top_row_layout.addStretch()
+
+        # Buttons on the right
         search_field = QLineEdit(self)
         search_field.setPlaceholderText("Search for title or module...")
         search_field.setFixedSize(200, 30)
         search_field.textChanged.connect(self.filter_runs)
 
         button_layout = QHBoxLayout()
-        button_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        button_layout.addWidget(new_button)
+        button_layout.setAlignment(
+            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
+        )
         button_layout.addWidget(search_field)
-        self.main_layout.addLayout(button_layout)
+
+        # Wrap buttons in a widget so layout behaves properly
+        button_widget = QWidget()
+        button_widget.setLayout(button_layout)
+        top_row_layout.addWidget(button_widget, alignment=Qt.AlignmentFlag.AlignTop)
+
+        # Add everything to the main layout
+        self.main_layout.addLayout(top_row_layout)
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -201,6 +244,7 @@ class Dashboard(Styled):
 
     def refresh_dashboard(self):
         self.clear_layout(self.layout)
+
         visual_pos = -1
         sorted_items = sorted(
             (
@@ -240,7 +284,7 @@ class Dashboard(Styled):
                         title_and_tags_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
                         if last_run["status"] == "completed":
-                            title_and_tags_layout.addWidget(
+                            current_row.addWidget(
                                 self.create_icon_button(
                                     "➕",
                                     "#007bff",
@@ -251,7 +295,7 @@ class Dashboard(Styled):
                                 )
                             )
 
-                        title_and_tags_layout.addWidget(
+                        current_row.addWidget(
                             self.create_icon_button(
                                 "🗑",
                                 "#dc3545",
@@ -271,19 +315,19 @@ class Dashboard(Styled):
                         if last_run["description"]:
                             title_label = QLabel(" " + last_run["description"], self)
                             title_label.setStyleSheet(
-                                "font-size: 20px; font-weight: bold;"
+                                "font-size: 15px; font-weight: bold;"
                             )
                             title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
                             title_and_tags_layout.addWidget(title_label)
 
                         group_layout.addLayout(title_and_tags_layout)
-                        group_layout.addSpacing(10)
+                        group_layout.addSpacing(5)
 
                     self.layout.addLayout(group_layout)
 
                 current_group_key = group_key
                 group_layout = QVBoxLayout()
-                group_layout.addSpacing(10)
+                group_layout.addSpacing(5)
                 button_rows = []
                 tags_to_show = []
 
@@ -314,10 +358,7 @@ class Dashboard(Styled):
             special = get_special_title(run)
             label = QLabel(
                 (
-                    "<b>"
-                    + special.split(" ")[0]
-                    + "</b><br>"
-                    + convert_to_readable(run["timestamp"])
+                    "<b>" + special + "</b><br>" + convert_to_readable(run["timestamp"])
                     if run["status"] == "completed"
                     else "<b>Creating</b><br>" + convert_to_readable(run["timestamp"])
                 ),
@@ -327,7 +368,7 @@ class Dashboard(Styled):
             label.setAlignment(
                 Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
             )
-            label.setToolTip(special)
+            label.setToolTip("Show results")
             label.setWordWrap(True)
             button_layout = QVBoxLayout(run_button)
             button_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
@@ -336,11 +377,11 @@ class Dashboard(Styled):
             run_button.setStyleSheet(
                 f"""
                 QPushButton {{
-                    background-color: {button_color};
+                    background-color: white;
                     color: black;
                     border-radius: 5px;
                     font-size: 16px;
-                    border: 1px solid black;
+                    border: 1px solid {self.darker_color(self.darker_color(button_color))};
                     font-weight: bold;
                 }}
                 QPushButton:hover {{
@@ -361,7 +402,7 @@ class Dashboard(Styled):
                     )
                 )
             )
-            run_button.setFixedSize(120, 42)
+            run_button.setFixedSize(160, 42)
 
             widget_width = self.scroll_area.viewport().width() or 600
             margin = 5
@@ -372,7 +413,7 @@ class Dashboard(Styled):
                 if (child := current_row.itemAt(i)) and child.widget()
             )
 
-            if current_row_width + 120 + margin > widget_width:
+            if current_row_width + 160 + margin > widget_width:
                 current_row = QHBoxLayout()
                 current_row.setAlignment(Qt.AlignmentFlag.AlignLeft)
                 button_rows.append(current_row)
@@ -401,7 +442,7 @@ class Dashboard(Styled):
                 title_and_tags_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
                 if last_run["status"] == "completed":
-                    title_and_tags_layout.addWidget(
+                    current_row.addWidget(
                         self.create_icon_button(
                             "➕",
                             "#007bff",
@@ -410,7 +451,7 @@ class Dashboard(Styled):
                         )
                     )
 
-                title_and_tags_layout.addWidget(
+                current_row.addWidget(
                     self.create_icon_button(
                         "🗑",
                         "#dc3545",
@@ -429,12 +470,12 @@ class Dashboard(Styled):
 
                 if last_run["description"]:
                     title_label = QLabel(" " + last_run["description"], self)
-                    title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+                    title_label.setStyleSheet("font-size: 15px; font-weight: bold;")
                     title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
                     title_and_tags_layout.addWidget(title_label)
 
                 group_layout.addLayout(title_and_tags_layout)
-                group_layout.addSpacing(10)
+                group_layout.addSpacing(5)
 
             self.layout.addLayout(group_layout)
 

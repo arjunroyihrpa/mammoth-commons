@@ -41,8 +41,14 @@ def specific_concerns(
     """
     <p>Computes a fairness or bias measure that matches a specific type of numerical
     evaluation using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
-    library. The measure is built by combining simpler options to form more than 300 valid alternatives.
-    The assessment is conducted over sensitive attributes like gender, age, and race. Each attribute can have multiple values,
+    library. The measure is built by combining simpler options to form more than 300 valid alternatives.</p>
+
+    <span class="alert alert-warning alert-dismissible fade show" role="alert"
+    style="display: inline-block; padding: 10px;"> <i class="bi bi-exclamation-triangle-fill"></i>
+    This computes a specific fairness concerns and does not paint a broad enough picture. Make sure that
+    you explore prospective biases with other modules first, like <i>model card</i>.</span>
+
+    <p>The assessment is conducted over sensitive attributes like gender, age, and race. Each attribute can have multiple values,
     such as several genders or races. Numeric attributes, like age, are normalized to the range [0,1] and treated
     as fuzzy values, where 0 indicates membership to a fuzzy group of "small" values, and 1 indicates membership to
     a fuzzy group of "large" values. A separate set of fairness metrics is calculated for each prediction label.</p>
@@ -165,7 +171,7 @@ def specific_concerns(
                }}
            }});
        </script>
-       <h1>{outcome} {f'{metric_name} over {len(sensitive.branches())} groups' if problematic_deviation == 0 else f'{metric_name} over {len(sensitive.branches())} groups for {problematic_deviation:.3f} deviations'}</h1>
+       <h1>{outcome} {metric_name}</h1>
        <p>A report was generated for the generated bias assessment,
        which combines a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
        Differences at least {problematic_deviation:.3f} away from their ideal values are colored red, otherwise green. 
