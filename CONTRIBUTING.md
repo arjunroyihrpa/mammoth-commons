@@ -190,10 +190,10 @@ Also install the libraries in that file for tests to run locally.
 Pull requests will be reviewed manually, so if you plan to create a complex one
 get in touch with us by opening an issue first. Finally, your module should 
 be automatically added to the demonstrator do that you can see how it is going
-to appear in the main toolkit 
-(instructions on launching the demonstrator [here](../mammoth-commons/README.md)).
+to appear in the main toolkit.
 The demonstrator does not require the steps covered below and you can run it
-during development.
+during development per `python -m mai_bias.app` for the desktop app 
+or `python -m mai_bias.cli` for a command line interface.
 
 ## Write documentation
 
