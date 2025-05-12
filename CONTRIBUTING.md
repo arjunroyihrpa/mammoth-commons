@@ -2,8 +2,8 @@
 
 This document contains instructions on how to contribute modules to the MAMMOth catalogue 
 so that they are included in the MAI-BIAS desktop application and server toolkit. Modules depend on the
-MAMMOTH-commons library's file types types. To contribute to the main
-library (for example, to add data types) see [here](../mammoth-commons/README.md).
+MAMMOTH-commons library's types. To contribute to the main
+library (for example, to add data types) see [here](mammoth_commons/README.md).
 Instructions on how to manually build modules or how to trigger continuous integration
 as a maintainer are provided [here](mai_bias/catalogue/README.md).
 
@@ -20,10 +20,10 @@ Create a fork of the repository. You may work on the `dev` branch and
 create pull requests that repository maintainers will try to merge.
 Those requests will trigger continuous integration actions to verify
 that contributions are compliant with all technical requirements of the toolkit.
-Use the *black* linter. Pull requests with errors other than linter ones
-will be rejected.
+Use the *black* linter, though this can be fixed upon merging too. 
+Pull requests with errors other than linting ones will be rejected.
 
-Creating a module is as simple as adding a file in the `catalogue/` 
+Creating a module is as simple as adding a file in the `mai_bias/catalogue/` 
 directory, adding an function with typehints, and decorating the latter.
 The decorator works as a buffer between
 your code and various interfaces. Here are some details: 
@@ -32,7 +32,7 @@ your code and various interfaces. Here are some details:
 from `mammoth_commons.datasets` and `mammoth_commons.models` respectively. 
 Use them to annotate your method's argument
 and return types. *Type annotations are mandatory for 
-all arguments.*
+all arguments.* 
 
 2. *Parameters.* In addition to some mandatory positional
 arguments for each type of module, you may add any number of 
@@ -50,9 +50,9 @@ correspond to the last previous path.
 
 3. You must also create
 a docstring for your module. This should include both the main description
-and parameter descriptions under an `Args:` section (the title of this secion is mandatory). 
+and parameter descriptions under an `Args:` section (the title of this section is mandatory). 
 The parameter descriptions should follow the convention `name: description` and not
-specify any type. You cannot have line breaks in the description.
+specify any type. You cannot have line breaks in the parameter description.
 
 4. *Decorators.* Decorate your module with either the 
 `@mammoth.integration.metric(namespace, version, python="3.12", packages=(...))` or 
@@ -60,12 +60,15 @@ the `@mammoth.integration.loader(namespace, version, python="3.12", packages=(..
 These require at least one argument to denote
 the module's version. The namespace refers to whom the module
 should be accredited to (if you are not using continuous integration, it should be the same as your DockerHub 
-username). Finally, packarary dependencies and must be a tuple of strings 
+username). Finally, packaged dependencies to be a tuple of strings 
 (take care to write something like `packages=("pandas",)` **comma included** if you only have one dependency).
 These dependencies are any packages other than the few found in `requirements.txt`, and need to include
 any dependencies. For example, add *pandas* as a package dependency if you use or load the `CSV` datatype
 because it is needed there. Note that mammoth-commons imports packages for its datatypes only at the
 last necessary moment.
+
+5. As a last step, make sure that you add your module to MAI-BIAS desktop by registering it
+both in `mai_bias/backend/loaders.py` and in `mai_bias/backend/catalogue_loaders.py`.
 
 Here are some examples of modules:
 

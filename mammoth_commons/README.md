@@ -16,6 +16,8 @@ The current structure into subdirectories corresponding to Python modules is as 
 | `externals.py`    | Supporting methods for module creation, for example that automate safe running of third-party code.                                                                    |
 
 :warning: Contributions will be accepted only for the `datasets/` and `models/` directories. 
-The rest need some knowledge of the MAMMOth toolkit's internal workings to properly understand.
+The rest need some knowledge of the MIA-BIAS toolkit's common internal workings across
+all platforms to properly understand.
 Furthermore, make sure that libraries other than those in `requirements.txt` (**not** the text with 
-[all] requirements) are import from within functions.
+[all] requirements) are imported from within functions. The canary test in GitHub actions tests
+for this scenario. Replicate it locally to assert that you have not mistakenly added an import.

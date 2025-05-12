@@ -2,7 +2,8 @@
 
 [![Integration Tests](https://github.com/mammoth-eu/mammoth-commons/actions/workflows/integration.yml/badge.svg)](https://github.com/mammoth-eu/mammoth-commons/actions/workflows/integration.yml)
 ![Coverage](./coverage-badge.svg)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md) 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+[![Downloads](https://static.pepy.tech/badge/mai-bias)](https://pepy.tech/projects/mai-bias)
 
 *Quickly develop and locally run MAI-BIAS toolkit modules.*
 

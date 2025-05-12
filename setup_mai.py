@@ -12,7 +12,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="MAI-Bias",
-    version="0.1.21",
+    version="0.1.22",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Desktop app version of the MAI-Bias toolkit.",
