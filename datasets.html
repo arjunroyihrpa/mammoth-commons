@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dataset loaders</title>
+    <title>Datasets</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -89,8 +89,8 @@
 <a href='#uci'>Uci</a>
 <a href='#custom-csv'>Custom csv</a>
 <a href='#csv-rankings'>Csv rankings</a>
+<a href='#researchers'>Researchers</a>
 <a href='#graph'>Graph</a>
-<a href='#graph-csv'>Graph csv</a>
 <a href='#images'>Images</a>
 <a href='#image-pairs'>Image pairs</a>
 
@@ -100,7 +100,7 @@
     <div class="content-wrapper">
         <div class="main-content container">
             <div class="container">
-<h1 class='display-4 text-center my-4'>Dataset loaders</h1>
+<h1 class='display-4 text-center my-4'>Datasets</h1>
 <h2 id='auto-csv'>Auto csv</h2>
 <p><p>Loads a CSV file that contains numeric, categorical, and predictive data columns. This automatically detects the characteristics of the dataset being loaded, namely the delimiter that separates the columns, and whether each column contains numeric or categorical data. A <a href="https://pandas.pydata.org/">pandas</a> CSV reader is employed internally. The last categorical column is used as the dataset label. To load the file using different options (e.g., a subset of columns, a different label column) use the custom csv loader instead.</p> </p>
 <b>Parameters</b><br><button
@@ -225,6 +225,75 @@
 <b>Parameters</b><br>Path
 Delimiter
 <br>
+<h2 id='researchers'>Researchers</h2>
+<p><p>This is a Loader to load .csv files with information about researchers The <code>papers path</code> and <code>papers affiliations</code> should be given relative to your locally running instance (e.g.: <em>./data/researchers/Top&#95;researchers.csv</em>) The <code>Delimiter</code> should match the CSV file you have (e.g.: '|')</p> </p>
+<b>Parameters</b><br><button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" The path to the paper citation graph."
+                          data-description=" The path to the paper citation graph."
+                          data-name="Paper graph path"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Paper graph path
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" The delimiter in the paper graph file."
+                          data-description=" The delimiter in the paper graph file."
+                          data-name="Paper graph delimiter"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Paper graph delimiter
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" The path to the paper affiliation map."
+                          data-description=" The path to the paper affiliation map."
+                          data-name="Paper affiliations path"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Paper affiliations path
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" The delimiter of the paper affiliation map file."
+                          data-description=" The delimiter of the paper affiliation map file."
+                          data-name="Paper affiliation delimiter"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Paper affiliation delimiter
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" Metadata mapping countries to respective codes found in researcher profilers. Prefer the default value."
+                          data-description=" Metadata mapping countries to respective codes found in researcher profilers. Prefer the default value."
+                          data-name="Country codes path"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Country codes path
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" Metadata of country divisions. Prefer the default value."
+                          data-description=" Metadata of country divisions. Prefer the default value."
+                          data-name="Country divisions path"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Country divisions path
+                        </button>
+<br>
 <h2 id='graph'>Graph</h2>
 <p><p>Loads the edges of a graph organized as rows of a comma-delimited file.</p> </p>
 <b>Parameters</b><br><button
@@ -237,42 +306,6 @@ Delimiter
                           data-name="Path"
                           onclick="showDescriptionModal(this)">
                           <i class="bi bi-info-circle"></i> Path
-                        </button>
-<br>
-<h2 id='graph-csv'>Graph csv</h2>
-<p><p>This loads the nodes and edges of a graph.</p> </p>
-<b>Parameters</b><br><button
-                          type="button"
-                          class="btn btn-light"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title=" A csv file containing the node identifiers as the first column."
-                          data-description=" A csv file containing the node identifiers as the first column."
-                          data-name="Path nodes"
-                          onclick="showDescriptionModal(this)">
-                          <i class="bi bi-info-circle"></i> Path nodes
-                        </button>
-<button
-                          type="button"
-                          class="btn btn-light"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title=" A csv file, where each raw corresponds to a pair of node identifiers of an edge."
-                          data-description=" A csv file, where each raw corresponds to a pair of node identifiers of an edge."
-                          data-name="Path edges"
-                          onclick="showDescriptionModal(this)">
-                          <i class="bi bi-info-circle"></i> Path edges
-                        </button>
-<button
-                          type="button"
-                          class="btn btn-light"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title=" A comma separated list of attributes to retain from the dataset."
-                          data-description=" A comma separated list of attributes to retain from the dataset."
-                          data-name="Attributes"
-                          onclick="showDescriptionModal(this)">
-                          <i class="bi bi-info-circle"></i> Attributes
                         </button>
 <br>
 <h2 id='images'>Images</h2>
@@ -359,8 +392,19 @@ Delimiter
                           class="btn btn-light"
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
-                          title=" A comma-separated list of safe libraries that are allowed in the transformation code."
-                          data-description=" A comma-separated list of safe libraries that are allowed in the transformation code."
+                          title=" Number of subprocesses to use for data loading."
+                          data-description=" Number of subprocesses to use for data loading."
+                          data-name="Num workers"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Num workers
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" A comma-separated list of safe libraries that are allowed in the transformation code. As a safety measure against code injection attacks, an error will be created if libraries other than those are encountered."
+                          data-description=" A comma-separated list of safe libraries that are allowed in the transformation code. As a safety measure against code injection attacks, an error will be created if libraries other than those are encountered."
                           data-name="Safe libraries"
                           onclick="showDescriptionModal(this)">
                           <i class="bi bi-info-circle"></i> Safe libraries
@@ -450,8 +494,19 @@ Delimiter
                           class="btn btn-light"
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
-                          title=" A comma-separated list of safe libraries that are allowed in the transformation code."
-                          data-description=" A comma-separated list of safe libraries that are allowed in the transformation code."
+                          title=" Number of subprocesses to use for data loading."
+                          data-description=" Number of subprocesses to use for data loading."
+                          data-name="Num workers"
+                          onclick="showDescriptionModal(this)">
+                          <i class="bi bi-info-circle"></i> Num workers
+                        </button>
+<button
+                          type="button"
+                          class="btn btn-light"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title=" A comma-separated list of safe libraries that are allowed in the transformation code. As a safety measure against code injection attacks, an error will be created if libraries other than those are encountered."
+                          data-description=" A comma-separated list of safe libraries that are allowed in the transformation code. As a safety measure against code injection attacks, an error will be created if libraries other than those are encountered."
                           data-name="Safe libraries"
                           onclick="showDescriptionModal(this)">
                           <i class="bi bi-info-circle"></i> Safe libraries
