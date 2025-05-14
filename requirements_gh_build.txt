@@ -36,3 +36,7 @@ readchar
 rich
 html2text
 mmm-fair
+Dbias
+tf-keras
+spacy[transformers]
+numpy>=2.0

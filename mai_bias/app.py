@@ -33,9 +33,6 @@ QSurfaceFormat.setDefaultFormat(fmt)
 """
 
 items = load_all_runs("history.json")
-import matplotlib
-
-matplotlib.use("Agg")
 
 
 class SlidingStackedWidget(QStackedWidget):

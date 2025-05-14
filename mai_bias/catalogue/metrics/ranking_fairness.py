@@ -7,13 +7,9 @@ from mammoth_commons.models.researcher_ranking import ResearcherRanking
 from mammoth_commons.datasets.graph_csh import Graph_CSH
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 from io import BytesIO
 import base64
 import statistics
-from . import networks_layouts
-import networkx as nx
 
 
 def b(k):
@@ -72,6 +68,12 @@ def Exposure_distance(
 
 
 def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import networkx as nx
+    import matplotlib
+
+    matplotlib.use("Agg")
     # Set figure size based on number of categories
     n_categories = len(dataframe[y_variable].unique())
     height = min(7, max(4, n_categories * 0.5))  # Adaptive height
@@ -117,6 +119,10 @@ def boxplots_mitigation_strategies_pretty(
     ER_Old, ER_Mitigation, Method, sampling_attribute=None, n_runs=1
 ):
     """Compare the old results with possible mitigation strategies"""
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import networkx as nx
+
     plt.rcParams["mathtext.fontset"] = "dejavusans"
     plt.rcParams["figure.autolayout"] = True
 
@@ -586,6 +592,11 @@ def plot_network(
     division_size_edges=100,
     size_edges=1,
 ):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import networkx as nx
+    from . import networks_layouts
+
     degree = dict(G.degree(weight="weight"))
     weights = [G[u][v]["weight"] for u, v in G.edges()]
     pos = networks_layouts.forceatlas2_layout(
@@ -637,7 +648,15 @@ def plot_network(
     return enc_str
 
 
-@metric(namespace="mammotheu", version="v0042", python="3.12")
+@metric(
+    namespace="mammotheu",
+    version="v0042",
+    python="3.12",
+    packages=(
+        "seaborn",
+        "matplotlib",
+    ),
+)
 def exposure_distance_comparison(
     dataset: Graph_CSH,
     model: ResearcherRanking,

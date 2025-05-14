@@ -1,0 +1,13 @@
+numpy
+markdown2
+dill
+pandas
+PyYAML
+kfp
+onnxruntime
+onnx
+docker
+PySide6
+html2text
+readchar
+rich

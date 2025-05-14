@@ -7,6 +7,7 @@ from mai_bias.catalogue.dataset_loaders.graph import data_graph
 from mai_bias.catalogue.dataset_loaders.images import data_images
 from mai_bias.catalogue.dataset_loaders.image_pairs import data_image_pairs
 from mai_bias.catalogue.dataset_loaders.uci_csv import data_uci_
+from mai_bias.catalogue.dataset_loaders.free_text import data_free_text
 
 # model loaders
 from mai_bias.catalogue.model_loaders.no_model import no_model
@@ -34,6 +35,7 @@ from mai_bias.catalogue.metrics.bias_scan import bias_scan
 from mai_bias.catalogue.metrics.augmentation_report import (
     augmentation_report,
 )
+from mai_bias.catalogue.metrics.text_dbias import text_debias
 
 from mai_bias.backend.registry import Registry
 
@@ -47,6 +49,7 @@ registry.data(data_researchers)
 registry.data(data_graph)
 registry.data(data_images)
 registry.data(data_image_pairs)
+registry.data(data_free_text)
 
 registry.model(
     no_model,
@@ -55,6 +58,7 @@ registry.model(
         data_custom_csv,
         data_uci_,
         data_images,
+        data_free_text
     ],
 )
 registry.model(model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci_])
@@ -82,3 +86,4 @@ registry.analysis(
     compatible=[model_mitigation_ranking],
 )
 registry.analysis(augmentation_report)
+registry.analysis(text_debias)

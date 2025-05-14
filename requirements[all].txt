@@ -36,3 +36,7 @@ rich
 html2text
 scikit-image
 mmm-fair
+Dbias
+tf-keras
+spacy[transformers]
+numpy>=2.0

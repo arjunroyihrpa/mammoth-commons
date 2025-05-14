@@ -1,12 +1,8 @@
-import pandas as pd
-from skimage.filters import threshold_otsu
-
 from mammoth_commons.datasets import Dataset
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
 from mammoth_commons.integration import metric
-from aif360.sklearn.metrics import ot_distance
 
 
 @metric(
@@ -50,6 +46,9 @@ def optimal_transport(
     Args:
         threshold: Transport distances below the given threshold are considered negligible.
     """
+    from skimage.filters import threshold_otsu
+    from aif360.sklearn.metrics import ot_distance
+    import pandas as pd
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
     assert hasattr(

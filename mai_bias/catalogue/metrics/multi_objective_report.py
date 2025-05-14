@@ -3,20 +3,15 @@ from mammoth_commons.models.onnx_ensemble import ONNXEnsemble
 from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
-from fairbench import v1 as fb
 import numpy as np
-import plotly
 from mammoth_commons.externals import fb_categories
-from mmm_fair.viz_trade_offs import plot3d
-
-
 
 
 @metric(
     namespace="mammotheu",
     version="v0042",
     python="3.12",
-    packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
+    packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank", "mmm-fair"),
 )
 def multi_objective_report(
     dataset: CSV,
@@ -42,6 +37,8 @@ def multi_objective_report(
     report generates predictions at each step of the partial ensemble. This may result in slower processing
     times when the number of Pareto solutions is high.</span>
     """
+    from fairbench import v1 as fb
+    from mmm_fair.viz_trade_offs import plot3d
 
     # obtain predictions
     if hasattr(model, "mmm"):

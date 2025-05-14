@@ -14,6 +14,19 @@ if os.getcwd().endswith(r"mammoth\tests"):
 
 
 def unwrap(component):
+    """import subprocess
+    from mammoth_commons.externals import notify_progress, notify_end
+
+    notify_progress(0, "Installing dependencies")
+    subprocess.run(
+        component.component_spec.implementation.container.command[:2]
+        + [
+            component.component_spec.implementation.container.command[2].rsplit(
+                "&&", 1
+            )[0]
+        ]
+    )
+    notify_end()"""
     return component.python_func.__mammoth_wrapped__
 
 

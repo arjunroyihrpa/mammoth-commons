@@ -5,3 +5,4 @@ from mammoth_commons.datasets.graph import Graph
 from mammoth_commons.datasets.graph_csh import Graph_CSH
 from mammoth_commons.datasets.image import Image
 from mammoth_commons.datasets.image_pairs import ImagePairs
+from mammoth_commons.datasets.text import Text
