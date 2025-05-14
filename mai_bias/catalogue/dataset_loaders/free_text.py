@@ -1,11 +1,9 @@
 from mammoth_commons.datasets import Text
 from mammoth_commons.integration import loader
 
+
 @loader(
-    namespace="mammotheu",
-    version="v0042",
-    python="3.12",
-    packages=("bs4", "requests")
+    namespace="mammotheu", version="v0042", python="3.12", packages=("bs4", "requests")
 )
 def data_free_text(text: str = "") -> Text:
     """Sets a free text that can be used by text-based AI to perform various kinds of analysis,
@@ -23,10 +21,10 @@ def data_free_text(text: str = "") -> Text:
         response.raise_for_status()
         html_content = response.text
         from bs4 import BeautifulSoup
+
         soup = BeautifulSoup(html_content, "html.parser")
         text = "\n\n".join(
             p.get_text(strip=True) for p in soup.find_all("p") if p.get_text(strip=True)
         )
 
     return Text(text)
-

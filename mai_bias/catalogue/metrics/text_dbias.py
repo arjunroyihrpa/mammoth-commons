@@ -12,7 +12,7 @@ from mammoth_commons.exports import HTML
 def manual_install_wheel(wheel_url_or_path):
     print("Manually installing a broken wheel for the DBias library")
     if wheel_url_or_path.startswith("http://") or wheel_url_or_path.startswith(
-            "https://"
+        "https://"
     ):
         local_whl = os.path.join(".cache", os.path.basename(wheel_url_or_path))
         print(f"Downloading wheel from {wheel_url_or_path}...")
@@ -52,10 +52,7 @@ def manual_install_wheel(wheel_url_or_path):
     python="3.12",
     packages=("dbias", "tf-keras", "spacy[transformers]"),
 )
-def text_debias(
-    dataset: Text,
-    model: EmptyModel,
-    sensitive: list[str]) -> HTML:
+def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     """
     <p>
     This module uses <a href="https://github.com/dreji18/Fairness-in-AI">DBias</a> library to perform
