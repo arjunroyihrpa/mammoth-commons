@@ -2,7 +2,7 @@ import numpy as np
 from mammoth_commons.models.predictor import Predictor
 from mammoth_commons.integration_callback import notify_progress
 import re
-
+from mmm_fair.onnx_utils import ONNX_MMM
 
 class ONNXEnsemble(Predictor):
     def __init__(
@@ -15,17 +15,12 @@ class ONNXEnsemble(Predictor):
         theta=None,
         pareto=None,
         sensitives=None,
+        **kwargs,
     ):
         assert (
             _ is None
         ), "Internal error: ONNXEnsemble was accidentally constructed with more positional arguments than acceptable"
-        self.models = models
-        self.pareto = pareto
-        self.alphas = alphas
-        self.sensitive = sensitives
-        self.classes = classes
-        self.theta = theta
-        self.n_classes = n_classes
+        self.mmm=ONNX_MMM(models,alphas,classes,n_classes,theta,pareto,sensitives)
 
     def _extract_number(self, filename):
         match = re.search(r"_(\d+)\.onnx$", filename)
@@ -35,24 +30,7 @@ class ONNXEnsemble(Predictor):
         """assert (
             sensitive is None or len(sensitive) == 0
         ), "ONNXEnsemble can only be called with no declared sensitive attributes" """
-        theta = theta if self.theta is None else self.theta
-        sensitive = sensitive if self.sensitive is None else self.sensitive
-        X = dataset.to_pred(sensitive)
-
-        # n_classes = self.params['n_classes']
-        classes = self.classes[:, np.newaxis]
-
-        pred = 0
-        i = 0
-        for estimator, alpha in zip(
-            self.models[:theta],
-            self.alphas[:theta],
-        ):
-            notify_progress(i / theta, f"Running ensemble voter {i}/{theta}")
-            pred += (estimator.predict(X, []) == classes).T * alpha
-            i += 1
-        notify_progress(1, f"Completed ensemble voting")
-        pred /= self.alphas[:theta].sum()
-        pred[:, 0] *= -1
-        preds = classes.take(pred.sum(axis=1) > 0, axis=0)
-        return np.squeeze(preds, axis=1)
+        
+        preds = self.mmm.predict(dataset, sensitive, theta)
+        
+        return preds
