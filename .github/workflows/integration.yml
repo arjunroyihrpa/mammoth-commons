@@ -27,6 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        python -m pip install coverage black
         python -m pip install -r requirements[mai].txt
 
     - name: Generate catalogue
