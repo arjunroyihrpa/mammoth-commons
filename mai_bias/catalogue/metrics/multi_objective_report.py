@@ -3,13 +3,13 @@ from mammoth_commons.models.onnx_ensemble import ONNXEnsemble
 from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
-from fairbench import v1 as fb
 import numpy as np
-import plotly
 from mammoth_commons.externals import fb_categories
 
 
 def create_3d_plot(x=None, y=None, z=None):
+    import plotly
+
     # Generate sample 3D plot
     go = plotly.graph_objects
     if x == None or y == None or z == None:
@@ -68,6 +68,8 @@ def multi_objective_report(
     report generates predictions at each step of the partial ensemble. This may result in slower processing
     times when the number of Pareto solutions is high.</span>
     """
+    from fairbench import v1 as fb
+    import plotly
 
     # obtain predictions
     if hasattr(model, "pareto") and model.pareto is not None:

@@ -3,6 +3,7 @@ import inspect
 from typing import get_type_hints, Dict, List, get_origin, get_args, Union
 import os
 import pickle
+from functools import wraps
 
 
 _default_python = "3.12"
@@ -55,6 +56,32 @@ def metric(namespace, version, python=_default_python, packages=_default_package
     import yaml
 
     def wrapper(method):
+        @wraps(method)
+        def wrapper_with_installation_outiside_kfp(*args, **kwargs):
+            from mammoth_commons.externals import notify_progress, notify_end
+            import subprocess
+            import sys
+            import importlib
+
+            for i, package in enumerate(packages):
+                notify_progress(
+                    i / len(packages),
+                    "Verifying and installing dependencies: " + package,
+                )
+                try:
+                    importlib.import_module(package)
+                except ImportError:
+                    try:
+                        subprocess.check_call(
+                            [sys.executable, "-m", "pip", "install", package]
+                        )
+                    except subprocess.CalledProcessError as e:
+                        raise Exception(
+                            f"Failed to install: " + str(package) + ": " + str(e)
+                        )
+            notify_end()
+            return method(*args, **kwargs)
+
         # prepare the kfp wrapper given decorator arguments
         name = method.__name__  # will use this as the component id
         base_image = f"python:{python}-slim-bullseye"
@@ -179,7 +206,7 @@ def kfp_method(
         # rename the kfp_method so that kfp will create an appropriate name for it
         kfp_method.__name__ = name
         kfp_method.__module__ = method.__module__
-        kfp_method.__mammoth_wrapped__ = method
+        kfp_method.__mammoth_wrapped__ = wrapper_with_installation_outiside_kfp
         # return the wrapped kfp method
         return kfp_wrapper(kfp_method)
 
@@ -193,6 +220,31 @@ def loader(
     import yaml
 
     def wrapper(method, ltype):
+        @wraps(method)
+        def wrapper_with_installation_outiside_kfp(*args, **kwargs):
+            from mammoth_commons.externals import notify_progress, notify_end
+            import subprocess
+            import sys
+            import importlib
+
+            for i, package in enumerate(packages):
+                try:
+                    importlib.import_module(package)
+                except ImportError:
+                    notify_progress(
+                        i / len(packages), "Installing dependencies: " + package
+                    )
+                    try:
+                        subprocess.check_call(
+                            [sys.executable, "-m", "pip", "install", package]
+                        )
+                    except subprocess.CalledProcessError as e:
+                        raise Exception(
+                            f"Failed to install: " + str(package) + ": " + str(e)
+                        )
+            notify_end()
+            return method(*args, **kwargs)
+
         # Prepare the KFP wrapper given decorator arguments
         name = method.__name__  # Will use this as the component id
         if ltype is None:
@@ -312,7 +364,7 @@ def kfp_method(
         # Rename the kfp_method so that KFP will create an appropriate name for it
         kfp_method.__name__ = name
         kfp_method.__module__ = method.__module__
-        kfp_method.__mammoth_wrapped__ = method
+        kfp_method.__mammoth_wrapped__ = wrapper_with_installation_outiside_kfp
 
         # Return the wrapped KFP method
         return kfp_wrapper(kfp_method)

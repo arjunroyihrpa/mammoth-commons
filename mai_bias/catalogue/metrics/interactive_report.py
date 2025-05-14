@@ -3,7 +3,6 @@ from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
-from fairbench import v1 as fb
 from mammoth_commons.externals import fb_categories
 
 
@@ -27,6 +26,8 @@ def interactive_report(
         intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute.
         compare_groups: Whether to compare groups pairwise, or each group to the whole population.
     """
+    from fairbench import v1 as fb
+
     # obtain predictions
     predictions = model.predict(dataset, sensitive)
 

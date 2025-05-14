@@ -5,7 +5,6 @@ from typing import List
 from mammoth_commons.integration import metric
 
 # install facex lib using: pip install facextool
-from facex.component import run_embeddings_mammoth
 
 
 @metric(
@@ -57,6 +56,7 @@ def facex_embeddings(
         target_class: This variable determines what kind of comparison you want to explore. If you set the target class to 1, FaceX will investigate the regions in the image that are similar to the reference embedding (i.e., explanations on why the model consider the two images similar). If you set the target class to 0, FaceX will show the regions that are most different from the reference embedding (i.e., explanations on why the model consider the two images dissimilar).
         target_layer: This parameter lets you choose which part of the model's neural network you want to analyze. In simple terms, a model consists of multiple layers that process information at different levels. The target layer refers to the specific layer in the model that you want to explain. The explanation will show you which regions of the face are most important to that layer's decision-making process. For example, the deeper layers of the model may focus on more complex features like facial structure, while earlier layers might focus on simpler features like edges and textures. Typically, you should opt for the last layer producing the final embeddings.
     """
+    from facex.component import run_embeddings_mammoth
 
     assert "," not in target_layer, "Only one model layer can be analysed"
     target_class = int(target_class)

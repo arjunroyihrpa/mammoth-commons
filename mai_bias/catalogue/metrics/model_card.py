@@ -4,7 +4,6 @@ from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
 from mammoth_commons.externals import fb_categories, align_predictions_labels
-import fairbench as fb
 
 
 @metric(
@@ -50,6 +49,7 @@ def model_card(
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify problematic values as red.
     """
+    import fairbench as fb
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
     reject = not bool(show_non_problematic)

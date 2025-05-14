@@ -35,3 +35,6 @@ readchar
 rich
 html2text
 scikit-image
+Dbias
+tf-keras
+spacy[transformers]

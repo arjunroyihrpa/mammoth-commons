@@ -1,12 +1,9 @@
-import pandas as pd
-
 import mammoth_commons.integration
 from mammoth_commons.datasets import CSV
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
 from mammoth_commons.integration import metric
-from aif360.sklearn.detectors import bias_scan as aif360bias_scan
 
 
 @metric(
@@ -42,6 +39,8 @@ def bias_scan(
         penalty: The higher the penalty, the less complex the highest scoring subset that gets returned is.
         scoring: The distribution used to computer p-values.
     """
+    import pandas as pd
+    from aif360.sklearn.detectors import bias_scan as aif360bias_scan
 
     penalty = float(penalty)
     text = ""

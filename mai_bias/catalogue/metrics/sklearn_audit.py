@@ -3,7 +3,6 @@ from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
-import fairbench as fb
 import numpy as np
 from mammoth_commons.integration_callback import notify_progress, notify_end
 from mammoth_commons.externals import fb_categories
@@ -71,6 +70,8 @@ def sklearn_audit(
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify non-problematic values as green and the rest as either orange or red.
         top_recommendations: The number of top recommendations in evaluation that emulates showing the respective data samples to users when querying the trained model to give examples for each class in the dataset. Common values in the literature are 1,3,5,10.
     """
+    import fairbench as fb
+
     assert len(sensitive) != 0, "Set at least one sensitive attribute"
     reject = not bool(show_non_problematic)
     X = dataset.to_features(sensitive)

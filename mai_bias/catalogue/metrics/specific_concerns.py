@@ -4,7 +4,6 @@ from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
 from mammoth_commons.externals import fb_categories, align_predictions_labels
-import fairbench as fb
 
 
 @metric(
@@ -64,6 +63,7 @@ def specific_concerns(
         reduction: The strategy with which to reduce all measure comparisons to one value.
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
     """
+    import fairbench as fb
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
     predictions = model.predict(dataset, sensitive)

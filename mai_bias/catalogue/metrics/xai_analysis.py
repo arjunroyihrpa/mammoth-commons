@@ -5,7 +5,6 @@ from typing import List
 from mammoth_commons.integration import metric
 
 # install facex lib using: pip install facextool
-from facex.component import run_mammoth
 
 
 @metric(
@@ -53,6 +52,10 @@ def facex_regions(
         target_class: This parameter allows you to specify which class you want to analyze. For example, if you are using the model to classify faces by gender, setting the target class to male (i.e., the integer identifier for males class) will show you how the model makes decisions about male faces.
         target_layer: This parameter lets you choose which part of the model's neural network you want to analyze. In simple terms, a model consists of multiple layers that process information at different levels. The target layer refers to the specific layer in the model that you want to explain. The explanation will show you which regions of the face are most important to that layer's decision-making process. For example, the deeper layers of the model may focus on more complex features like facial structure, while earlier layers might focus on simpler features like edges and textures. Typically, you should opt for the last layer prior to the classification layer.
     """
+    from facex.component import run_mammoth
+    import matplotlib
+
+    matplotlib.use("Agg")
 
     assert "," not in target_layer, "Only one model layer can be analysed"
     target_class = int(target_class)

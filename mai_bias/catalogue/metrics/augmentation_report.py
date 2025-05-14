@@ -3,12 +3,6 @@ from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML
 from typing import List
 from mammoth_commons.integration import metric
-
-import pandas as pd
-import plotly.graph_objects as go
-import plotly.express as px
-
-from plotly.subplots import make_subplots
 from mammoth_commons.integration_callback import notify_progress, notify_end
 
 
@@ -17,6 +11,11 @@ def generate_nested_pie_chart(df, columns, title=None, color_scheme=None):
     Generate a nested pie chart (sunburst) where the same values in the same ring
     have the same color while ensuring distinct colors between rings.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     if not isinstance(df, pd.DataFrame):
         raise TypeError("df must be a pandas DataFrame")
     if not isinstance(columns, list) or len(columns) < 1:
@@ -197,6 +196,11 @@ def plot_sampling_strategies(
     height : int, optional
         Height of the figure, default is 400
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     # Create a copy of the dataframe
     data = df.copy()
 
@@ -313,6 +317,11 @@ def add_plot_distribution(fig, df, protected_attribute, target_column, row, col)
     """
     Add distribution plot to the specified subplot with counts on y-axis and percentages inside bars.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     # Calculate counts for each group
     counts_tab = pd.crosstab(df[protected_attribute], df[target_column])
 
@@ -389,6 +398,11 @@ def apply_class_sampling(df, protected_attribute, target_column):
     Separately for each group (0/1 in protected attribute) sample instances
     for the minority class to match the number in the majority class.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     result = df.copy()
     protected_values = df[protected_attribute].unique()
 
@@ -426,6 +440,11 @@ def apply_class_protected_sampling(df, protected_attribute, target_column):
     the number in the majority class. For all other groups, sample for both classes
     to match the largest group.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     result = df.copy()
 
     # Find the largest group
@@ -475,6 +494,11 @@ def apply_protected_sampling(df, protected_attribute, target_column):
     Do not sample for the largest group, but only for all other groups
     to match the number in the largest group, without considering class labels.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     result = df.copy()
 
     # Find the largest group
@@ -503,6 +527,11 @@ def apply_class_ratio_sampling(df, protected_attribute, target_column):
 
     This implementation follows the approach described in the prompt.
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+
     result = df.copy()
 
     # Find the largest group
@@ -634,6 +663,10 @@ def augmentation_report(
     **"Synthetic Tabular Data Generation for Class Imbalance and Fairness: A Comparative Study"**
     [Link to paper](https://arxiv.org/pdf/2409.05215).
     """
+    import pandas as pd
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
 
     df = dataset.data
     non_categorical = [col for col in sensitive if col not in dataset.categorical]

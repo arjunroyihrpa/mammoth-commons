@@ -2,7 +2,6 @@ import os
 from mammoth_commons.models.pytorch import Pytorch
 from mammoth_commons.integration import loader
 from mammoth_commons.externals import safeexec
-import torch
 
 
 @loader(namespace="mammotheu", version="v0042", python="3.12")
@@ -24,6 +23,7 @@ def model_torch(
         safe_libraries: A comma-separated list of libraries that can be imported.
         multiclass_threshold: A decision threshold that treats outputs as separate classes. If this is set to zero (default), a softmax is applied to outputs. For binary classification, this is equivalent to setting the decision threshold at 0.5. Otherwise, each output is thresholded separately.
     """
+    import torch
 
     multiclass_threshold = float(multiclass_threshold)
     model = safeexec(

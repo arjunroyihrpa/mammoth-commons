@@ -1,7 +1,6 @@
 import json
 import re
 import readchar
-import matplotlib
 import os
 import glob
 import shutil
@@ -9,7 +8,6 @@ from datetime import datetime
 from mai_bias.backend.loaders import registry
 from mammoth_commons.externals import pd_read_csv, get_model_layer_list
 
-matplotlib.use("Agg")
 
 tags = {
     key: "<h1>" + key + "</h1>" + module["description"]
@@ -838,7 +836,13 @@ class Step:
                         description = "..."
                     description = description.ljust(20)
                     title = extract_title(run)
-                    title = title.replace("<span>", "").replace("</span>", "").ljust(40)
+                    title = (
+                        title.replace("<span>", "")
+                        .replace("<i>", "")
+                        .replace("</span>", "")
+                        .replace("</i>", "")
+                        .ljust(40)
+                    )
                     time = run.get("timestamp", "").ljust(18)
 
                     options = list()
@@ -945,7 +949,13 @@ class Dashboard:
                 description = "..."
             description = description.ljust(20)
             title = extract_title(run)
-            title = title.replace("<span>", "").replace("</span>", "").ljust(40)
+            title = (
+                title.replace("<span>", "")
+                .replace("<i>", "")
+                .replace("</span>", "")
+                .replace("</i>", "")
+                .ljust(40)
+            )
             time = run.get("timestamp", "").ljust(18)
             coloring = colorsbg if i == state.selection else colors
             button_color = (
@@ -991,7 +1001,13 @@ class Dashboard:
                     description = "..."
                 description = description.ljust(20)
                 title = extract_title(run)
-                title = title.replace("<span>", "").replace("</span>", "").ljust(40)
+                title = (
+                    title.replace("<span>", "")
+                    .replace("<i>", "")
+                    .replace("</span>", "")
+                    .replace("</i>", "")
+                    .ljust(40)
+                )
                 time = run.get("timestamp", "").ljust(18)
 
                 options = list()

@@ -3,7 +3,6 @@ from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML, Markdown
 from typing import List
 from mammoth_commons.integration import metric, Options
-from cvbiasmitigation.suggest import analysis
 
 
 @metric(
@@ -42,6 +41,7 @@ def image_bias_analysis(
     Args:
         task: The type of predictive task. It should be either face verification or image classification.
     """
+    from cvbiasmitigation.suggest import analysis
 
     assert task in [
         "face verification",
