@@ -38,3 +38,4 @@ scikit-image
 Dbias
 tf-keras
 spacy[transformers]
+numpy>=2.0
