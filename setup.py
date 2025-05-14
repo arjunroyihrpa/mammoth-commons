@@ -13,12 +13,9 @@ with open("README.md", "r") as file:
 with open("requirements.txt", "r") as file:
     deployment_requirements = file.read().splitlines()
 
-with open("requirements[all].txt", "r") as file:
-    test_requirements = file.read().splitlines()
-
 setuptools.setup(
     name="MAMMOth-commons",
-    version="0.0.63",  # DON'T FORGET TO CHANGE THIS IN integration.py
+    version="0.0.64",  # DON'T FORGET TO CHANGE THIS IN integration.py
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Component interfaces of the MAI-BIAS toolkit.",
@@ -36,5 +33,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=deployment_requirements,
-    extras_require={"deployment": deployment_requirements, "all": test_requirements},
+    extras_require={"deployment": deployment_requirements},
 )

@@ -118,7 +118,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
         from Dbias.text_debiasing import run
         from Dbias.bias_classification import classify
         from Dbias.bias_recognition import recognizer
-    except:
+    except OSError:
         manual_install_wheel(
             "https://huggingface.co/d4data/en_pipeline/resolve/main/en_pipeline-any-py3-none-any.whl"
         )

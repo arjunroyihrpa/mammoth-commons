@@ -1,5 +1,4 @@
 from mammoth_commons.datasets import CSV
-from mmm_fair.data_process import data_raw
 from mammoth_commons.integration import loader, Options
 import pandas as pd
 @loader(
@@ -35,6 +34,8 @@ def data_read_any(
     Raises:
         ValueError: If both `raw_dataframe` and `dataset_path` are None, or if the file format is unsupported.
     """
+    from mmm_fair.data_process import data_raw
+
     try:            
         csv_dataset=data_raw(raw_data, dataset_name, target)
         

@@ -1,8 +1,5 @@
-import numpy as np
 from mammoth_commons.models.predictor import Predictor
-from mammoth_commons.integration_callback import notify_progress
 import re
-from mmm_fair.onnx_utils import ONNX_MMM
 
 class ONNXEnsemble(Predictor):
     def __init__(
@@ -17,6 +14,7 @@ class ONNXEnsemble(Predictor):
         sensitives=None,
         **kwargs,
     ):
+        from mmm_fair.onnx_utils import ONNX_MMM
         assert (
             _ is None
         ), "Internal error: ONNXEnsemble was accidentally constructed with more positional arguments than acceptable"
