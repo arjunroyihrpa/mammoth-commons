@@ -7,35 +7,9 @@ from fairbench import v1 as fb
 import numpy as np
 import plotly
 from mammoth_commons.externals import fb_categories
+from mmm_fair.viz_trade_offs import plot3d
 
 
-def create_3d_plot(x=None, y=None, z=None):
-    # Generate sample 3D plot
-    go = plotly.graph_objects
-    if x == None or y == None or z == None:
-        x = [1, 2, 3, 4, 5]
-        y = [10, 11, 12, 13, 14]
-        z = [5, 6, 7, 8, 9]
-    hidden_data = [str(i) for i in range(len(x))]
-    fig = go.Figure(
-        data=[
-            go.Scatter3d(
-                x=x, y=y, z=z, mode="markers", text=hidden_data, customdata=hidden_data
-            )
-        ]
-    )
-    axis_names = ["Acc.", "Balanc. Acc", "MMM-fair"]
-    fig.update_layout(
-        title="objectives Pareto Plot",
-        scene=dict(
-            xaxis_title="X:" + axis_names[0],
-            yaxis_title="Y:" + axis_names[1],
-            zaxis_title="Z:" + axis_names[2],
-        ),
-        width=1000,  # Set the width of the plot
-        height=700,
-    )
-    return fig.to_html(full_html=False)  # Returns HTML as a string
 
 
 @metric(
@@ -70,6 +44,8 @@ def multi_objective_report(
     """
 
     # obtain predictions
+    if hasattr(model, "mmm"):
+        model=model.mmm
     if hasattr(model, "pareto") and model.pareto is not None:
         thetas = model.pareto
     else:
@@ -107,7 +83,7 @@ def multi_objective_report(
         # print(O_1[-1], O_2[-1], O_3[-1])
         # obs.append([O_1,O_2,O_3
 
-    plot_html = create_3d_plot(x=O_1, y=O_2, z=O_3)
+    plot_html = plot3d(x=O_1, y=O_2, z=O_3, html=True)
 
     # Create an instance of your existing HTML class with the plot content
     # html_content = HTML(body=plot_html)

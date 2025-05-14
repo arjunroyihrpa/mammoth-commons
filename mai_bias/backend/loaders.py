@@ -6,7 +6,7 @@ from mai_bias.catalogue.dataset_loaders.auto_csv import data_auto_csv
 from mai_bias.catalogue.dataset_loaders.graph import data_graph
 from mai_bias.catalogue.dataset_loaders.images import data_images
 from mai_bias.catalogue.dataset_loaders.image_pairs import data_image_pairs
-from mai_bias.catalogue.dataset_loaders.uci_csv import data_uci
+from mai_bias.catalogue.dataset_loaders.uci_csv import data_uci_
 
 # model loaders
 from mai_bias.catalogue.model_loaders.no_model import no_model
@@ -40,7 +40,7 @@ from mai_bias.backend.registry import Registry
 registry = Registry()
 
 registry.data(data_auto_csv)
-registry.data(data_uci)
+registry.data(data_uci_)
 registry.data(data_custom_csv)
 registry.data(data_csv_rankings)
 registry.data(data_researchers)
@@ -53,14 +53,14 @@ registry.model(
     compatible=[
         data_auto_csv,
         data_custom_csv,
-        data_uci,
+        data_uci_,
         data_images,
     ],
 )
-registry.model(model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci])
+registry.model(model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci_])
 registry.model(
     model_onnx_ensemble,
-    compatible=[data_auto_csv, data_custom_csv, data_uci],
+    compatible=[data_auto_csv, data_custom_csv, data_uci_],
 )
 registry.model(model_torch, compatible=[data_images, data_image_pairs])
 registry.model(model_torch2onnx, compatible=[data_images, data_image_pairs])

@@ -4,7 +4,7 @@ fairbench
 PyYAML
 kfp
 onnxruntime
-onnx
+onnx==1.17.0
 markdown2
 dill
 timm
@@ -35,3 +35,4 @@ scikit-image
 readchar
 rich
 html2text
+mmm-fair
