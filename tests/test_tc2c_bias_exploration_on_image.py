@@ -16,7 +16,7 @@ def test_bias_exploration():
         # additional arguements needed for faceX
         target_class = 1
         target_layer = "layer4"
-        num_workers = 0#4
+        num_workers = 0  # 4
         dataset = env.data_images(
             path=csv_dir,
             image_root_dir=data_dir,

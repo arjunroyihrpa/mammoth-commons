@@ -69,7 +69,9 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                     "Verifying and installing dependencies: " + package,
                 )
                 try:
-                    importlib.import_module(package)
+                    if package == "scikit-learn":
+                        package = "sklearn"
+                    importlib.import_module(package.split("[")[0].replace("-", "_"))
                 except ImportError:
                     try:
                         subprocess.check_call(
@@ -142,6 +144,7 @@ def metric(namespace, version, python=_default_python, packages=_default_package
 
         if options:
             method.__doc__ += "\n    Options:" + options
+            wrapper_with_installation_outiside_kfp.__doc__ += "\n    Options:" + options
 
         # create component_metadata/{name}_meta.yaml
         metadata = {
@@ -229,7 +232,9 @@ def loader(
 
             for i, package in enumerate(packages):
                 try:
-                    importlib.import_module(package)
+                    if package == "scikit-learn":
+                        package = "sklearn"
+                    importlib.import_module(package.split("[")[0].replace("-", "_"))
                 except ImportError:
                     notify_progress(
                         i / len(packages), "Installing dependencies: " + package
@@ -308,6 +313,7 @@ def loader(
 
         if options:
             method.__doc__ += "\n    Options:" + options
+            wrapper_with_installation_outiside_kfp.__doc__ += "\n    Options:" + options
 
         # Create component_metadata/{name}_meta.yaml
         metadata = {

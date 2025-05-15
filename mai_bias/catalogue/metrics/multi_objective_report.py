@@ -11,7 +11,15 @@ from mammoth_commons.externals import fb_categories
     namespace="mammotheu",
     version="v0042",
     python="3.12",
-    packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank", "mmm-fair"),
+    packages=(
+        "fairbench",
+        "plotly",
+        "pandas",
+        "onnxruntime",
+        "ucimlrepo",
+        "pygrank",
+        "mmm-fair",
+    ),
 )
 def multi_objective_report(
     dataset: CSV,
@@ -30,8 +38,6 @@ def multi_objective_report(
     different stages of the ensemble, helping them better understand the trade-offs involved in each model
     configuration.</p>
 
-
-
     <span class="alert alert-warning alert-dismissible fade show" role="alert"
     style="display: inline-block; padding: 10px;"> <i class="bi bi-exclamation-triangle-fill"></i> The multi-objective
     report generates predictions at each step of the partial ensemble. This may result in slower processing
@@ -42,7 +48,7 @@ def multi_objective_report(
 
     # obtain predictions
     if hasattr(model, "mmm"):
-        model=model.mmm
+        model = model.mmm
     if hasattr(model, "pareto") and model.pareto is not None:
         thetas = model.pareto
     else:

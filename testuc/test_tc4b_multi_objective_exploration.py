@@ -39,7 +39,6 @@ sensitive = ["X2", "X4", "X5"]
 pipeline(
     data_uci__params={
         "dataset_name": "credit",
-        "target": "Y",
     },
     model_onnx_ensemble__params={
         "path": "https://github.com/mammoth-eu/mammoth-commons/raw/refs/heads/dev/data/credit_mfppb.zip",
