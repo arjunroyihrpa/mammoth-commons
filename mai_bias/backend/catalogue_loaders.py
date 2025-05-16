@@ -31,6 +31,8 @@ from mai_bias.catalogue.metrics.xai_analysis import facex_regions
 from mai_bias.catalogue.metrics.xai_analysis_embeddings import facex_embeddings
 from mai_bias.catalogue.metrics.ranking_fairness import exposure_distance_comparison
 from mai_bias.catalogue.metrics.multi_objective_report import multi_objective_report
+from mai_bias.catalogue.metrics.viz_fairness_plots import viz_fairness_plots
+from mai_bias.catalogue.metrics.viz_fairness_report import viz_fairness_report
 from mai_bias.catalogue.metrics.optimal_transport import optimal_transport
 from mai_bias.catalogue.metrics.bias_scan import bias_scan
 from mai_bias.catalogue.metrics.augmentation_report import (
@@ -84,6 +86,8 @@ registry.analysis(image_bias_analysis)
 registry.analysis(facex_regions)
 registry.analysis(facex_embeddings)
 registry.analysis(multi_objective_report)
+registry.analysis(viz_fairness_plots)
+registry.analysis(viz_fairness_report)
 registry.analysis(
     exposure_distance_comparison,
     compatible=[model_mitigation_ranking],
