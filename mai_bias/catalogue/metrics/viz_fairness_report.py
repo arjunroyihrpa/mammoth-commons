@@ -11,13 +11,13 @@ from mammoth_commons.integration import metric
 
 from typing import List
 
+
 @metric(
     namespace="mammotheu",
     version="v0001",
     python="3.12",
     packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair"),
 )
-
 def viz_fairness_report(
     dataset: CSV,
     model: Predictor,
@@ -27,7 +27,7 @@ def viz_fairness_report(
     <p>This module generates a detailed fairness report using <a href="https://fairlearn.org/" target="_blank">Fairlearn</a>,
     providing both group-wise and scalar fairness metrics across sensitive attributes such as sex or race.</p>
     """
-    #Import the existing function from mmm-fair
+    # Import the existing function from mmm-fair
     from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
 
     # Extract predictions and ground truth
@@ -38,6 +38,7 @@ def viz_fairness_report(
 
     # Convert sensitive attributes into the expected numpy array format
     import numpy as np
+
     sa_df = dataset.data[sensitive].copy()
     sa_matrix = sa_df.to_numpy()
 
@@ -48,7 +49,6 @@ def viz_fairness_report(
         sa_matrix[:, col_idx] = np.where(col == first_group, 0, 1)
 
     sa_matrix = sa_matrix.astype(int)
-
 
     # Call the original report function from mmm-fair (already supports console/table/html)
     html_string = generate_reports_from_fairlearn(

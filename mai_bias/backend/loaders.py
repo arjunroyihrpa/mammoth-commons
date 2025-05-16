@@ -55,13 +55,7 @@ registry.data(data_free_text)
 
 registry.model(
     no_model,
-    compatible=[
-        data_auto_csv,
-        data_custom_csv,
-        data_uci_,
-        data_images,
-        data_free_text
-    ],
+    compatible=[data_auto_csv, data_custom_csv, data_uci_, data_images, data_free_text],
 )
 registry.model(model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci_])
 registry.model(

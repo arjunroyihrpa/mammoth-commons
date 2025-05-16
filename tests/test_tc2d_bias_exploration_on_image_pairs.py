@@ -18,7 +18,7 @@ def test_bias_exploration():
         # model_path = "./data/torch_model/adaface.py"
         # model_dict = "./data/torch_model/ir50_adaface.pth"
         # target_layer = "body.23.res_layer.4"
-        num_workers = 0 #4
+        num_workers = 0  # 4
         model_path = "./data/torch_model/adaface_toy.py"
         model_dict = "./data/torch_model/toy_adaface.pth"
         target_layer = "conv3"

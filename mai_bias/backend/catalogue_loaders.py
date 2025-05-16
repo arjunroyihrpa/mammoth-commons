@@ -66,10 +66,12 @@ registry.model(
         data_free_text,
     ],
 )
-registry.model(model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci_, data_read_any])
+registry.model(
+    model_onnx, compatible=[data_auto_csv, data_custom_csv, data_uci_, data_read_any]
+)
 registry.model(
     model_onnx_ensemble,
-    compatible=[data_uci_,data_read_any],
+    compatible=[data_uci_, data_read_any],
 )
 registry.model(model_torch, compatible=[data_images, data_image_pairs])
 registry.model(model_torch2onnx, compatible=[data_images, data_image_pairs])

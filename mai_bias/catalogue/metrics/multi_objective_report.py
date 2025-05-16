@@ -11,7 +11,15 @@ from mammoth_commons.externals import fb_categories
     namespace="mammotheu",
     version="v0042",
     python="3.12",
-    packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank", "mmm-fair"),
+    packages=(
+        "fairbench",
+        "plotly",
+        "pandas",
+        "onnxruntime",
+        "ucimlrepo",
+        "pygrank",
+        "mmm-fair",
+    ),
 )
 def multi_objective_report(
     dataset: CSV,
@@ -42,7 +50,7 @@ def multi_objective_report(
 
     # obtain predictions
     if hasattr(model, "mmm"):
-        model=model.mmm
+        model = model.mmm
     if hasattr(model, "pareto") and model.pareto is not None:
         thetas = model.pareto
     else:

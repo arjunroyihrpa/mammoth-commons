@@ -7,13 +7,14 @@ from mai_bias.catalogue.metrics.viz_fairness_report import viz_fairness_report
 def test_multiobjective_report():
     with testing.Env(model_onnx_ensemble, viz_fairness_report, data_read_any) as env:
         dataset_name = "data/credit.csv"
-        target='class'
+        target = "class"
         dataset = env.data_read_any(dataset_name=dataset_name, target=target)
         model_path = "data/model_MMM_Fair_GBT.zip"
         model = env.model_onnx_ensemble(model_path)
-        sensitive = ['SEX', 'MARRIAGE']
+        sensitive = ["SEX", "MARRIAGE"]
         html_result = env.viz_fairness_report(dataset, model, sensitive=sensitive)
         html_result.show()
+
 
 if __name__ == "__main__":
     test_multiobjective_report()

@@ -11,7 +11,7 @@ def test_multiattribute_bias_mitigation():
         dataset = env.data_uci_(dataset_name=dataset_name, target=target)
         model_path = "data/model_MMM_Fair.zip"
         model = env.model_onnx_ensemble(model_path)
-        sensitive = ["age","marital"]
+        sensitive = ["age", "marital"]
         markdown_result = env.model_card(dataset, model, sensitive=sensitive)
         markdown_result.show()
 
