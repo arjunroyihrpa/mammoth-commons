@@ -11,4 +11,4 @@ PySide6
 html2text
 readchar
 rich
-mmm-fair
+mmm-fair>=2.2.0
