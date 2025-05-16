@@ -5,7 +5,7 @@ pandas
 PyYAML
 kfp
 onnxruntime
-onnx
+onnx==1.14.1 
 docker
 PySide6
 html2text
