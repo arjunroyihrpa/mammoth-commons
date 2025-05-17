@@ -1,4 +1,4 @@
-numpy
+numpy==1.26.4
 markdown2
 dill
 pandas
@@ -12,3 +12,4 @@ html2text
 readchar
 rich
 mmm-fair>=2.2.0
+click==8.1.7
