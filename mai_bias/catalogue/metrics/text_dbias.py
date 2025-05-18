@@ -15,6 +15,7 @@ def manual_install_wheel(wheel_url_or_path):
     if wheel_url_or_path.startswith("http://") or wheel_url_or_path.startswith(
         "https://"
     ):
+
         def reporthook(block_num, block_size, total_size):
             downloaded = block_num * block_size
             progress = min(downloaded / total_size, 1.0) if total_size > 0 else 0

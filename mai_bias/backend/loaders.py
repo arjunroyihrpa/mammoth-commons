@@ -70,7 +70,7 @@ registry.model(
 )
 registry.model(
     model_onnx_ensemble,
-    compatible=[data_auto_csv, data_custom_csv, data_uci, data_read_any]
+    compatible=[data_auto_csv, data_custom_csv, data_uci, data_read_any],
 )
 registry.model(model_torch, compatible=[data_images, data_image_pairs])
 registry.model(model_torch2onnx, compatible=[data_images, data_image_pairs])

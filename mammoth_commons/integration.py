@@ -17,9 +17,12 @@ def unpack_optionals(arg_type):
         return [arg for arg in get_args(arg_type) if arg is not type(None)][0]
     return arg_type
 
+
 def fixed_version(library):
-    if library=="numpy": return "numpy>=2.0.0"
-    if library=="onnxruntime": return "git+https://github.com/onnx/sklearn-onnx.git"
+    if library == "numpy":
+        return "numpy>=2.0.0"
+    if library == "onnxruntime":
+        return "git+https://github.com/onnx/sklearn-onnx.git"
     return library
 
 
@@ -74,11 +77,11 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                     i / len(packages),
                     "Verifying and installing dependencies: " + package,
                 )
-                #try:
+                # try:
                 #    if package == "scikit-learn":
                 #        package = "sklearn"
                 #    importlib.import_module(package.split("[")[0].replace("-", "_"))
-                #except ImportError:
+                # except ImportError:
                 try:
                     result = subprocess.run(
                         [sys.executable, "-m", "pip", "install", package],
@@ -90,11 +93,11 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                         if not line.startswith("Requirement already satisfied:"):
                             print(line)
                     if result.returncode != 0:
-                        raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout)
+                        raise subprocess.CalledProcessError(
+                            result.returncode, result.args, output=result.stdout
+                        )
                 except subprocess.CalledProcessError as e:
-                    raise Exception(
-                        f"Failed to install: {package}: {e.output}"
-                    )
+                    raise Exception(f"Failed to install: {package}: {e.output}")
             notify_end()
             return method(*args, **kwargs)
 
@@ -273,11 +276,11 @@ def loader(
                         if not line.startswith("Requirement already satisfied:"):
                             print(line)
                     if result.returncode != 0:
-                        raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout)
+                        raise subprocess.CalledProcessError(
+                            result.returncode, result.args, output=result.stdout
+                        )
                 except subprocess.CalledProcessError as e:
-                    raise Exception(
-                        f"Failed to install: {package}: {e.output}"
-                    )
+                    raise Exception(f"Failed to install: {package}: {e.output}")
             notify_end()
             return method(*args, **kwargs)
 
