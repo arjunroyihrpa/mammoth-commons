@@ -1,6 +1,7 @@
 from mammoth_commons.models.predictor import Predictor
 import re
 
+
 class ONNXEnsemble(Predictor):
     def __init__(
         self,
@@ -15,10 +16,13 @@ class ONNXEnsemble(Predictor):
         **kwargs,
     ):
         from mmm_fair.onnx_utils import ONNX_MMM
+
         assert (
             _ is None
         ), "Internal error: ONNXEnsemble was accidentally constructed with more positional arguments than acceptable"
-        self.mmm=ONNX_MMM(models,alphas,classes,n_classes,theta,pareto,sensitives)
+        self.mmm = ONNX_MMM(
+            models, alphas, classes, n_classes, theta, pareto, sensitives
+        )
 
     def _extract_number(self, filename):
         match = re.search(r"_(\d+)\.onnx$", filename)
@@ -28,7 +32,7 @@ class ONNXEnsemble(Predictor):
         """assert (
             sensitive is None or len(sensitive) == 0
         ), "ONNXEnsemble can only be called with no declared sensitive attributes" """
-        
+
         preds = self.mmm.predict(dataset, sensitive, theta)
-        
+
         return preds
