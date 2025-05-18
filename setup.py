@@ -15,7 +15,7 @@ with open("requirements.txt", "r") as file:
 
 setuptools.setup(
     name="MAMMOth-commons",
-    version="0.0.64",  # DON'T FORGET TO CHANGE THIS IN integration.py
+    version="0.0.65",  # DON'T FORGET TO CHANGE THIS IN integration.py
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Component interfaces of the MAI-BIAS toolkit.",

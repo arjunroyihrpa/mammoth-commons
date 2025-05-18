@@ -7,6 +7,7 @@ from mammoth_commons.datasets import Text
 from mammoth_commons.integration import metric
 from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML
+from mammoth_commons.externals import notify_progress, notify_end
 
 
 def manual_install_wheel(wheel_url_or_path):
@@ -14,9 +15,16 @@ def manual_install_wheel(wheel_url_or_path):
     if wheel_url_or_path.startswith("http://") or wheel_url_or_path.startswith(
         "https://"
     ):
+        def reporthook(block_num, block_size, total_size):
+            downloaded = block_num * block_size
+            progress = min(downloaded / total_size, 1.0) if total_size > 0 else 0
+            message = f"Downloading dbias transformers to cache... {int(progress*100)}%"
+            notify_progress(progress, message)
+
         local_whl = os.path.join(".cache", os.path.basename(wheel_url_or_path))
         print(f"Downloading wheel from {wheel_url_or_path}...")
-        urlretrieve(wheel_url_or_path, local_whl)
+        urlretrieve(wheel_url_or_path, local_whl, reporthook=reporthook)
+        notify_end()
     else:
         local_whl = wheel_url_or_path
         if not os.path.exists(local_whl):
@@ -50,7 +58,7 @@ def manual_install_wheel(wheel_url_or_path):
     namespace="mammotheu",
     version="v0042",
     python="3.12",
-    packages=("dbias", "tf-keras", "spacy[transformers]", "numpy>=2.0"),
+    packages=("dbias", "tf-keras", "spacy[transformers]"),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     """
@@ -70,22 +78,21 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
 
     # RANT AHEAD WITH SOME USEFUL INFO ABOUT FUTURE CHOICES - BUT NOT EXPECTING ANYONE TO BE ABLE TO MAINTAIN THIS
     #
-    # This whole implementation is a complete and utter hack because the original release of DBias
+    # The whole implementation is a complete and utter hack because the original release of DBias
     # has been rendered basically obsolete by the uselessly fast-evolving LLM technology landscape.
     #
     # I don't care if you present the latest SOTA framework if this is going to break in a couple of months
-    # forever. To be clear: I am mainly bashing transformers and the huggingface acosystem's hype
+    # forever. To be clear: I am mainly bashing transformers and the huggingface ecosystem's hype
     # and not dbias (who is at most guilty of a couple questionable engineering choices - like we all are).
     #
     # If you follow instructions from the dbias repo prepare for a world of pain. In fact I have suggested
     # the solution in this file to that repository as more helpful (!) alternative to installing stuff.
-    # Until someone maintains that package or it becomes completely obsolete this will be the integration
+    # Until someone maintains that package, or until it becomes completely obsolete, this will be the integration
     # with MAI-BIAS. (Or maybe MAI-BIAS will stop being maintained first. who knows?)
     #
     # So the hacks:
     #
-    # - MAI-BIAS installs the default version of numpy (which is later than 2.0) which thankfully prevents
-    #   dbias from overwriting it and preemptively mess with other modules.
+    # - MAI-BIAS installs the default version of numpy (which is later than 2.0).
     #   I do not know why people keep freezing versions of numpy without good reason. *Everyone* uses numpy
     #   in AI and this is the easiest way to create a mess.
     # - We also install the latest version of spacy, because older ones often do not compile (I am failing
@@ -101,6 +108,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     #   you try to do something constructive by actually combining solutions instead of deploying apps or microservices.
     # - Also disabled GPU to prevent JIT-ing because this is the one thing that breaks after all the other sorcery.
     #   Surprised we reached so far, honestly.
+    # - There's a chance pip's eager upgrade will work. But this also works and does what I want it to for sure.
     # - Yes, I could also add a large try-catch to guarantee restoration of `os.environ["CUDA_VISIBLE_DEVICES"]`
     #   but this is hacky enough and runs fast enough for me to prefer the occasional user issue rather than
     #   looking at the monstrosity of having another nesting block. I HOPE I'm not breaking other cuda devices
@@ -118,7 +126,12 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
         from Dbias.text_debiasing import run
         from Dbias.bias_classification import classify
         from Dbias.bias_recognition import recognizer
+        import en_pipeline
     except OSError:
+        manual_install_wheel(
+            "https://huggingface.co/d4data/en_pipeline/resolve/main/en_pipeline-any-py3-none-any.whl"
+        )
+    except:
         manual_install_wheel(
             "https://huggingface.co/d4data/en_pipeline/resolve/main/en_pipeline-any-py3-none-any.whl"
         )

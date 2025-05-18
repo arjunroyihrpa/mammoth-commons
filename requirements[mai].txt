@@ -1,6 +1,4 @@
-numpy
-markdown2
-dill
+mammoth-commons[deployment]
 pandas
 PyYAML
 kfp
