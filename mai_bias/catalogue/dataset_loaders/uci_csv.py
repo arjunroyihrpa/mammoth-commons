@@ -19,9 +19,7 @@ def data_uci(
 
     Args:
         dataset_name: The name of the dataset.
-        target: The name of the predictive label.
     """
     from mmm_fair.data_process import data_uci as mmm_data_uci
 
-    csv_dataset = mmm_data_uci(dataset_name)
-    return csv_dataset
+    return mmm_data_uci(dataset_name)

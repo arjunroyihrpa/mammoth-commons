@@ -32,9 +32,8 @@ def run_test(file_path):
         return True
     except Exception as e:
         print(f"{file_path.ljust(60)}: {RED}FAILED{RESET} - {str(e)}")
-        import traceback
-
-        traceback.print_exc()
+        #import traceback
+        #traceback.print_exc()
         return False
 
 

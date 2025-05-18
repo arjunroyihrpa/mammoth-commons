@@ -1,4 +1,7 @@
 mammoth-commons[deployment]
+numpy>=2.0.0
+markdown2
+dill
 pandas
 PyYAML
 kfp
@@ -9,3 +12,5 @@ PySide6
 html2text
 readchar
 rich
+mmm-fair>=2.2.0
+click

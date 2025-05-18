@@ -17,6 +17,10 @@ def unpack_optionals(arg_type):
         return [arg for arg in get_args(arg_type) if arg is not type(None)][0]
     return arg_type
 
+def fixed_version(library):
+    if library=="onnxruntime": return "git+https://github.com/onnx/sklearn-onnx.git"
+    return library
+
 
 def _path(method):
     running_path = os.path.abspath(os.getcwd()).lower()
@@ -52,6 +56,7 @@ class Options:
 
 
 def metric(namespace, version, python=_default_python, packages=_default_packages):
+    packages = [fixed_version(package) for package in packages]
     from mammoth_commons import custom_kfp
     import yaml
 
@@ -68,19 +73,27 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                     i / len(packages),
                     "Verifying and installing dependencies: " + package,
                 )
+                #try:
+                #    if package == "scikit-learn":
+                #        package = "sklearn"
+                #    importlib.import_module(package.split("[")[0].replace("-", "_"))
+                #except ImportError:
                 try:
-                    if package == "scikit-learn":
-                        package = "sklearn"
-                    importlib.import_module(package.split("[")[0].replace("-", "_"))
-                except ImportError:
-                    try:
-                        subprocess.check_call(
-                            [sys.executable, "-m", "pip", "install", package]
-                        )
-                    except subprocess.CalledProcessError as e:
-                        raise Exception(
-                            f"Failed to install: " + str(package) + ": " + str(e)
-                        )
+                    result = subprocess.run(
+                        [sys.executable, "-m", "pip", "install", package],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                    )
+                    for line in result.stdout.splitlines():
+                        if not line.startswith("Requirement already satisfied:"):
+                            print(line)
+                    if result.returncode != 0:
+                        raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout)
+                except subprocess.CalledProcessError as e:
+                    raise Exception(
+                        f"Failed to install: {package}: {e.output}"
+                    )
             notify_end()
             return method(*args, **kwargs)
 
@@ -219,6 +232,7 @@ def kfp_method(
 def loader(
     namespace, version, ltype=None, python=_default_python, packages=_default_packages
 ):
+    packages = [fixed_version(package) for package in packages]
     from mammoth_commons import custom_kfp
     import yaml
 
@@ -231,7 +245,7 @@ def loader(
             import importlib
 
             for i, package in enumerate(packages):
-                try:
+                """try:
                     if package == "scikit-learn":
                         package = "sklearn"
                     importlib.import_module(package.split("[")[0].replace("-", "_"))
@@ -246,7 +260,23 @@ def loader(
                     except subprocess.CalledProcessError as e:
                         raise Exception(
                             f"Failed to install: " + str(package) + ": " + str(e)
-                        )
+                        )"""
+                try:
+                    result = subprocess.run(
+                        [sys.executable, "-m", "pip", "install", package],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                    )
+                    for line in result.stdout.splitlines():
+                        if not line.startswith("Requirement already satisfied:"):
+                            print(line)
+                    if result.returncode != 0:
+                        raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout)
+                except subprocess.CalledProcessError as e:
+                    raise Exception(
+                        f"Failed to install: {package}: {e.output}"
+                    )
             notify_end()
             return method(*args, **kwargs)
 
