@@ -8,7 +8,7 @@ from mammoth_commons.integration import metric, Options
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=("torch", "torchvision", "cvbiasmitigation"),
 )
 def image_bias_analysis(

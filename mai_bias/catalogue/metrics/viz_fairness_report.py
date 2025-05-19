@@ -15,7 +15,7 @@ from typing import List
 @metric(
     namespace="mammotheu",
     version="v0001",
-    python="3.13",
+    python="3.12",
     packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair"),
 )
 def viz_fairness_report(

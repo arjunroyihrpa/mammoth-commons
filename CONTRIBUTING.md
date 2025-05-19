@@ -55,8 +55,8 @@ The parameter descriptions should follow the convention `name: description` and 
 specify any type. You cannot have line breaks in the parameter description.
 
 4. *Decorators.* Decorate your module with either the 
-`@mammoth.integration.metric(namespace, version, python="3.13", packages=(...))` or 
-the `@mammoth.integration.loader(namespace, version, python="3.13", packages=(...))` decorator. 
+`@mammoth.integration.metric(namespace, version, python="3.12", packages=(...))` or 
+the `@mammoth.integration.loader(namespace, version, python="3.12", packages=(...))` decorator. 
 These require at least one argument to denote
 the module's version. The namespace refers to whom the module
 should be accredited to (if you are not using continuous integration, it should be the same as your DockerHub 
@@ -83,7 +83,7 @@ from typing import Dict, List
 from mammoth_commons.integration import metric
 
 
-@metric(namespace="...", version="v001", python="3.13")
+@metric(namespace="...", version="v001", python="3.12")
 def new_metric(
         dataset: CSV,
         model: ONNX,
@@ -113,7 +113,7 @@ from typing import List, Optional
 @loader(
     namespace="maniospas",
     version="v001",
-    python="3.13",
+    python="3.12",
     packages=("pandas",),
 )
 def categorical_csv(
@@ -143,7 +143,7 @@ from mammoth_commons.models import ONNX
 from mammoth_commons.integration import loader
 
 
-@loader(namespace="...", version="v001", python="3.13")
+@loader(namespace="...", version="v001", python="3.12")
 def model_onnx(
         path: str
 ) -> ONNX:

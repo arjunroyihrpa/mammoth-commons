@@ -6,7 +6,7 @@ import pandas as pd
 @loader(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=("pandas", "mmm-fair"),
 )
 def data_read_any(

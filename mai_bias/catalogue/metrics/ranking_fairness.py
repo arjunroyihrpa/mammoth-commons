@@ -651,7 +651,7 @@ def plot_network(
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=(
         "seaborn",
         "matplotlib",
