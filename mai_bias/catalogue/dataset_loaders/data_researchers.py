@@ -7,7 +7,7 @@ import numpy as np
 @loader(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=("pandas", "networkx"),
 )
 def data_researchers(

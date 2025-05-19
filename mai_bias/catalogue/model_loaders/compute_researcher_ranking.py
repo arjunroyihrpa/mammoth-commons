@@ -209,7 +209,7 @@ def model_normal_ranking() -> ResearcherRanking:
     return ResearcherRanking(normal_ranking)
 
 
-@loader(namespace="csh", version="v002", python="3.13")
+@loader(namespace="csh", version="v002", python="3.12")
 def model_mitigation_ranking() -> ResearcherRanking:
     """
     Load the researcher ranking model incorporating a mitigation strategy.

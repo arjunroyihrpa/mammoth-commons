@@ -58,8 +58,8 @@ def manual_install_wheel(wheel_url_or_path):
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
-    packages=("dbias", "tf-keras", "spacy[transformers]"),
+    python="3.12",
+    packages=("git+https://github.com/maniospas/Fairness-in-AI", "tf-keras", "spacy[transformers]"),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     """

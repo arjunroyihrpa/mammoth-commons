@@ -5,7 +5,7 @@ from mammoth_commons.integration import loader, Options
 @loader(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=("pandas", "ucimlrepo", "mmm-fair"),
 )
 def data_uci(

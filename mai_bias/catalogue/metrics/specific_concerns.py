@@ -9,7 +9,7 @@ from mammoth_commons.externals import fb_categories, align_predictions_labels
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.13",
+    python="3.12",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
 def specific_concerns(

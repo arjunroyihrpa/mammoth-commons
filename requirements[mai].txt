@@ -12,5 +12,4 @@ PySide6
 html2text
 readchar
 rich
-mmm-fair>=2.2.0
 click
