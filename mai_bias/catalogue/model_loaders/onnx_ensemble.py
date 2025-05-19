@@ -7,7 +7,7 @@ import zipfile
 
 
 @loader(
-    namespace="mammotheu", version="v0042", python="3.12", packages=("onnxruntime",)
+    namespace="mammotheu", version="v0042", python="3.13", packages=("onnxruntime",)
 )
 def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
     """<p>This ONNX Ensemble Module enables predictions using a <a href="https://scikit-learn.org/stable/modules/ensemble.html" target="_blank">boosting ensemble</a> mechanism, ideal for combining multiple weak learners to improve prediction accuracy. Boosting, a powerful technique in machine learning, focuses on training a series of simple models (weak learners) – often single-depth <a href="https://scikit-learn.org/stable/modules/tree.html#classification" target="_blank">decision trees</a> – and combining them into a strong ensemble model. However, the model loader module allows any model converted to <a href="https://onnxruntime.ai/docs/tutorials/traditional-ml.html#convert-model-to-onnx">ONNX</a> format and zipped inside a directory path along with other meta-informations (if any) stored in <a href="https://numpy.org/doc/2.1/reference/generated/numpy.save.html">.npy</a> format.</p>

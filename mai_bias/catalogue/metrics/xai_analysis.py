@@ -10,7 +10,7 @@ from mammoth_commons.integration import metric
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.12",
+    python="3.13",
     packages=("torch", "torchvision", "timm", "facextool"),
 )
 def facex_regions(
