@@ -6,7 +6,7 @@ from mammoth_commons.externals import pd_read_csv
 @loader(
     namespace="mammotheu",
     version="v0042",
-    python="3.12",
+    python="3.13",
     packages=("pandas",),
 )
 def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:

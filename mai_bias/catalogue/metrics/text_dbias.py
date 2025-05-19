@@ -58,7 +58,7 @@ def manual_install_wheel(wheel_url_or_path):
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.12",
+    python="3.13",
     packages=(
         "git+https://github.com/maniospas/Fairness-in-AI",
         "tf-keras",
