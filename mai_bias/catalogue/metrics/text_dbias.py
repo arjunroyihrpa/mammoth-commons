@@ -58,8 +58,12 @@ def manual_install_wheel(wheel_url_or_path):
 @metric(
     namespace="mammotheu",
     version="v0042",
-    python="3.12",
-    packages=("git+https://github.com/maniospas/Fairness-in-AI", "tf-keras", "spacy[transformers]"),
+    python="3.13",
+    packages=(
+        "git+https://github.com/maniospas/Fairness-in-AI",
+        "tf-keras",
+        "spacy[transformers]",
+    ),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     """
@@ -88,8 +92,8 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     #
     # If you follow instructions from the dbias repo prepare for a world of pain. In fact I have suggested
     # the solution in this file to that repository as more helpful (!) alternative to installing stuff.
-    # Until someone maintains that package, or until it becomes completely obsolete, this will be the integration
-    # with MAI-BIAS. (Or maybe MAI-BIAS will stop being maintained first. who knows?)
+    # And I still needed to create a fork of the repo, remove dependency freezes,
+    # and orchestrate a git installation.
     #
     # So the hacks:
     #
