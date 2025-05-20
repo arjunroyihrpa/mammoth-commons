@@ -18,7 +18,7 @@ run those modules in your local machine.
 
 ## 🔬 Run locally
 
-1. Make **sure** you are on Python 3.12.
+1. Make **sure** you are on Python 3.13.
 2. Install the *mai-bias* package. This will take time due to supporting many AI tools.
 3. Launch the desktop app.
 
@@ -36,9 +36,9 @@ python -m mai_bias.app
 ```bash
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt update
-sudo apt install python3.12
-sudo apt install python3.12-pip
-sudo apt install python3.12-venv
+sudo apt install python3.13
+sudo apt install python3.13-pip
+sudo apt install python3.13-venv
 python3 -m venv venv
 source venv/bin/activate
 python3 install mai-bias
