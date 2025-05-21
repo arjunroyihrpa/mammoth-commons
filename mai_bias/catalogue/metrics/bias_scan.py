@@ -26,7 +26,7 @@ def bias_scan(
     scoring: mammoth_commons.integration.Options(
         "Bernoulli", "Gaussian", "Poisson", "BerkJones"
     ) = "Bernoulli",
-    discovery: bool = True
+    discovery: bool = True,
 ) -> HTML:
     """<p>Performs a scan for the most biased attribute intersection in the dataset.
     Any sensitive attributes that are already known will be <b>excluded</b> from the scan. That is, you can
