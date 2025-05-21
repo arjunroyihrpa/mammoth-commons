@@ -25,7 +25,7 @@ def viz_fairness_report(
 ) -> HTML:
     """
     <p>
-        This module generates a structured fairness report using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library. 
+        This module generates a structured fairness report using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library.
         It assesses whether a machine learning model behaves similarly across different population groups, as defined by sensitive attributes such as gender, race, or age.
     </p>
     <p>
@@ -36,7 +36,7 @@ def viz_fairness_report(
         <li><strong>Scalar metrics</strong>: These summarize disparities across groups into single numeric values. Small differences and ratios close to 1 indicate balanced treatment.</li>
     </ul>
     <p>
-        Results are presented in aligned tables with clear formatting, allowing users to compare outcomes across groups at a glance. 
+        Results are presented in aligned tables with clear formatting, allowing users to compare outcomes across groups at a glance.
         Each metric is briefly explained to help interpret whether the model exhibits performance or outcome disparities for different groups.
     </p>
     <p>

@@ -25,7 +25,7 @@ def viz_fairness_plots(
 ) -> HTML:
     """
     <p>
-    This module visualizes fairness metrics using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library and interactive Plotly charts. 
+    This module visualizes fairness metrics using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library and interactive Plotly charts.
     It provides visual insights into how a model performs across different groups defined by sensitive features such as gender, race, or age.
     </p>
     <p>
@@ -36,7 +36,7 @@ def viz_fairness_plots(
         <li><strong>Scalar metrics</strong>: Displayed as horizontal bar charts, these summarize disparities (e.g., equal opportunity difference) in a compact, interpretable format.</li>
     </ul>
     <p>
-        Interactive charts allow users to hover for precise values, compare metrics between groups, and quickly identify fairness gaps. 
+        Interactive charts allow users to hover for precise values, compare metrics between groups, and quickly identify fairness gaps.
         An explanation panel is included to define each metric and guide interpretation.
     </p>
     <p>
