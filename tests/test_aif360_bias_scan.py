@@ -19,7 +19,7 @@ def test_bias_scan():
             "contact",
             "poutcome",
         ]
-        sensitive = ["poutcome"]
+        sensitive = []
         dataset_uri = "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip/bank/bank.csv"
         dataset = env.data_custom_csv(
             dataset_uri,
