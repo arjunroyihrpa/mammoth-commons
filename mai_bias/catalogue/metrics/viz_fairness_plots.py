@@ -24,9 +24,27 @@ def viz_fairness_plots(
     sensitive: List[str],
 ) -> HTML:
     """
-    <p>This module generates a detailed fairness plots using <a href="https://fairlearn.org/" target="_blank">Fairlearn</a>,
-    providing both group-wise and scalar fairness metrics across sensitive attributes such as sex or race.</p>
+    <p>
+    This module visualizes fairness metrics using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library and interactive Plotly charts. 
+    It provides visual insights into how a model performs across different groups defined by sensitive features such as gender, race, or age.
+    </p>
+    <p>
+        The module produces two sets of visual outputs:
+    </p>
+    <ul>
+        <li><strong>Group-wise metrics</strong>: Shown as grouped bar charts, these display performance metrics (e.g., false positive rate) across subgroups.</li>
+        <li><strong>Scalar metrics</strong>: Displayed as horizontal bar charts, these summarize disparities (e.g., equal opportunity difference) in a compact, interpretable format.</li>
+    </ul>
+    <p>
+        Interactive charts allow users to hover for precise values, compare metrics between groups, and quickly identify fairness gaps. 
+        An explanation panel is included to define each metric and guide interpretation.
+    </p>
+    <p>
+        This module is well suited for exploratory analysis, presentations, and fairness monitoring.
+        It makes group disparities visible and intuitive, helping identify where further scrutiny or mitigation may be needed.
+    </p>
     """
+
     # Import the existing function from mmm-fair
     from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
 

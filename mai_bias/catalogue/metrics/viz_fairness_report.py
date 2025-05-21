@@ -24,9 +24,27 @@ def viz_fairness_report(
     sensitive: List[str],
 ) -> HTML:
     """
-    <p>This module generates a detailed fairness report using <a href="https://fairlearn.org/" target="_blank">Fairlearn</a>,
-    providing both group-wise and scalar fairness metrics across sensitive attributes such as sex or race.</p>
+    <p>
+        This module generates a structured fairness report using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library. 
+        It assesses whether a machine learning model behaves similarly across different population groups, as defined by sensitive attributes such as gender, race, or age.
+    </p>
+    <p>
+        The report includes two types of fairness metrics:
+    </p>
+    <ul>
+        <li><strong>Group-wise metrics</strong>: These show how the model performs for each group separately (e.g., true positive rates for Group A vs. Group B).</li>
+        <li><strong>Scalar metrics</strong>: These summarize disparities across groups into single numeric values. Small differences and ratios close to 1 indicate balanced treatment.</li>
+    </ul>
+    <p>
+        Results are presented in aligned tables with clear formatting, allowing users to compare outcomes across groups at a glance. 
+        Each metric is briefly explained to help interpret whether the model exhibits performance or outcome disparities for different groups.
+    </p>
+    <p>
+        This module is particularly useful in evaluation pipelines, audit reports, and model reviews where transparency and fairness are essential.
+        It helps teams assess group-level equity in model behavior using interpretable, tabular summaries.
+    </p>
     """
+
     # Import the existing function from mmm-fair
     from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
 
