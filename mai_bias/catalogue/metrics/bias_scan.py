@@ -28,22 +28,28 @@ def bias_scan(
     ) = "Bernoulli",
     discovery: bool = True,
 ) -> HTML:
-    """<p>Performs a scan for the most biased attribute intersection in the dataset.
-    Any sensitive attributes that are already known will be <b>excluded</b> from the scan. That is, you can
-    condition the scan to discover more attributes other than those declared as sensitive. These may not be
-    actually sensitive, but set so because you are trying to find more subtle biases.
-    A paper describing how this approach is implemented to estimate the intersection
-    in linear rather than exponential time is available <a href="https://arxiv.org/pdf/1611.08292">here</a>.</p>
+    """<p>This module scans your dataset to estimate the most biased attributes or combinations of attributes.
+    For example, gender could be biased only when combined with socioeconomic status. If  you have already
+    marked some attributes as sensitive (such as race or gender),
+    the module will **not** include them in the scan. This lets you search for additional attributes
+    that may contribute to unfair outcomes, even if they are not obviously sensitive. These new attributes
+    might seem innocuous at frst, but they could reveal more subtle patterns of bias.</p>
 
-    <p>To start a scan for the first time, do not set any sensitive attributes. As a typical use case, you can
-    rerun the analysis by adding problematic attributes from the previous run to those already known to be biased.
-    This process will let you discover more potential issues, though now of lesser importance. To help with this
-    process, this module can partially automate it by enabling the discovery mode. This removes all problematic
-    attributes in the intersection and retries, Discovery
-    is less informed than a human investigator that knows when to exclude intersections from the dataset</p>
+    <p>A paper describing how this approach is implemented to estimate biased intersection candidates
+    in linear rather than exponential time is available <a href="https://arxiv.org/pdf/1611.08292">this paper</a>
+    Instead of checking across all combinations (which can take a very long time), it uses a faster approach.</p>
+
+    <p>To start use the module in an informed manner, run it without setting any sensitive attributes.
+    After the first scan, you can review the results and mark any problematic attributes it found as sensitive.
+    Then,  scan again to uncover more potential issues; these may be less important but still worth investigating.</p>
+
+    <p>For convenience, there's a <i>discovery</i> mode in parameters, which helps automate a simple variation of
+    the rerun scheme. In this mode, the tool removes the most obviously biased combinations from the results
+    and runs the scan again. However, this automatic process might remove potential interactions that a domain
+    expert would be better equipped to catch by removing one attribute at a time instead of the whole combination.</p>
 
     Args:
-        penalty: The higher the penalty, the less complex the highest scoring subset that gets returned is.
+        penalty: A positive. The higher the penalty, the less complex the highest scoring subset that gets returned is, but penalties as small as 1.E-12 could also be acceptable to promote finding intersections of many attributes.
         scoring: The distribution used to compute p-values. Can be Bernoulli, Gaussian, Poisson, or BerkJones.
         discovery: Whether the scan should attempt to create a list of problematic attribute combinations in decreasing order of importance. That list will contain only non-overlapping attribute intersections.
     """
