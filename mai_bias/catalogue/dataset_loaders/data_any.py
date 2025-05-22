@@ -7,7 +7,7 @@ import pandas as pd
     namespace="mammotheu",
     version="v0042",
     python="3.13",
-    packages=("pandas", "mmm-fair"),
+    packages=("pandas", "onnxruntime", "mmm-fair"),
 )
 def data_read_any(
     raw_data: pd.DataFrame = None,

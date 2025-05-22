@@ -29,24 +29,25 @@ def bias_scan(
     discovery: bool = True,
 ) -> HTML:
     """<p>This module scans your dataset to estimate the most biased attributes or combinations of attributes.
-    For example, gender could be biased only when combined with socioeconomic status. If  you have already
-    marked some attributes as sensitive (such as race or gender),
-    the module will **not** include them in the scan. This lets you search for additional attributes
-    that may contribute to unfair outcomes, even if they are not obviously sensitive. These new attributes
-    might seem innocuous at frst, but they could reveal more subtle patterns of bias.</p>
+    For example, gender may only show bias when combined with socioeconomic status, despite the latter not
+    bein inherently sensitive. If you have already marked some
+    attributes as sensitive (such as race or gender), the module will **exclude** them from the scan. This allows
+    searching for additional patterns that contribute to unfair outcomes.</p>
 
-    <p>A paper describing how this approach is implemented to estimate biased intersection candidates
-    in linear rather than exponential time is available <a href="https://arxiv.org/pdf/1611.08292">this paper</a>
-    Instead of checking across all combinations (which can take a very long time), it uses a faster approach.</p>
+    <p>A paper describing how this approach estimates biased intersection candidates in **linear** rather
+    than **exponential** time is available <a href="https://arxiv.org/pdf/1611.08292">here</a>. Instead of checking
+    every possible combination (which can be very time-consuming), it uses a more efficient method.</p>
 
-    <p>To start use the module in an informed manner, run it without setting any sensitive attributes.
-    After the first scan, you can review the results and mark any problematic attributes it found as sensitive.
-    Then,  scan again to uncover more potential issues; these may be less important but still worth investigating.</p>
+    <p>To get started, run the module without setting any sensitive attributes. After the first scan,
+    advanced users can review the results and mark any problematic attributes it identifies as sensitive.
+    Then, run the scan again to uncover additional potential issues—these may be less prominent but still
+    worth investigating.</p>
 
-    <p>For convenience, there's a <i>discovery</i> mode in parameters, which helps automate a simple variation of
-    the rerun scheme. In this mode, the tool removes the most obviously biased combinations from the results
-    and runs the scan again. However, this automatic process might remove potential interactions that a domain
-    expert would be better equipped to catch by removing one attribute at a time instead of the whole combination.</p>
+    <p>For convenience, there is a <i>discovery</i> mode available in the parameters. This automatically adds
+    attributes suspected of contributing to bias to the list of ignored (already known sensitive) ones, then reruns
+    the scan. While this automation helps streamline the process, it removes all attributes contributing to biased
+    intersections. A domain expert may prefer to manually remove one attribute at a time by adding it to known
+    sensitive attributes and rerun the module to investigate more granular effects on the results.</p>
 
     Args:
         penalty: A positive. The higher the penalty, the less complex the highest scoring subset that gets returned is, but penalties as small as 1.E-12 could also be acceptable to promote finding intersections of many attributes.
