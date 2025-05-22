@@ -62,6 +62,7 @@ registry.model(
         data_uci,
         data_read_any,
         data_images,
+        data_image_pairs,
         data_free_text,
     ],
 )

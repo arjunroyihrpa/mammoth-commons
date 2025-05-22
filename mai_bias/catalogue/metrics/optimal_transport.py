@@ -49,8 +49,12 @@ def optimal_transport(
     from skimage.filters import threshold_otsu
     from aif360.sklearn.metrics import ot_distance
     import pandas as pd
+    import numpy as np
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
+    if hasattr(dataset, "target") and not hasattr(dataset, "labels") and hasattr(dataset, "to_numpy"):
+        batches = [batch[-2] for batch in dataset.to_numpy(sensitive)]
+        dataset.labels = np.concatenate(batches)
     assert hasattr(
         dataset, "labels"
     ), "The chosen dataset loader has not identified any labels"
@@ -77,6 +81,12 @@ def optimal_transport(
             label = pd.Series(labels[label_name])
             for attr in sensitive:
                 df = dataset.data[attr]
+                if hasattr(predictions, "numpy"):
+                    predictions = predictions.numpy()
+                if hasattr(df, "numpy"):
+                    df = df.numpy()
+                if len(labels) > 1:
+                    labels = pd.Series(labels[-1].numpy())
                 dist = ot_distance(y_true=label, y_pred=predictions, prot_attr=df)
                 for k, v in dist.items():
                     if (attr, k) not in results:
@@ -103,10 +113,18 @@ def optimal_transport(
         """
         for attr in sensitive:
             df = dataset.data[attr]
+            if hasattr(predictions, "numpy"):
+                predictions = pd.Series(predictions.numpy())
+            if hasattr(df, "numpy"):
+                df = df.numpy()
+            if len(labels) > 1:
+                labels = pd.Series(labels[-1].numpy())
+            if not isinstance(df, pd.Series):
+                df = pd.Series(df)
             dist = ot_distance(y_true=labels, y_pred=predictions, prot_attr=df)
             for k, v in dist.items():
                 if v > threshold:
-                    offenders.append(f"{attr} for target {v}")
+                    offenders.append(f"{attr} {k} for target")
                 worst_distance = max(v, worst_distance)
                 text += f"<tr><td>{attr}</td><td>{k}</td><td>{v:.3f}</td></tr>"
         text += "</tbody></table></div>"

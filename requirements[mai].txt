@@ -6,6 +6,7 @@ pandas
 PyYAML
 kfp
 onnxruntime
+git+https://github.com/onnx/sklearn-onnx.git
 onnx
 docker
 PySide6

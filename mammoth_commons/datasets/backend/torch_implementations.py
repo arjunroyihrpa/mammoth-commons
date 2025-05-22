@@ -86,8 +86,8 @@ class PytorchImagePairsDataset(Dataset):
         img1_name = self.data.iloc[idx, 0]  # ref
         img2_name = self.data.iloc[idx, 1]  # motion
 
-        id1_image_path = os.path.join(self.root_dir, img1_name)
-        id2_image_path = os.path.join(self.root_dir, img2_name)
+        id1_image_path = os.path.join(self.root_dir, str(img1_name))
+        id2_image_path = os.path.join(self.root_dir, str(img2_name))
 
         target = self.data.iloc[idx][self.target]
         protected = [self.data.iloc[idx][attr] for attr in self.sensitive]
