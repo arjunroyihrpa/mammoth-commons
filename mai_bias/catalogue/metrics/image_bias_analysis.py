@@ -110,6 +110,8 @@ def image_bias_analysis(
                 result_str += " " * indent + "```" + data.get("language", "") + "\n"
                 result_str += " " * indent + data.get("content", "") + "\n"
                 result_str += " " * indent + "```\n"
+            elif data.get("type") == "html":
+                result_str += " " * indent + data.get("content", "") + "\n"
             elif data.get("type") == "list":
                 result_str += json_to_str_recursively(data.get("content", []), indent)
             else:
