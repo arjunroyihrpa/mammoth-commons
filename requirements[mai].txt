@@ -5,9 +5,8 @@ dill
 pandas
 PyYAML
 kfp
-onnxruntime
-git+https://github.com/onnx/sklearn-onnx.git
 onnx
+onnxruntime
 docker
 PySide6
 html2text

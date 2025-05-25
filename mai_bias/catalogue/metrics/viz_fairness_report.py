@@ -16,7 +16,7 @@ from typing import List
     namespace="mammotheu",
     version="v0001",
     python="3.13",
-    packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair"),
+    packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair", "skl2onnx"),
 )
 def viz_fairness_report(
     dataset: CSV,

@@ -1,4 +1,4 @@
-from mammoth_commons.datasets import CSV
+from mammoth_commons.datasets import Dataset
 from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML
 from typing import List
@@ -14,7 +14,6 @@ def generate_nested_pie_chart(df, columns, title=None, color_scheme=None):
     import pandas as pd
     import plotly.graph_objects as go
     import plotly.express as px
-    from plotly.subplots import make_subplots
 
     if not isinstance(df, pd.DataFrame):
         raise TypeError("df must be a pandas DataFrame")
@@ -633,7 +632,7 @@ def apply_class_ratio_sampling(df, protected_attribute, target_column):
     ),
 )
 def augmentation_report(
-    dataset: CSV,
+    dataset: Dataset,
     model: EmptyModel,
     sensitive: List[str],
 ) -> HTML:
@@ -664,17 +663,16 @@ def augmentation_report(
     [Link to paper](https://arxiv.org/pdf/2409.05215).
     """
     import pandas as pd
-    import plotly.graph_objects as go
-    import plotly.express as px
-    from plotly.subplots import make_subplots
+    import numpy as np
 
-    df = dataset.data
     non_categorical = [col for col in sensitive if col not in dataset.categorical]
     if non_categorical:
         raise ValueError(
             f"Non-categorical sensitive attributes cannot be processed not allowed by augmentation report: {non_categorical}. "
             f"Current categorical columns are: {dataset.categorical}"
         )
+
+    df = dataset.data
     target = dataset.labels.name if hasattr(dataset.labels, "name") else "target"
     target_values_df = (
         dataset.labels.idxmax(axis=1)

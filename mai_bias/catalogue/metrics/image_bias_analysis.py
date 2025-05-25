@@ -1,4 +1,4 @@
-from mammoth_commons.datasets import Image
+from mammoth_commons.datasets import ImageLike
 from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML, Markdown
 from typing import List
@@ -12,7 +12,7 @@ from mammoth_commons.integration import metric, Options
     packages=("torch", "torchvision", "cvbiasmitigation"),
 )
 def image_bias_analysis(
-    dataset: Image,
+    dataset: ImageLike,
     model: EmptyModel,
     sensitive: List[str],
     task: Options("face verification", "image classification") = None,

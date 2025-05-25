@@ -6,7 +6,7 @@ from mammoth_commons.integration import loader, Options
     namespace="mammotheu",
     version="v0042",
     python="3.13",
-    packages=("pandas", "ucimlrepo", "onnxruntime", "mmm-fair"),
+    packages=("pandas", "ucimlrepo", "onnxruntime", "mmm-fair", "skl2onnx"),
 )
 def data_uci(
     dataset_name: Options("Credit", "Bank", "Adult", "Kdd") = None,

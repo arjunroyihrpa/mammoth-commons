@@ -21,6 +21,8 @@ def unpack_optionals(arg_type):
 def fixed_version(library):
     if library == "numpy":
         return "numpy>=2.0.0"
+    if library == "skl2onnx":
+        return "git+https://github.com/onnx/sklearn-onnx.git"
     #if library == "onnxruntime":
     #    return "git+https://github.com/onnx/sklearn-onnx.git"
     return library

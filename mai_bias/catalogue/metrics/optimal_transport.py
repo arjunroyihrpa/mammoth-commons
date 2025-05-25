@@ -85,8 +85,6 @@ def optimal_transport(
                     predictions = predictions.numpy()
                 if hasattr(df, "numpy"):
                     df = df.numpy()
-                if len(labels) > 1:
-                    labels = pd.Series(labels[-1].numpy())
                 dist = ot_distance(y_true=label, y_pred=predictions, prot_attr=df)
                 for k, v in dist.items():
                     if (attr, k) not in results:
@@ -117,8 +115,6 @@ def optimal_transport(
                 predictions = pd.Series(predictions.numpy())
             if hasattr(df, "numpy"):
                 df = df.numpy()
-            if len(labels) > 1:
-                labels = pd.Series(labels[-1].numpy())
             if not isinstance(df, pd.Series):
                 df = pd.Series(df)
             dist = ot_distance(y_true=labels, y_pred=predictions, prot_attr=df)
