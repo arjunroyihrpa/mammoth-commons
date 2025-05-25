@@ -23,7 +23,7 @@ def fixed_version(library):
         return "numpy>=2.0.0"
     if library == "skl2onnx":
         return "git+https://github.com/onnx/sklearn-onnx.git"
-    #if library == "onnxruntime":
+    # if library == "onnxruntime":
     #    return "git+https://github.com/onnx/sklearn-onnx.git"
     return library
 

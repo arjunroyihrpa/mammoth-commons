@@ -52,7 +52,11 @@ def optimal_transport(
     import numpy as np
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
-    if hasattr(dataset, "target") and not hasattr(dataset, "labels") and hasattr(dataset, "to_numpy"):
+    if (
+        hasattr(dataset, "target")
+        and not hasattr(dataset, "labels")
+        and hasattr(dataset, "to_numpy")
+    ):
         batches = [batch[-2] for batch in dataset.to_numpy(sensitive)]
         dataset.labels = np.concatenate(batches)
     assert hasattr(

@@ -1,8 +1,10 @@
 from typing import List
 from mammoth_commons.datasets import Dataset
 
+
 class ImageLike(Dataset):
     pass
+
 
 class Image(ImageLike):
     def __init__(
@@ -27,7 +29,9 @@ class Image(ImageLike):
             num_workers (int): Number of subprocesses to use for data loading.
         """
 
-        assert target in cols, f"Target {target} not one of the columns: "+",".join(cols)
+        assert target in cols, f"Target {target} not one of the columns: " + ",".join(
+            cols
+        )
         self.path = path
         self.root_dir = root_dir
         self.target = target

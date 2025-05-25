@@ -25,7 +25,9 @@ class ImagePairs(ImageLike):
             num_workers (int): Number of subprocesses to use for data loading.
         """
 
-        assert target in cols, f"Target {target} not one of the columns: "+",".join(cols)
+        assert target in cols, f"Target {target} not one of the columns: " + ",".join(
+            cols
+        )
         self.path = path
         self.root_dir = root_dir
         self.target = target
