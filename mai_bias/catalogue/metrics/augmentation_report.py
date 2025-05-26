@@ -1,4 +1,4 @@
-from mammoth_commons.datasets import Dataset
+from mammoth_commons.datasets import Dataset, ImageLike
 from mammoth_commons.models import EmptyModel
 from mammoth_commons.exports import HTML
 from typing import List
@@ -480,6 +480,10 @@ def apply_class_protected_sampling(df, protected_attribute, target_column):
             class_samples = group_data[group_data[target_column] == class_val]
             n_samples = len(class_samples)
             n_to_generate = n_majority - n_samples
+            if n_samples == 0:
+                raise Exception(
+                    f"Group {group} has no members in prediction class {target_column}"
+                )
 
             if n_to_generate > 0:
                 synthetic_samples = class_samples.sample(n_to_generate, replace=True)
@@ -665,13 +669,18 @@ def augmentation_report(
     import pandas as pd
     import numpy as np
 
+    if isinstance(dataset, ImageLike):
+        dataset.to_features(sensitive)
     non_categorical = [col for col in sensitive if col not in dataset.categorical]
+
     if non_categorical:
         raise ValueError(
             f"Non-categorical sensitive attributes cannot be processed not allowed by augmentation report: {non_categorical}. "
             f"Current categorical columns are: {dataset.categorical}"
         )
 
+    if not hasattr(dataset, "data"):
+        dataset.to_features(sensitive)
     df = dataset.data
     target = dataset.labels.name if hasattr(dataset.labels, "name") else "target"
     target_values_df = (

@@ -76,7 +76,7 @@ def optimal_transport(
         <thead class="table-dark"><tr><th>Attribute</th><th>Group</th>
         """
         for label_name in labels.columns:
-            text += f"<th>{label_name}</th>"
+            text += f"<th>{label_name} distance</th>"
         text += "</tr></thead><tbody>"
 
         # Collect distances for merging
@@ -107,10 +107,14 @@ def optimal_transport(
         text += "</tbody></table></div>"
     else:
         labels = pd.Series(labels)
+        if len(labels) > 1:
+            labels = labels.iloc[-1]
+            if not isinstance(labels, pd.Series):
+                labels = pd.Series(labels.numpy())
         text += """
         <div class="container mt-4">
         <table class="table table-striped table-bordered">
-        <thead class="table-dark"><tr><th>Attribute</th><th>Group</th><th>Prediction</th></tr>
+        <thead class="table-dark"><tr><th>Attribute</th><th>Group</th><th>Prediction distance</th></tr>
         </thead><tbody>
         """
         for attr in sensitive:
@@ -124,7 +128,7 @@ def optimal_transport(
             dist = ot_distance(y_true=labels, y_pred=predictions, prot_attr=df)
             for k, v in dist.items():
                 if v > threshold:
-                    offenders.append(f"{attr} {k} for target")
+                    offenders.append(f"{attr} group {k} for binary target")
                 worst_distance = max(v, worst_distance)
                 text += f"<tr><td>{attr}</td><td>{k}</td><td>{v:.3f}</td></tr>"
         text += "</tbody></table></div>"

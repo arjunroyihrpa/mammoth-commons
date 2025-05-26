@@ -1,9 +1,35 @@
 from typing import List
-from mammoth_commons.datasets import Dataset
+from mammoth_commons.datasets import Dataset, CSV
 
 
 class ImageLike(Dataset):
-    pass
+    def convert_to_csv(self, skip_first_columns, sensitive):
+        import pandas as pd
+        from mammoth_commons.externals import pd_read_csv
+
+        raw_data = pd_read_csv(self.path)
+        cols = [col for col in raw_data][skip_first_columns:]
+        numeric = [
+            col for col in cols if pd.api.types.is_any_real_numeric_dtype(raw_data[col])
+        ]
+        numeric = [col for col in numeric if len(set(raw_data[col])) > 10]
+        numeric_set = set(numeric)
+        categorical = [
+            col for col in cols if col not in numeric_set if col != self.target
+        ]
+        if len(categorical) < 1:
+            raise Exception("At least two categorical columns are required.")
+        label = self.target
+        csv = CSV(
+            raw_data,
+            numeric=numeric,
+            categorical=categorical,
+            labels=label,
+        )
+        self.data = csv.data
+        self.labels = csv.labels
+        self.categorical = csv.categorical
+        return csv.to_features(sensitive)
 
 
 class Image(ImageLike):
@@ -93,9 +119,6 @@ class Image(ImageLike):
             dataset=dataset, batch_size=self.batch_size, shuffle=self.shuffle
         )
 
-    def to_features(self):
-        return
-
     def _get_input_size(self, transform):
         from torchvision import transforms
 
@@ -103,3 +126,6 @@ class Image(ImageLike):
             if isinstance(t, transforms.Resize):
                 return t.size
         return (224, 224)
+
+    def to_features(self, sensitive):
+        return self.convert_to_csv(1, sensitive)

@@ -97,3 +97,6 @@ class ImagePairs(ImageLike):
             if isinstance(t, transforms.Resize):
                 return t.size
         return (224, 224)
+
+    def to_features(self, sensitive):
+        return self.convert_to_csv(2, sensitive)
