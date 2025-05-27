@@ -71,19 +71,13 @@ def sklearn_audit(
         top_recommendations: The number of top recommendations in evaluation that emulates showing the respective data samples to users when querying the trained model to give examples for each class in the dataset. Common values in the literature are 1,3,5,10.
     """
     import fairbench as fb
+    from sklearn import model_selection
 
     assert len(sensitive) != 0, "Set at least one sensitive attribute"
     reject = not bool(show_non_problematic)
-    X = dataset.to_features(sensitive)
+    X = dataset.to_numpy(sensitive)
     y = dataset.labels
-    if isinstance(y, dict):
-        y = y[list(y.keys())[0]]
-    else:
-        assert (
-            y.shape[1] <= 2
-        ), "Cannot create an sklearn report for non-binary predictions"
-        y = y[y.columns[-1]]
-    from sklearn import model_selection
+    y = y[list(y.__iter__())[0]]
 
     (
         X_train,
@@ -93,7 +87,7 @@ def sklearn_audit(
         _,
         idx_test,
     ) = model_selection.train_test_split(
-        X, y, np.arange(0, y.shape[0], dtype=np.int64), test_size=0.2
+        X, y, np.arange(0, len(y), dtype=np.int64), test_size=0.2
     )
     if predictor == "Logistic regression":
         from sklearn.linear_model import LogisticRegression
@@ -127,7 +121,7 @@ def sklearn_audit(
     predictions = model.predict(X_test)
     scores = model.predict_proba(X_test)[:, 1]
     sensitive = fb.Dimensions(
-        {attr + " ": fb_categories(dataset.data[attr][idx_test]) for attr in sensitive}
+        {attr + " ": fb_categories(dataset.df[attr][idx_test]) for attr in sensitive}
     )
 
     if intersectional:

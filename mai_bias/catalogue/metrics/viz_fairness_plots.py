@@ -4,7 +4,7 @@ Fairness Visualization Report Generator
 This module generates a detailed fairness plots using the Fairlearn library, providing both group-wise and scalar fairness metrics across sensitive attributes such as sex or race.
 """
 
-from mammoth_commons.datasets import Dataset
+from mammoth_commons.datasets import Dataset, Labels
 from mammoth_commons.exports import HTML
 from mammoth_commons.models import Predictor
 from mammoth_commons.integration import metric
@@ -54,6 +54,7 @@ def viz_fairness_plots(
     y_pred = model.predict(dataset, sensitive)
     dataset = dataset.to_csv(sensitive)
     y_true = list(dataset.labels.columns.values())[-1]
+
 
     sa_df = dataset.df[sensitive].copy()
     sa_matrix = sa_df.to_numpy()

@@ -1,5 +1,5 @@
 import mammoth_commons.integration
-from mammoth_commons.datasets import CSV
+from mammoth_commons.datasets import Dataset
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
@@ -19,7 +19,7 @@ from mammoth_commons.integration import metric
     ),
 )
 def bias_scan(
-    dataset: CSV,
+    dataset: Dataset,
     model: Predictor,
     sensitive: List[str],
     penalty: float = 0.5,
@@ -57,9 +57,10 @@ def bias_scan(
     import pandas as pd
     from aif360.sklearn.detectors import bias_scan as aif360bias_scan
 
+    predictions = pd.Series(model.predict(dataset, sensitive))
+    dataset = dataset.to_csv(sensitive)
     penalty = float(penalty)
     text = ""
-    predictions = pd.Series(model.predict(dataset, sensitive))
 
     counts = 0
     starting_sensitive = sensitive
@@ -68,7 +69,7 @@ def bias_scan(
         text += f'<h2 class="text-secondary">Prediction label: {label}</h2>'
         while True:
             labels = pd.Series(dataset.labels[label])
-            cats = [cat for cat in dataset.categorical if cat not in sensitive]
+            cats = [cat for cat in dataset.cat if cat not in sensitive]
             if len(cats) == 0 and text:
                 text += f"<i>All categorical attributes are already considered sensitive</i>"
                 break
@@ -79,7 +80,7 @@ def bias_scan(
                 text += f"<i>Already known sensitive attributes to be ignored: {', '.join(sensitive)}</i>"
             else:
                 text += f"<i>No attributes to be ignored (scanning everything)</i>"
-            X = dataset.data[cats]
+            X = dataset.df[cats]
             ret = aif360bias_scan(
                 X=X,
                 y_true=labels,
@@ -110,7 +111,7 @@ def bias_scan(
     text = f"""
         <div class="container mt-4">
             {'<h1 class="text-success">No concern</h1>' if counts==0 else '<h1 class="text-danger">Biased intersections of up to '+str(counts)+' attributes</h1>'}
-            {"" if len(dataset.numeric) == 0 else "<p><b>Numeric attributes have been ignored; the scan can work with only categorical ones.</b></p>"}
+            {"" if len(dataset.num) == 0 else "<p><b>Numeric attributes have been ignored; the scan can work with only categorical ones.</b></p>"}
             <p>After scanning for imbalances, the following attribute combinations out of those that were
             <i>not</i> already marked as sensitive were found to be underestimated. {'The scan was run in discovery mode, so the process added all indicated sensitive attributes to sensitive ones and retrying the analysis. This was repeated until no more suspicions were shed on data.' if discovery else 'There may be more attribute combinations that could be underestimated, but only the top one is presented here.'}
             Not all found attributes should necessarily be protected, and you should account only for the discovered

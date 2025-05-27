@@ -1,4 +1,5 @@
 from mammoth_commons.datasets import Dataset, ImageLike
+from mammoth_commons.externals import align_predictions_labels
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
@@ -46,29 +47,18 @@ def optimal_transport(
     Args:
         threshold: Transport distances below the given threshold are considered negligible.
     """
-    from skimage.filters import threshold_otsu
     from aif360.sklearn.metrics import ot_distance
     import pandas as pd
-    import numpy as np
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
-    if (
-        hasattr(dataset, "target")
-        and not hasattr(dataset, "labels")
-        and hasattr(dataset, "to_numpy")
-    ):
-        batches = [batch[-2] for batch in dataset.to_numpy(sensitive)]
-        dataset.labels = np.concatenate(batches)
-    assert hasattr(
-        dataset, "labels"
-    ), "The chosen dataset loader has not identified any labels"
     threshold = float(threshold)
-    if isinstance(dataset, ImageLike):
-        dataset.to_features(sensitive)
-
     text = ""
     predictions = pd.Series(model.predict(dataset, sensitive))
+    dataset = dataset.to_csv(sensitive)
     labels = dataset.labels
+    predictions, labels = align_predictions_labels(predictions, labels)
+    predictions = predictions.columns
+    labels = labels.columns
     worst_distance = 0
     offenders = list()
     if hasattr(labels, "columns"):
@@ -86,7 +76,7 @@ def optimal_transport(
         for label_name in labels.columns:
             label = pd.Series(labels[label_name])
             for attr in sensitive:
-                df = dataset.data[attr]
+                df = dataset.df[attr]
                 if hasattr(predictions, "numpy"):
                     predictions = predictions.numpy()
                 if hasattr(df, "numpy"):
@@ -122,7 +112,7 @@ def optimal_transport(
         </thead><tbody>
         """
         for attr in sensitive:
-            df = dataset.data[attr]
+            df = dataset.df[attr]
             if hasattr(predictions, "numpy"):
                 predictions = pd.Series(predictions.numpy())
             if hasattr(df, "numpy"):

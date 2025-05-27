@@ -11,7 +11,7 @@ class ONNX(Predictor):
         x = (
             dataset
             if isinstance(dataset, np.ndarray)
-            else dataset.to_features(sensitive)
+            else dataset.to_numpy(sensitive)
         )
         import onnxruntime as rt
         from onnxruntime.capi.onnxruntime_pybind11_state import InvalidArgument

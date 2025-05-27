@@ -72,8 +72,8 @@ def data_custom_csv(
             )
     csv_dataset = CSV(
         raw_data,
-        numeric=numeric,
-        categorical=categorical,
+        num=numeric,
+        cat=categorical,
         labels=label,
     )
     return csv_dataset

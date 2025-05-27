@@ -76,7 +76,7 @@ class SlidingStackedWidget(QStackedWidget):
 
         self.setAutoFillBackground(True)
         palette = self.palette()
-        palette.setColor(self.backgroundRole(), QColor("#ccc"))
+        palette.setColor(self.backgroundRole(), QColor("#eee"))
         self.setPalette(palette)
 
     def slideInNext(self) -> bool:

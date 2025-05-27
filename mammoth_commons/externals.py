@@ -73,6 +73,10 @@ def align_predictions_labels(predictions: Any, labels: Labels) -> (Labels, Label
                 + " vs "
                 + ",".join(labels.__iter__())
             )
+    elif hasattr(predictions, "to_numpy"):
+        predictions = predictions.to_numpy()
+    elif hasattr(predictions, "to_dict"):
+        predictions = Labels(predictions.to_dict(orient="list"))
 
     if not isinstance(predictions, Labels):
         if "0" in labels and "1" in labels and len(labels) == 2:

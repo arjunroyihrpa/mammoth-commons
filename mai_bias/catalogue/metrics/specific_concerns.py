@@ -69,7 +69,7 @@ def specific_concerns(
     predictions = model.predict(dataset, sensitive)
     labels = dataset.labels
     sensitive = fb.Dimensions(
-        {attr: fb_categories(dataset.data[attr]) for attr in sensitive}
+        {attr: fb_categories(dataset.df[attr]) for attr in sensitive}
     )
 
     if intersectional:
@@ -122,7 +122,7 @@ def specific_concerns(
         depth=1 if isinstance(predictions, dict) else 0,
     )
 
-    dataset_desc = dataset.format_description()
+    dataset_desc = dataset.to_description()
     if problematic_deviation == 0:
         outcome = "Report"
     else:

@@ -196,7 +196,7 @@ class Dashboard(Styled):
             )
         if reply != QMessageBox.StandardButton.Yes:
             return
-        self.runs[index]["timestamp"] = now()
+        #self.runs[index]["timestamp"] = now()
         run = self.runs.pop(index)
         self.runs.append(run)
         self.refresh_dashboard()
@@ -286,12 +286,13 @@ class Dashboard(Styled):
                         if last_run["status"] == "completed":
                             current_row.addWidget(
                                 self.create_icon_button(
-                                    "➕",
+                                    "+",
                                     "#007bff",
                                     "New variation",
                                     partial(
                                         lambda i=last_index: self.create_variation(i)
                                     ),
+                                    size=35
                                 )
                             )
 
@@ -301,6 +302,7 @@ class Dashboard(Styled):
                                 "#dc3545",
                                 "Delete",
                                 partial(lambda i=last_index: self.delete_item(i)),
+                                size=35
                             )
                         )
 
@@ -444,10 +446,11 @@ class Dashboard(Styled):
                 if last_run["status"] == "completed":
                     current_row.addWidget(
                         self.create_icon_button(
-                            "➕",
+                            "+",
                             "#007bff",
                             "New variation",
                             partial(lambda i=last_index: self.create_variation(i)),
+                             size=35
                         )
                     )
 
@@ -457,6 +460,7 @@ class Dashboard(Styled):
                         "#dc3545",
                         "Delete",
                         partial(lambda i=last_index: self.delete_item(i)),
+                        size=35
                     )
                 )
 

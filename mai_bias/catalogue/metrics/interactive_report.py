@@ -30,11 +30,12 @@ def interactive_report(
 
     # obtain predictions
     predictions = model.predict(dataset, sensitive)
+    dataset = dataset.to_csv()
 
     # declare sensitive attributes
     labels = dataset.labels
     sensitive = fb.Fork(
-        {attr + " ": fb_categories(dataset.data[attr]) for attr in sensitive}
+        {attr + " ": fb_categories(dataset.df[attr]) for attr in sensitive}
     )
 
     # change behavior based on arguments

@@ -52,7 +52,7 @@ class Results(Styled):
 
         # Buttons (Square Icons with Short Hints & Mouse Hover Effect)
         self.variation_button = self.create_icon_button(
-            "➕", "#007bff", "New variation", self.create_variation
+            "+", "#007bff", "New variation", self.create_variation
         )
         self.edit_button = self.create_icon_button(
             "✎", "#d39e00", "Edit", self.edit_run
