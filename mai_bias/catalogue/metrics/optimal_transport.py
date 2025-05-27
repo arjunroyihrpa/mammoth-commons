@@ -1,4 +1,4 @@
-from mammoth_commons.datasets import Dataset
+from mammoth_commons.datasets import Dataset, ImageLike
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
@@ -63,6 +63,8 @@ def optimal_transport(
         dataset, "labels"
     ), "The chosen dataset loader has not identified any labels"
     threshold = float(threshold)
+    if isinstance(dataset, ImageLike):
+        dataset.to_features(sensitive)
 
     text = ""
     predictions = pd.Series(model.predict(dataset, sensitive))
@@ -110,7 +112,9 @@ def optimal_transport(
         if len(labels) > 1:
             labels = labels.iloc[-1]
             if not isinstance(labels, pd.Series):
-                labels = pd.Series(labels.numpy())
+                if hasattr(labels, "numpy"):
+                    labels = labels.numpy()
+                labels = pd.Series(labels)
         text += """
         <div class="container mt-4">
         <table class="table table-striped table-bordered">

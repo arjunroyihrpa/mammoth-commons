@@ -640,6 +640,8 @@ class Step(Styled):
 
     def show_error_message(self, message):
         error_msg = QMessageBox(self)
+        if not message:
+            message = "Unknown assertion error"
         if message[0] == "'" and message[-1] == "'":
             message = message[1:-1]
         message = "The following issue must be addressed:<br><b>" + message + "</b>"

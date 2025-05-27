@@ -1,3 +1,4 @@
+import importlib
 from mammoth_commons.datasets import CSV
 from mammoth_commons.integration import loader
 from mammoth_commons.externals import pd_read_csv
@@ -23,34 +24,15 @@ def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:
         path: The local file path or a web URL of the file.
         max_discrete: If a numeric column has a number of discrete entries than is less than this number (e.g., if it contains binary numeric values) then it is considered to hold categorical instead of numeric data. Minimum accepted value is 2.
     """
-    if not path.endswith(".csv"):
-        raise Exception("A file or url with .csv extension is needed.")
     max_discrete = int(max_discrete)
-    if max_discrete < 2:
-        raise Exception(
-            "The number of numeric levels (the value of max discrete) should be at least 2"
-        )
-    raw_data = pd_read_csv(
-        path,
-        on_bad_lines="skip",
-    )
-    import pandas as pd
-
-    numeric = [
-        col for col in raw_data if pd.api.types.is_any_real_numeric_dtype(raw_data[col])
-    ]
-    numeric = [col for col in numeric if len(set(raw_data[col])) > max_discrete]
-    numeric_set = set(numeric)
-    categorical = [col for col in raw_data if col not in numeric_set]
-    if len(categorical) < 1:
-        raise Exception("At least two categorical columns are required.")
-    label = categorical[-1]
-    categorical = categorical[:-1]
-
-    csv_dataset = CSV(
-        raw_data,
-        numeric=numeric,
-        categorical=categorical,
-        labels=label,
-    )
+    assert path.endswith(".csv"), "A file or url with the .csv extension is expected."
+    assert max_discrete >= 2, "Numeric levels (max discrete) should be at least 2"
+    pd = importlib.import_module("pandas")
+    df = pd_read_csv(path, on_bad_lines="skip")
+    num = [col for col in df if pd.api.types.is_any_real_numeric_dtype(df[col])]
+    num = [col for col in num if len(set(df[col])) > max_discrete]
+    num_set = set(num)
+    cat = [col for col in df if col not in num_set]
+    assert len(cat) >= 1, "At least one categorical column is required."
+    csv_dataset = CSV(df, num=num, cat=cat[:-1], labels=cat[-1])
     return csv_dataset

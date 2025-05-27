@@ -4,7 +4,7 @@ Fairness Visualization Report Generator
 This module generates a detailed fairness report using the Fairlearn library, providing both group-wise and scalar fairness metrics across sensitive attributes such as sex or race.
 """
 
-from mammoth_commons.datasets import CSV
+from mammoth_commons.datasets import Dataset
 from mammoth_commons.exports import HTML
 from mammoth_commons.models import Predictor
 from mammoth_commons.integration import metric
@@ -19,7 +19,7 @@ from typing import List
     packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair", "skl2onnx"),
 )
 def viz_fairness_report(
-    dataset: CSV,
+    dataset: Dataset,
     model: Predictor,
     sensitive: List[str],
 ) -> HTML:
@@ -44,20 +44,16 @@ def viz_fairness_report(
         It helps teams assess group-level equity in model behavior using interpretable, tabular summaries.
     </p>
     """
-
-    # Import the existing function from mmm-fair
     from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
-
-    # Extract predictions and ground truth
-    if hasattr(model, "mmm"):
-        model = model.mmm
-    y_true = list(dataset.labels.values())[-1]
-    y_pred = model.predict(dataset, sensitive)
-
-    # Convert sensitive attributes into the expected numpy array format
     import numpy as np
 
-    sa_df = dataset.data[sensitive].copy()
+    if hasattr(model, "mmm"):
+        model = model.mmm
+    y_pred = model.predict(dataset, sensitive)
+    dataset = dataset.to_csv(sensitive)
+    y_true = list(dataset.labels.columns.values())[-1]
+
+    sa_df = dataset.df[sensitive].copy()
     sa_matrix = sa_df.to_numpy()
 
     # Force the first group in each sensitive column to be privileged (0), rest as 1

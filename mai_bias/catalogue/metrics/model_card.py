@@ -1,4 +1,6 @@
-from mammoth_commons.datasets import Dataset
+import importlib
+
+from mammoth_commons.datasets import Dataset, Labels
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import Dict, List
@@ -16,7 +18,7 @@ def model_card(
     dataset: Dataset,
     model: Predictor,
     sensitive: List[str],
-    intersectional: bool = False,
+    intersections: Options("Base", "All", "Subgroups") = "Base",
     compare_groups: Options("Pairwise", "To the total population") = None,
     problematic_deviation: float = 0.1,
     show_non_problematic: bool = False,
@@ -44,37 +46,34 @@ def model_card(
     ignored in the analysis. The report may also include information about built-in datasets.</p>
 
     Args:
-        intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
+        intersections: Whether to consider only the provided groups, all non-empty group intersections, or all non-empty intersections while ignoring larger groups during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify problematic values as red.
     """
-    import fairbench as fb
-
-    assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
+    fb = importlib.import_module("fairbench")
+    reps = fb.reports
+    prob = float(problematic_deviation)
+    assert len(sensitive) != 0, "At least one sensitive attribute should be provided"
+    assert 0 <= prob <= 1, "Problematic deviation should be in [0,1]"
+    report_type = reps.pairwise if compare_groups == "Pairwise" else reps.vsall
     reject = not bool(show_non_problematic)
     predictions = model.predict(dataset, sensitive)
+    dataset = dataset.to_csv(sensitive)
     labels = dataset.labels
-    sensitive = fb.Dimensions(
-        {attr: fb_categories(dataset.data[attr]) for attr in sensitive}
-    )
-
-    if intersectional:
+    sensitive = fb.Dimensions({s: fb_categories(dataset.df[s]) for s in sensitive})
+    if intersections != "Base":
         sensitive = sensitive.intersectional()
-    report_type = (
-        fb.reports.pairwise if compare_groups == "Pairwise" else fb.reports.vsall
-    )
+    if intersections == "Subgroups":
+        sensitive = sensitive.strict()
+    assert len(sensitive.branches()) != 0, "Could not find any intersections"
 
     predictions, labels = align_predictions_labels(predictions, labels)
+    predictions = predictions.columns
+    labels = labels.columns
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
-    problematic_deviation = float(problematic_deviation)
-    assert (
-        0 <= problematic_deviation <= 1
-    ), "Problematic deviation should be in the range [0,1]"
-    if problematic_deviation != 0:
-        report = report.filter(
-            fb.investigate.DeviationsOver(problematic_deviation, prune=reject)
-        )
+    if prob != 0:
+        report = report.filter(fb.investigate.DeviationsOver(prob, prune=reject))
 
     views = {
         "Summary": report.show(env=fb.export.HtmlTable(view=False, filename=None)),
@@ -94,8 +93,6 @@ def model_card(
         f'<div id="{key}" class="tabcontent">{value}</div>'
         for key, value in views.items()
     )
-
-    dataset_desc = dataset.format_description()
 
     html_content = f"""
        <style>
@@ -140,7 +137,7 @@ def model_card(
        </script>
        <h1>Report for {len(sensitive.branches())} groups</h1>
        <p>A report was generated over several prospective biases to paint a broad picture
-       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f', but for simplicity only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
+       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if prob == 0 else f', but for simplicity only those that differ at least {prob:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
        Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
        </p>
        <p>
@@ -155,7 +152,7 @@ def model_card(
        <br>
        <div>{tab_headers}</div>
        <div>{tab_contents}</div>
-       <div style="clear: both;">{dataset_desc}</div>
+       <div style="clear: both;">{dataset.to_description()}</div>
        """
 
     return HTML(html_content)

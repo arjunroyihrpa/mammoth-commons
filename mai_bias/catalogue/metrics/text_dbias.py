@@ -23,9 +23,10 @@ def manual_install_wheel(wheel_url_or_path):
             notify_progress(progress, message)
 
         local_whl = os.path.join(".cache", os.path.basename(wheel_url_or_path))
-        print(f"Downloading wheel from {wheel_url_or_path}...")
-        urlretrieve(wheel_url_or_path, local_whl, reporthook=reporthook)
-        notify_end()
+        if not os.path.exists(local_whl):
+            print(f"Downloading wheel from {wheel_url_or_path}...")
+            urlretrieve(wheel_url_or_path, local_whl, reporthook=reporthook)
+            notify_end()
     else:
         local_whl = wheel_url_or_path
         if not os.path.exists(local_whl):
@@ -60,9 +61,10 @@ def manual_install_wheel(wheel_url_or_path):
     version="v0042",
     python="3.13",
     packages=(
-        "git+https://github.com/maniospas/Fairness-in-AI",
-        "tf-keras",
-        "spacy[transformers]",
+        "dbias --no-deps --upgrade",
+        "tensorflow",
+        "transformers" "tf-keras",
+        "spacy]",
     ),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:

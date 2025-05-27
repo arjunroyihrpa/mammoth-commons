@@ -12,6 +12,7 @@ from mai_bias.catalogue.dataset_loaders.free_text import data_free_text
 
 # model loaders
 from mai_bias.catalogue.model_loaders.no_model import no_model
+from mai_bias.catalogue.model_loaders.trivial_predictor import model_trivial_predictor
 from mai_bias.catalogue.model_loaders.onnx import model_onnx
 from mai_bias.catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
 from mai_bias.catalogue.model_loaders.pytorch import model_torch
@@ -64,6 +65,17 @@ registry.model(
         data_read_any,
         data_images,
         data_free_text,
+    ],
+)
+registry.model(
+    model_trivial_predictor,
+    compatible=[
+        data_auto_csv,
+        data_custom_csv,
+        data_uci,
+        data_read_any,
+        data_images,
+        data_image_pairs,
     ],
 )
 registry.model(

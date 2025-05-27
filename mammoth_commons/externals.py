@@ -1,6 +1,9 @@
 import urllib.request
 import urllib.parse
 import os
+from typing import Any
+
+from mammoth_commons.datasets import Labels
 from mammoth_commons.integration_callback import notify_progress, notify_end
 import zipfile
 import bz2
@@ -50,38 +53,40 @@ def get_model_layer_list(model):
         return []
 
 
-def align_predictions_labels(predictions, labels):
-    if isinstance(labels, dict) and len(labels) == 1:
-        labels = labels[next(labels.keys().__iter__())]
-
-    if labels is not None and hasattr(labels, "columns") and len(labels.columns) == 1:
-        labels = labels[labels.columns[0]]
-
-    if labels is not None and hasattr(labels, "columns"):
-        labels = {col: labels[col] for col in labels.columns}
-
-    if (
-        labels is not None
-        and not isinstance(predictions, dict)
-        and isinstance(labels, dict)
-    ):
-        if "0" in labels and "1" in labels and len(labels) == 2:
-            predictions = {"0": 1 - predictions, "1": predictions}
-        elif "no" in labels and "yes" in labels and len(labels) == 2:
-            predictions = {"no": 1 - predictions, "yes": predictions}
-        else:
+def align_predictions_labels(predictions: Any, labels: Labels) -> (Labels, Labels):
+    assert isinstance(
+        labels, Labels
+    ), "Internal error: labels in align_predictions_labels were not Labels"
+    if isinstance(predictions, dict):
+        predictions = Labels(predictions)
+    if isinstance(predictions, Labels):
+        try:
+            assert len(predictions) == len(labels)
+            for key in predictions:
+                assert key in labels
+            for key in labels:
+                assert key in predictions
+        except AssertionError:
             raise Exception(
-                f"The selected model creates a vector of predictions but it is unknown how to match this to multiple labels {','.join(labels.keys())}. Make the dataset have 0/1 or no/yes labels to automatically convert the prediction to two columns."
+                "Different predictions to labels: "
+                + ",".join(predictions.__iter__())
+                + " vs "
+                + ",".join(labels.__iter__())
             )
 
-    if (
-        labels is not None
-        and isinstance(labels, dict)
-        and isinstance(predictions, dict)
-    ):
-        predictions = {f"class {k}": v for k, v in predictions.items()}
-        labels = {f"class {k}": v for k, v in labels.items()}
-
+    if not isinstance(predictions, Labels):
+        if "0" in labels and "1" in labels and len(labels) == 2:
+            predictions = Labels({"0": 1 - predictions, "1": predictions})
+        elif "no" in labels and "yes" in labels and len(labels) == 2:
+            predictions = Labels({"no": 1 - predictions, "yes": predictions})
+        else:
+            raise Exception(
+                "The selected model creates a vector of predictions but it is unknown how to match this to "
+                f"multiple labels {','.join(labels.__iter__())}. Make the dataset have 0/1 or no/yes labels to "
+                "automatically convert the prediction to two columns."
+            )
+    predictions = Labels({f"class {k}": v for k, v in predictions.items()})
+    labels = Labels({f"class {k}": v for k, v in labels.items()})
     return predictions, labels
 
 

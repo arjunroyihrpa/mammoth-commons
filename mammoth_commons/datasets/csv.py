@@ -1,46 +1,45 @@
+from typing import Iterable
+import importlib
 import numpy as np
-from mammoth_commons.datasets.dataset import Dataset
+from mammoth_commons.datasets.dataset import Dataset, Labels
 
 
-def _features(df, numeric, categorical):
-    import pandas as pd
-
-    dfs = [df[col] for col in numeric] + [
-        pd.get_dummies(df[col]) for col in categorical
-    ]
-    return pd.concat(dfs, axis=1).values
-
-
-def _pred_features(df, numeric, categorical, sensitives):
-    import pandas as pd
-
-    dfs = [df[col] for col in numeric if col not in sensitives] + [
-        pd.get_dummies(df[col]) for col in categorical if col not in sensitives
-    ]
+def pd_features(df, num: list[str], cat: list[str], sens: list[str] | None = None):
+    sens = set() if sens is None else set(sens)
+    pd = importlib.import_module("pandas")
+    dfs = [df[col] for col in num if col not in sens]
+    dfs += [pd.get_dummies(df[col]) for col in cat if col not in sens]
     return pd.concat(dfs, axis=1).values
 
 
 class CSV(Dataset):
-    def __init__(self, data, numeric, categorical, labels, sensitives=None):
-        import pandas as pd
-
-        self.data = data
-        self.numeric = numeric
-        self.categorical = categorical
-        self.labels = (
-            pd.get_dummies(data[labels])
+    def __init__(
+        self,
+        df,
+        num: list[str],
+        cat: list[str],
+        labels: str | dict | Iterable,
+        sens: list[str] | None = None,
+    ):
+        pd = importlib.import_module("pandas")
+        super().__init__(Labels(dict()))
+        self.df = df
+        self.num = num
+        self.cat = cat
+        self.cols = num + cat
+        sens = set() if sens is None else set(sens)
+        self.feats = [col for col in self.cols if col not in sens]
+        self.labels = Labels(
+            pd.get_dummies(df[labels]).to_dict(orient="list")
             if isinstance(labels, str)
-            else (labels if isinstance(labels, dict) else {"label": labels})
+            else labels if isinstance(labels, dict) else {"1": labels, "0": 1 - labels}
         )
-        self.cols = numeric + categorical
-        if sensitives is None:
-            sensitives = []
-        self.pred_cols = [col for col in self.cols if col not in sensitives]
 
-    def to_features(self, sensitive):
-        return _features(self.data, self.numeric, self.categorical).astype(np.float64)
+    def to_numpy(self, sensitive: list[str]):
+        return pd_features(self.df, self.num, self.cat).astype(np.float64)
 
-    def to_pred(self, sensitive):
-        return _pred_features(
-            self.data, self.numeric, self.categorical, sensitive
-        ).astype(np.float64)
+    def to_input(self, sensitive: list[str]):
+        return pd_features(self.df, self.num, self.cat, sensitive).astype(np.float64)
+
+    def to_csv(self, sensitive: list[str]):
+        return self

@@ -98,5 +98,5 @@ class ImagePairs(ImageLike):
                 return t.size
         return (224, 224)
 
-    def to_features(self, sensitive):
-        return self.convert_to_csv(2, sensitive)
+    def to_csv(self, sensitive: list[str]):
+        return super().to_csv(sensitive, 2)

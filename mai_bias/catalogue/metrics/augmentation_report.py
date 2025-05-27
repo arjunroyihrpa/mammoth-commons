@@ -669,30 +669,28 @@ def augmentation_report(
     import pandas as pd
     import numpy as np
 
-    if isinstance(dataset, ImageLike):
-        dataset.to_features(sensitive)
-    non_categorical = [col for col in sensitive if col not in dataset.categorical]
-
-    if non_categorical:
-        raise ValueError(
-            f"Non-categorical sensitive attributes cannot be processed not allowed by augmentation report: {non_categorical}. "
-            f"Current categorical columns are: {dataset.categorical}"
-        )
-
-    if not hasattr(dataset, "data"):
-        dataset.to_features(sensitive)
-    df = dataset.data
-    target = dataset.labels.name if hasattr(dataset.labels, "name") else "target"
-    target_values_df = (
-        dataset.labels.idxmax(axis=1)
-        if isinstance(dataset.labels, pd.DataFrame)
-        else pd.concat(dataset.labels)
+    dataset = dataset.to_csv(sensitive)
+    non_categorical = [col for col in sensitive if col not in dataset.cat]
+    assert not non_categorical, (
+        f"Non-categorical sensitive attributes not allowed in augmentation report: {non_categorical}. "
+        f"Current categorical columns are: {dataset.cat}"
     )
-    df[target] = target_values_df.values
-
+    df = dataset.df
+    target = (
+        "1"
+        if "1" in dataset.labels
+        else (
+            "yes"
+            if "yes" in dataset.labels
+            else dataset.labels[dataset.labels.__iter__().__next__()]
+        )
+    )
+    df["class " + target] = pd.DataFrame(
+        np.array(dataset.labels[target], dtype=float)
+    ).values
+    target = "class " + target
     notify_progress(1 / (1 + len(sensitive)), "Creating figures: sunburst chart")
     fig = generate_nested_pie_chart(df, [target] + sensitive)
-
     augmentation_html_plots = []
     for i, sens in enumerate(sensitive):
         notify_progress((1 + i) / (1 + len(sensitive)), f"Creating figures: {sens}")
@@ -703,7 +701,7 @@ def augmentation_report(
         )
     notify_progress(1, f"Converting to html")
     notify_end()
-    # Convert to HTML
+
     fig.update_layout(autosize=True, height=600)
     main_html_content = fig.to_html(include_plotlyjs="cdn", full_html=False)
     complete_html = f"""

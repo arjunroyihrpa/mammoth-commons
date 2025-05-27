@@ -86,7 +86,7 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                 # except ImportError:
                 try:
                     result = subprocess.run(
-                        [sys.executable, "-m", "pip", "install", package],
+                        [sys.executable, "-m", "pip", "install"] + package.split(" "),
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
                         text=True,
