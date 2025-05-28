@@ -18,7 +18,7 @@ class CSV(Dataset):
         df,
         num: list[str],
         cat: list[str],
-        labels: str | dict | Iterable,
+        labels: str | dict | Iterable | None,
         sens: list[str] | None = None,
     ):
         pd = importlib.import_module("pandas")

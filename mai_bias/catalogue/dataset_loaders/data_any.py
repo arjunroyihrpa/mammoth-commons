@@ -10,8 +10,8 @@ import pandas as pd
     packages=("pandas", "onnxruntime", "mmm-fair", "skl2onnx"),
 )
 def data_read_any(
-    raw_data: pd.DataFrame = None,
-    dataset_name: str = None,
+    raw_data: pd.DataFrame=None,
+    dataset_name: str=None,
     target=None,
 ) -> CSV:
     """
@@ -36,4 +36,8 @@ def data_read_any(
     from mmm_fair.data_process import data_raw
 
     csv_dataset = data_raw(raw_data, dataset_name, target)
+    # TODO: REMOVE first argument
+    # TODO: add conversion to the actual mammoth CSV data type here. Something like the following but export the labels too
+    # TODO: returns commons data structures only if you import the module, otherwise return a convertible
+    # return CSV(df=csv_dataset.data,num=csv_dataset.numeric, cat=csv_dataset.categorical, labels="TODO")
     return csv_dataset
