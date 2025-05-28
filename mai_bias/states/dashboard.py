@@ -57,48 +57,10 @@ class Dashboard(Styled):
         top_row_layout = QHBoxLayout()
         top_row_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        logo_button = QPushButton(self)
-        logo_pixmap = QPixmap(
-            prepare(
-                "https://raw.githubusercontent.com/mammoth-eu/mammoth-commons/dev/mai_bias/logo.png"
-            )
-        )
-        logo_pixmap = logo_pixmap.scaled(
-            270,
-            135,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-
-        logo_button.setIcon(logo_pixmap)
-        logo_button.setIconSize(logo_pixmap.size())
-        logo_button.setFixedSize(
-            logo_pixmap.width() + 15, logo_pixmap.height() + 15
-        )  # accommodate padding
-        logo_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        logo_button.setToolTip("New analysis")
-        logo_button.clicked.connect(self.create_new_item)
-
-        logo_button.setStyleSheet(
-            """
-            QPushButton {
-                background-color: white;
-                border: 1px solid black;
-                border-radius: 5px;
-                padding: 10px;
-                margin-left: 10px;
-                margin-top: 10px;
-            }
-            QPushButton:hover {
-                border: 2px solid black;
-            }
-        """
-        )
-
-        top_row_layout.addWidget(logo_button, alignment=Qt.AlignmentFlag.AlignTop)
+        #top_row_layout.addWidget(logo_button, alignment=Qt.AlignmentFlag.AlignTop)
 
         # Spacer to push buttons to the right
-        top_row_layout.addStretch()
+        #top_row_layout.addStretch()
 
         # Buttons on the right
         search_field = QLineEdit(self)
@@ -108,7 +70,7 @@ class Dashboard(Styled):
 
         button_layout = QHBoxLayout()
         button_layout.setAlignment(
-            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
+            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
         )
         button_layout.addWidget(search_field)
 
@@ -152,6 +114,56 @@ class Dashboard(Styled):
 
         self.invisible_runs = set()
         self.refresh_dashboard()
+
+
+
+        logo_button = QPushButton(self)
+        logo_pixmap = QPixmap(
+            prepare(
+                "https://raw.githubusercontent.com/mammoth-eu/mammoth-commons/dev/mai_bias/logo.png"
+            )
+        )
+        logo_pixmap = logo_pixmap.scaled(
+            270,
+            135,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+
+        logo_button.setIcon(logo_pixmap)
+        logo_button.setIconSize(logo_pixmap.size())
+        logo_button.setFixedSize(
+            logo_pixmap.width() + 15, logo_pixmap.height() + 15
+        )  # accommodate padding
+        logo_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        logo_button.setToolTip("New analysis")
+        logo_button.clicked.connect(self.create_new_item)
+
+        logo_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 10px;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            QPushButton:hover {
+                border: 2px solid black;
+            }
+        """
+        )
+        self.logo_button = logo_button
+        self.logo_button.raise_()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        margin = 10
+        if hasattr(self, "logo_button"):
+            x = self.width() - self.logo_button.width() - margin
+            y = self.height() - self.logo_button.height() - margin
+            self.logo_button.move(x, y)
 
     def filter_runs(self, text):
         prev = self.invisible_runs
@@ -334,6 +346,7 @@ class Dashboard(Styled):
                 tags_to_show = []
 
             # Create run button
+            button_bg = "white"
             button_color = (
                 "#ffbbbb"
                 if "fail" in get_special_title(run).lower()
@@ -355,6 +368,7 @@ class Dashboard(Styled):
             )
             if run["status"] != "completed":
                 button_color = "#ffffbb"
+                button_bg = "#ffffdd"
 
             run_button = QPushButton(self)
             special = get_special_title(run)
@@ -379,7 +393,7 @@ class Dashboard(Styled):
             run_button.setStyleSheet(
                 f"""
                 QPushButton {{
-                    background-color: white;
+                    background-color: {button_bg};
                     color: black;
                     border-radius: 5px;
                     font-size: 16px;

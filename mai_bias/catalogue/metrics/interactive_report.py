@@ -30,7 +30,7 @@ def interactive_report(
 
     # obtain predictions
     predictions = model.predict(dataset, sensitive)
-    dataset = dataset.to_csv()
+    dataset = dataset.to_csv(sensitive)
 
     # declare sensitive attributes
     labels = dataset.labels

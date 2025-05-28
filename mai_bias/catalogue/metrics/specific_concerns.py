@@ -68,6 +68,11 @@ def specific_concerns(
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
     predictions = model.predict(dataset, sensitive)
     labels = dataset.labels
+    predictions, labels = align_predictions_labels(predictions, labels)
+    predictions = predictions.columns
+    labels = labels.columns
+
+
     sensitive = fb.Dimensions(
         {attr: fb_categories(dataset.df[attr]) for attr in sensitive}
     )
@@ -104,7 +109,6 @@ def specific_concerns(
         + fb_measures[base_measure]
     )
 
-    predictions, labels = align_predictions_labels(predictions, labels)
     report = fb.quick.__getattr__(metric_name)(
         predictions=predictions, labels=labels, sensitive=sensitive
     )

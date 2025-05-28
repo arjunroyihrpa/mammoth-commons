@@ -12,11 +12,14 @@ class Graph(Dataset):
         self.labels = None
         self.categorical = set(self.communities.keys())
 
-    def to_features(self, sensitive):
+    def to_numpy(self, sensitive):
         if sensitive is not None:
             return [self.communities[attr] for attr in sensitive]
         return self.graph
 
     @property
-    def data(self):
+    def df(self):
         return {k: v.np for k, v in self.communities.items()}
+
+    def to_csv(self, sensitive: list[str]):
+        return self

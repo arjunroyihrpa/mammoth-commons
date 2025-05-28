@@ -59,74 +59,44 @@ def optimal_transport(
     predictions, labels = align_predictions_labels(predictions, labels)
     predictions = predictions.columns
     labels = labels.columns
+
     worst_distance = 0
     offenders = list()
-    if hasattr(labels, "columns"):
-        text += """
-        <div class="container mt-4">
-        <table class="table table-striped table-bordered">
-        <thead class="table-dark"><tr><th>Attribute</th><th>Group</th>
-        """
-        for label_name in labels.columns:
-            text += f"<th>{label_name} distance</th>"
-        text += "</tr></thead><tbody>"
+    text += """
+    <div class="container mt-4">
+    <table class="table table-striped table-bordered">
+    <thead class="table-dark"><tr><th>Attribute</th><th>Group</th>
+    """
+    for label_name in labels:
+        text += f"<th>{label_name} distance</th>"
+    text += "</tr></thead><tbody>"
 
-        # Collect distances for merging
-        results = {}
-        for label_name in labels.columns:
-            label = pd.Series(labels[label_name])
-            for attr in sensitive:
-                df = dataset.df[attr]
-                if hasattr(predictions, "numpy"):
-                    predictions = predictions.numpy()
-                if hasattr(df, "numpy"):
-                    df = df.numpy()
-                dist = ot_distance(y_true=label, y_pred=predictions, prot_attr=df)
-                for k, v in dist.items():
-                    if (attr, k) not in results:
-                        results[(attr, k)] = {}
-                    results[(attr, k)][label_name] = v
-
-        # Render merged table
-        for (attr, group), distances in results.items():
-            text += f"<tr><td>{attr}</td><td>{group}</td>"
-            for label_name in labels.columns:
-                if distances.get(label_name, 0) > threshold:
-                    offenders.append(f"{attr} {group} for target {label_name}")
-                worst_distance = max(distances.get(label_name, 0), worst_distance)
-                text += f"<td>{distances.get(label_name, 'N/A'):.3f}</td>"
-            text += "</tr>"
-        text += "</tbody></table></div>"
-    else:
-        labels = pd.Series(labels)
-        if len(labels) > 1:
-            labels = labels.iloc[-1]
-            if not isinstance(labels, pd.Series):
-                if hasattr(labels, "numpy"):
-                    labels = labels.numpy()
-                labels = pd.Series(labels)
-        text += """
-        <div class="container mt-4">
-        <table class="table table-striped table-bordered">
-        <thead class="table-dark"><tr><th>Attribute</th><th>Group</th><th>Prediction distance</th></tr>
-        </thead><tbody>
-        """
+    # Collect distances for merging
+    results = {}
+    for label_name in labels:
+        label = pd.Series(labels[label_name])
         for attr in sensitive:
             df = dataset.df[attr]
             if hasattr(predictions, "numpy"):
-                predictions = pd.Series(predictions.numpy())
+                predictions = predictions.numpy()
             if hasattr(df, "numpy"):
                 df = df.numpy()
-            if not isinstance(df, pd.Series):
-                df = pd.Series(df)
-            dist = ot_distance(y_true=labels, y_pred=predictions, prot_attr=df)
+            dist = ot_distance(y_true=label, y_pred=pd.Series(predictions[label_name]), prot_attr=df)
             for k, v in dist.items():
-                if v > threshold:
-                    offenders.append(f"{attr} group {k} for binary target")
-                worst_distance = max(v, worst_distance)
-                text += f"<tr><td>{attr}</td><td>{k}</td><td>{v:.3f}</td></tr>"
-        text += "</tbody></table></div>"
+                if (attr, k) not in results:
+                    results[(attr, k)] = {}
+                results[(attr, k)][label_name] = v
 
+    # Render merged table
+    for (attr, group), distances in results.items():
+        text += f"<tr><td>{attr}</td><td>{group}</td>"
+        for label_name in labels:
+            if distances.get(label_name, 0) > threshold:
+                offenders.append(f"{attr} {group} for target {label_name}")
+            worst_distance = max(distances.get(label_name, 0), worst_distance)
+            text += f"<td>{distances.get(label_name, 'N/A'):.3f}</td>"
+        text += "</tr>"
+    text += "</tbody></table></div>"
     offenders = (
         (
             f"<h2 class='text-danger'>Distances over threshold</h2>-"

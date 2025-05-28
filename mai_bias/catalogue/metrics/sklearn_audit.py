@@ -132,7 +132,7 @@ def sklearn_audit(
 
     report = report_type(
         predictions=predictions,
-        labels=y_test.to_numpy(),
+        labels=np.array(y_test),
         scores=scores,
         sensitive=sensitive,
         top=top_recommendations,
@@ -165,7 +165,7 @@ def sklearn_audit(
     )
 
     dataset_desc = ""
-    if hasattr(dataset, "description"):
+    if dataset.description is not None:
         dataset_desc += "<h1>Dataset</h1>"
         if isinstance(dataset.description, str):
             dataset_desc += dataset.description + "<br>"
@@ -173,7 +173,7 @@ def sklearn_audit(
             for key, value in dataset.description.items():
                 dataset_desc += f"<h3>{key}</h3>" + value.replace("\n", "<br>") + "<br>"
         else:
-            raise Exception("Dataset description must be a string or a dictionary.")
+            raise Exception(f"Dataset description must be a string or a dictionary, not {self.description}.")
 
     html_content = f"""
        <style>
