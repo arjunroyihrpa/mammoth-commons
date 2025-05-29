@@ -6,7 +6,7 @@ from mammoth_commons.externals import prepare
 @loader(
     namespace="mammotheu", version="v0042", python="3.13", packages=("onnxruntime",)
 )
-def model_onnx(path: str = "") -> ONNX:
+def model_onnx(path: str = "", trained_with_sensitive: bool=True) -> ONNX:
     """Loads an inference model stored in <a href="https://onnx.ai/">ONNx</a> format.
     This is a generic cross-platform format for representing machine learning models with a common set of operations.
     Several machine learning frameworks can export to this format.
@@ -29,7 +29,8 @@ def model_onnx(path: str = "") -> ONNX:
 
     Args:
         path: A local path or url pointing to the ONNX file. The loader checks for the existence of the local path, and if it does not exist downloads it locally from the provided URL before loading.
+        trained_with_sensitive: Whether model training included the sensitive attributes that will be analysed in the next step or not. Including those attributes could help mitigate bias for some bias-aware training algorithms. Leave checked if you just trained the model with all available attributes.
     """
     with open(prepare(path), "rb") as f:
         model_bytes = f.read()
-    return ONNX(model_bytes)
+    return ONNX(model_bytes, trained_with_sensitive)

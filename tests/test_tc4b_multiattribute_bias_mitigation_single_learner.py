@@ -8,7 +8,7 @@ def test_multiattribute_bias_mitigation():
     with testing.Env(model_onnx_ensemble, data_read_any, model_card) as env:
         dataset_name = "data/credit.csv"
         target = "class"
-        dataset = env.data_read_any(dataset_name=dataset_name, target=target)
+        dataset = env.data_read_any(dataset_path=dataset_name, target=target)
         model_path = "data/model_MMM_Fair_GBT.zip"
         model = env.model_onnx_ensemble(model_path)
         sensitive = ["SEX", "MARRIAGE"]  # None #["X2", "X4", "X5"]

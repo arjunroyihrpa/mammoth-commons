@@ -75,7 +75,7 @@ def sklearn_audit(
 
     assert len(sensitive) != 0, "Set at least one sensitive attribute"
     reject = not bool(show_non_problematic)
-    X = dataset.to_numpy(sensitive)
+    X = dataset.to_pred(sensitive)
     y = dataset.labels
     y = y[list(y.__iter__())[0]]
 
@@ -173,7 +173,9 @@ def sklearn_audit(
             for key, value in dataset.description.items():
                 dataset_desc += f"<h3>{key}</h3>" + value.replace("\n", "<br>") + "<br>"
         else:
-            raise Exception(f"Dataset description must be a string or a dictionary, not {self.description}.")
+            raise Exception(
+                f"Dataset description must be a string or a dictionary, not {self.description}."
+            )
 
     html_content = f"""
        <style>

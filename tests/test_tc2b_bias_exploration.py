@@ -30,7 +30,7 @@ def test_bias_exploration():
         )
 
         model_path = "file://localhost//" + os.path.abspath("./data/model.onnx")
-        model = env.model_onnx(model_path)
+        model = env.model_onnx(model_path, trained_with_sensitive=False)
 
         html_result = env.interactive_report(dataset, model, sensitive)
         html_result.show()

@@ -3,6 +3,7 @@ from mammoth_commons.datasets.dataset import Dataset
 
 class Graph(Dataset):
     def __init__(self, graph, communities: dict):
+        super().__init__(None)
         import pygrank as pg
 
         self.graph = graph
@@ -12,10 +13,8 @@ class Graph(Dataset):
         self.labels = None
         self.categorical = set(self.communities.keys())
 
-    def to_numpy(self, sensitive):
-        if sensitive is not None:
-            return [self.communities[attr] for attr in sensitive]
-        return self.graph
+    def to_numpy(self, sensitive: list[str] | None = None):
+        return [self.communities[attr] for attr in sensitive]
 
     @property
     def df(self):

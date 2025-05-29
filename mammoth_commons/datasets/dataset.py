@@ -23,15 +23,19 @@ class Labels:
 class Dataset:
     integration = "dsl.Dataset"
 
-    def __init__(self, labels: Labels):
+    def __init__(self, labels: Labels|None):
         self.labels = labels
         self.description: str | dict | None = None
 
-    def to_numpy(self, sensitive: list[str]):
-        raise Exception(f"Dataset {self.__class__.__name__} has no features")
+    def to_numpy(self, features: list[str] | None = None):
+        raise Exception(
+            f"Dataset {self.__class__.__name__} has no numpy conversion for features"
+        )
 
-    def to_inputs(self, sensitive: list[str]):
-        raise Exception(f"Dataset {self.__class__.__name__} has no features")
+    def to_pred(self, exclude: list[str]):
+        raise Exception(
+            f"Dataset {self.__class__.__name__} has no numpy conversion given excluded features"
+        )
 
     def to_csv(self, sensitive: list[str]):
         raise Exception(f"Dataset {self.__class__.__name__} cannot be treated as a csv")

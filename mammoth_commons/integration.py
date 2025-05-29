@@ -77,11 +77,6 @@ def metric(namespace, version, python=_default_python, packages=_default_package
                     i / len(packages),
                     "Verifying and installing dependencies: " + package,
                 )
-                # try:
-                #    if package == "scikit-learn":
-                #        package = "sklearn"
-                #    importlib.import_module(package.split("[")[0].replace("-", "_"))
-                # except ImportError:
                 try:
                     result = subprocess.run(
                         [sys.executable, "-m", "pip", "install"] + package.split(" "),
@@ -249,25 +244,9 @@ def loader(
             import importlib
 
             for i, package in enumerate(packages):
-                """try:
-                    if package == "scikit-learn":
-                        package = "sklearn"
-                    importlib.import_module(package.split("[")[0].replace("-", "_"))
-                except ImportError:
-                    notify_progress(
-                        i / len(packages), "Installing dependencies: " + package
-                    )
-                    try:
-                        subprocess.check_call(
-                            [sys.executable, "-m", "pip", "install", package]
-                        )
-                    except subprocess.CalledProcessError as e:
-                        raise Exception(
-                            f"Failed to install: " + str(package) + ": " + str(e)
-                        )"""
                 try:
                     result = subprocess.run(
-                        [sys.executable, "-m", "pip", "install", package],
+                        [sys.executable, "-m", "pip", "install"] + package.split(" "),
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
                         text=True,

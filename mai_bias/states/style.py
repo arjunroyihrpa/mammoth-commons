@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QPushButton, QWidget, QSizePolicy
 
 
 class Styled(QWidget):
-    def create_icon_button(self, text, color, tooltip, callback,size=30):
+    def create_icon_button(self, text, color, tooltip, callback, size=30):
         button = QPushButton(text, self)
         button.setStyleSheet(
             f"""

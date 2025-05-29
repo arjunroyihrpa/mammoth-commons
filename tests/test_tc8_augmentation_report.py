@@ -8,8 +8,7 @@ from mai_bias.catalogue.metrics.augmentation_report import (
 
 def test_augmentation_report():
     with testing.Env(no_model, data_uci, augmentation_report) as env:
-        dataset_name = "credit"
-        dataset = env.data_uci(dataset_name=dataset_name)
+        dataset = env.data_uci(dataset_name="credit")
         model = env.no_model()
         sensitive = ["X2", "X4"]
         html_result = env.augmentation_report(dataset, model, sensitive=sensitive)

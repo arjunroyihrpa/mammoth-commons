@@ -53,10 +53,15 @@ def get_model_layer_list(model):
         return []
 
 
-def align_predictions_labels(predictions: Any, labels: Labels) -> (Labels, Labels):
+def align_predictions(predictions: Any, labels: Labels) -> (Labels, Labels | None):
+    if labels is None:
+        assert isinstance(
+            predictions, Labels
+        ), "Internal error: align_predictions with no labels requires predictions of class Labels"
+        return predictions, None
     assert isinstance(
         labels, Labels
-    ), "Internal error: labels in align_predictions_labels were not Labels"
+    ), "Internal error: align_predictions requires labels of class Labels"
     if isinstance(predictions, dict):
         predictions = Labels(predictions)
     if isinstance(predictions, Labels):

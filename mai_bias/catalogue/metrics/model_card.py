@@ -5,7 +5,7 @@ from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import Dict, List
 from mammoth_commons.integration import metric, Options
-from mammoth_commons.externals import fb_categories, align_predictions_labels
+from mammoth_commons.externals import fb_categories, align_predictions
 
 
 @metric(
@@ -60,7 +60,6 @@ def model_card(
     reject = not bool(show_non_problematic)
     predictions = model.predict(dataset, sensitive)
     dataset = dataset.to_csv(sensitive)
-    labels = dataset.labels
     sensitive = fb.Dimensions({s: fb_categories(dataset.df[s]) for s in sensitive})
     if intersections != "Base":
         sensitive = sensitive.intersectional()
@@ -68,9 +67,9 @@ def model_card(
         sensitive = sensitive.strict()
     assert len(sensitive.branches()) != 0, "Could not find any intersections"
 
-    predictions, labels = align_predictions_labels(predictions, labels)
+    predictions, labels = align_predictions(predictions, dataset.labels)
     predictions = predictions.columns
-    labels = labels.columns
+    labels = labels.columns if labels else None
     report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
     if prob != 0:
         report = report.filter(fb.investigate.DeviationsOver(prob, prune=reject))

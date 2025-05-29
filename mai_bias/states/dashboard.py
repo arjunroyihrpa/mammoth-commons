@@ -57,10 +57,10 @@ class Dashboard(Styled):
         top_row_layout = QHBoxLayout()
         top_row_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        #top_row_layout.addWidget(logo_button, alignment=Qt.AlignmentFlag.AlignTop)
+        # top_row_layout.addWidget(logo_button, alignment=Qt.AlignmentFlag.AlignTop)
 
         # Spacer to push buttons to the right
-        #top_row_layout.addStretch()
+        # top_row_layout.addStretch()
 
         # Buttons on the right
         search_field = QLineEdit(self)
@@ -114,8 +114,6 @@ class Dashboard(Styled):
 
         self.invisible_runs = set()
         self.refresh_dashboard()
-
-
 
         logo_button = QPushButton(self)
         logo_pixmap = QPixmap(
@@ -208,7 +206,7 @@ class Dashboard(Styled):
             )
         if reply != QMessageBox.StandardButton.Yes:
             return
-        #self.runs[index]["timestamp"] = now()
+        # self.runs[index]["timestamp"] = now()
         run = self.runs.pop(index)
         self.runs.append(run)
         self.refresh_dashboard()
@@ -304,7 +302,7 @@ class Dashboard(Styled):
                                     partial(
                                         lambda i=last_index: self.create_variation(i)
                                     ),
-                                    size=35
+                                    size=35,
                                 )
                             )
 
@@ -314,7 +312,7 @@ class Dashboard(Styled):
                                 "#dc3545",
                                 "Delete",
                                 partial(lambda i=last_index: self.delete_item(i)),
-                                size=35
+                                size=35,
                             )
                         )
 
@@ -464,7 +462,7 @@ class Dashboard(Styled):
                             "#007bff",
                             "New variation",
                             partial(lambda i=last_index: self.create_variation(i)),
-                             size=35
+                            size=35,
                         )
                     )
 
@@ -474,7 +472,7 @@ class Dashboard(Styled):
                         "#dc3545",
                         "Delete",
                         partial(lambda i=last_index: self.delete_item(i)),
-                        size=35
+                        size=35,
                     )
                 )
 

@@ -98,5 +98,5 @@ class ImagePairs(ImageLike):
                 return t.size
         return (224, 224)
 
-    def to_csv(self, sensitive: list[str], skip_first_columns: int=2):
+    def to_csv(self, sensitive: list[str], skip_first_columns: int = 2):
         return super().to_csv(sensitive, skip_first_columns)

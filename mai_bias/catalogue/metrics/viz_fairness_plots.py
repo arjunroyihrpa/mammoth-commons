@@ -55,7 +55,6 @@ def viz_fairness_plots(
     dataset = dataset.to_csv(sensitive)
     y_true = list(dataset.labels.columns.values())[-1]
 
-
     sa_df = dataset.df[sensitive].copy()
     sa_matrix = sa_df.to_numpy()
 

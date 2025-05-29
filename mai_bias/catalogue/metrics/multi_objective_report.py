@@ -19,6 +19,7 @@ from mammoth_commons.externals import fb_categories
         "ucimlrepo",
         "pygrank",
         "mmm-fair",
+        "skl2onnx",
     ),
 )
 def multi_objective_report(
@@ -54,7 +55,7 @@ def multi_objective_report(
     else:
         thetas = np.arange(2, len(model.models))
     O_1, O_2, O_3 = [], [], []
-    labs = list(dataset.labels.values())[-1]
+    labs = list(dataset.labels.__iter__())[-1]
     labs = labs.to_numpy() if hasattr(labs, "to_numpy") else np.array(labs)
     for i in thetas:
         predictions = model.predict(dataset, sensitive, theta=i)
@@ -69,7 +70,7 @@ def multi_objective_report(
         )
         mm_fair = []
         for attr in sensitive:
-            prots = fb.Fork(fb_categories(dataset.data[attr]))
+            prots = fb.Fork(fb_categories(dataset.df[attr]))
             groups = list(prots.branches().keys())  # [g for g in prots]#
             dfnr = fb.dfnr(predictions=predictions, labels=labs, sensitive=prots)
             dfpr = fb.dfpr(predictions=predictions, labels=labs, sensitive=prots)

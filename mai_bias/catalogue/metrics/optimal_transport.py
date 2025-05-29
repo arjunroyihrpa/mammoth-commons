@@ -1,5 +1,5 @@
 from mammoth_commons.datasets import Dataset, ImageLike
-from mammoth_commons.externals import align_predictions_labels
+from mammoth_commons.externals import align_predictions
 from mammoth_commons.models import Predictor
 from mammoth_commons.exports import HTML
 from typing import List
@@ -56,9 +56,9 @@ def optimal_transport(
     predictions = pd.Series(model.predict(dataset, sensitive))
     dataset = dataset.to_csv(sensitive)
     labels = dataset.labels
-    predictions, labels = align_predictions_labels(predictions, labels)
+    predictions, labels = align_predictions(predictions, labels)
     predictions = predictions.columns
-    labels = labels.columns
+    labels = labels.columns if labels else None
 
     worst_distance = 0
     offenders = list()
@@ -81,7 +81,9 @@ def optimal_transport(
                 predictions = predictions.numpy()
             if hasattr(df, "numpy"):
                 df = df.numpy()
-            dist = ot_distance(y_true=label, y_pred=pd.Series(predictions[label_name]), prot_attr=df)
+            dist = ot_distance(
+                y_true=label, y_pred=pd.Series(predictions[label_name]), prot_attr=df
+            )
             for k, v in dist.items():
                 if (attr, k) not in results:
                     results[(attr, k)] = {}

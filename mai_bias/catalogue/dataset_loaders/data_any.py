@@ -3,16 +3,46 @@ from mammoth_commons.integration import loader, Options
 import pandas as pd
 
 
+def data_local(raw_data: pd.DataFrame, target: str = None) -> CSV:
+    numeric = [
+        col
+        for col in raw_data
+        if pd.api.types.is_any_real_numeric_dtype(raw_data[col])
+        and len(set(raw_data[col])) > 10
+    ]
+    numeric_set = set(numeric)
+    categorical = [col for col in raw_data if col not in numeric_set]
+    if len(categorical) < 1:
+        raise Exception("At least one categorical column is required.")
+    if target is None:
+        if "class" in categorical:
+            target = "class"
+        elif "Class" in categorical:
+            target = "Class"
+        elif "Y" in categorical:
+            target = "Y"
+        elif "y" in categorical:
+            target = "y"
+        else:
+            target = categorical[-1]
+    if target in categorical:
+        categorical.remove(target)
+    elif target in numeric:
+        numeric.remove(target)
+    label = raw_data[target].copy()
+    raw_data = raw_data.drop(columns=[target])
+    return CSV(raw_data, num=numeric, cat=categorical, labels=label)
+
+
 @loader(
     namespace="mammotheu",
     version="v0042",
     python="3.13",
-    packages=("pandas", "onnxruntime", "mmm-fair", "skl2onnx"),
+    packages=("pandas",),
 )
 def data_read_any(
-    raw_data: pd.DataFrame=None,
-    dataset_name: str=None,
-    target=None,
+    dataset_path: str = None,
+    target: str = None,
 ) -> CSV:
     """
     Loads a dataset for analysis from either a pre-loaded pandas DataFrame or a file in one of the supported formats:
@@ -29,15 +59,18 @@ def data_read_any(
     using the ONNXEnsemble module.
 
     Args:
-        raw_dataframe (pd.DataFrame, optional): A preloaded pandas DataFrame. If provided, it is used directly.
-        dataset_path (str, optional): Path or URL to the dataset file. Must have one of the supported extensions.
-        target (str): The name of the column to treat as the predictive label.
+        dataset_path: Path or URL to the dataset file. Must have one of the supported extensions.
+        target: The name of the column to treat as the predictive label.
     """
-    from mmm_fair.data_process import data_raw
-
-    csv_dataset = data_raw(raw_data, dataset_name, target)
-    # TODO: REMOVE first argument
-    # TODO: add conversion to the actual mammoth CSV data type here. Something like the following but export the labels too
-    # TODO: returns commons data structures only if you import the module, otherwise return a convertible
-    # return CSV(df=csv_dataset.data,num=csv_dataset.numeric, cat=csv_dataset.categorical, labels="TODO")
-    return csv_dataset
+    try:
+        if dataset_path.endswith(".csv"):
+            df = pd.read_csv(dataset_path)
+        elif dataset_path.endswith(".xls", ".xlsx", ".xlsm", ".xlsb", ".odf", ".ods"):
+            df = pd.read_excel(dataset_path)
+        elif dataset_path.endswith(".json"):
+            df = pd.read_json(dataset_path)
+        elif dataset_path.endswith(".html", ".htm"):
+            df = pd.read_html(dataset_path)
+        return data_local(df, target)
+    except:
+        raise ValueError("Could not read data. Unsupported or invalid format.")
