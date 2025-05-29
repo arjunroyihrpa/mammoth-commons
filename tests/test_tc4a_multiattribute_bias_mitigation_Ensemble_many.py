@@ -8,13 +8,13 @@ def test_multiattribute_bias_mitigation():
     # TODO: mmm-fair does not use this repo's data structures, but basically needs to call to_pred WITHOUT the sensitive attribute
     # TODO: if it's going to include that in training
     """with testing.Env(model_onnx_ensemble, data_uci, model_card) as env:
-        dataset_name = "bank"
-        dataset = env.data_uci(dataset_name=dataset_name)
-        model_path = "data/model_MMM_Fair.zip"
-        model = env.model_onnx_ensemble(model_path)
-        sensitive = ["age", "marital"]
-        markdown_result = env.model_card(dataset, model, sensitive=sensitive)
-        markdown_result.show()"""
+    dataset_name = "bank"
+    dataset = env.data_uci(dataset_name=dataset_name)
+    model_path = "data/model_MMM_Fair.zip"
+    model = env.model_onnx_ensemble(model_path)
+    sensitive = ["age", "marital"]
+    markdown_result = env.model_card(dataset, model, sensitive=sensitive)
+    markdown_result.show()"""
 
 
 if __name__ == "__main__":

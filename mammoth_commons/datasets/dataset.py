@@ -23,7 +23,7 @@ class Labels:
 class Dataset:
     integration = "dsl.Dataset"
 
-    def __init__(self, labels: Labels|None):
+    def __init__(self, labels: Labels | None):
         self.labels = labels
         self.description: str | dict | None = None
 
