@@ -6,7 +6,7 @@ import pickle
 from functools import wraps
 
 
-_default_python = "3.12"
+_default_python = "3.13"
 _default_packages = ()  # appended to ["mammoth_commons[deployment]"]
 
 
