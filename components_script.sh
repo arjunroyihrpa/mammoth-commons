@@ -1,7 +1,6 @@
 echo "Building components"
 
-#pip install --upgrade -r requirements_gh_build.txt
-pip install --upgrade -r new_reqs.txt
+pip install --upgrade -r requirements_gh_build.txt
 pip install -e .
 
 kfp component build . --component-filepattern mai_bias/catalogue/dataset_loaders/auto_csv.py
