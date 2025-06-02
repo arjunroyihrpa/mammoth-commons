@@ -7,7 +7,7 @@ from mammoth_commons.integration import metric, Options
 
 @metric(
     namespace="mammotheu",
-    version="v0042",
+    version="v0043",
     python="3.13",
     packages=("torch", "torchvision", "cvbiasmitigation"),
 )
