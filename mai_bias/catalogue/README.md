@@ -42,7 +42,7 @@ pip install docker
 
 ```bash
 pip install -e .
-pip install requirements[all].txt # needed only if you want to run all integration tests
+pip install requirements[main].txt # other requirements automatically installed
 pip install docker
 ```
 

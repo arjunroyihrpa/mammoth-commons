@@ -47,3 +47,27 @@ jobs:
           name: module_yamls
           path: yamls/
           compression-level: 9
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download yamls artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: module_yamls
+          path: yamls
+
+      - name: Compress yamls folder
+        run: tar -czf module_yamls.tar.gz yamls
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Toolkit Modules Release v${{ github.run_number }}
+          body: |
+            This release contains the built module YAMLs.
+          files: module_yamls.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
