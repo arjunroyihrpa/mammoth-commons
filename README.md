@@ -135,3 +135,16 @@ through *brew*.
 ## 🦣 [Module catalogue](https://mammoth-eu.github.io/mammoth-commons/)
 
 ## 👍 [Contribute](CONTRIBUTING.md)
+
+
+## License
+
+This repository is distributed under the Apache 2.0 License, Copyright 2025 MAMMOth.
+
+Third-party licenses:
+
+- The file `mammoth_commons/custom_kfp.py` was adjusted from the KFP project to
+handle additional metadata needed for interoperability with the demonstrator 
+and our metaprogramming decorators. Modifications were made on an original 
+version that is released under Apache 2.0 License under the KFP here: 
+https://github.com/kubeflow/pipelines
