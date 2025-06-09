@@ -13,4 +13,4 @@ html2text
 readchar
 rich
 click
-mmm-fair-cli
+docker
