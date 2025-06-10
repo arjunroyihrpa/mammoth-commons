@@ -16,7 +16,14 @@ from typing import List
     namespace="mammotheu",
     version="v0001",
     python="3.13",
-    packages=("fairlearn", "plotly", "pandas", "onnxruntime", "mmm-fair", "skl2onnx"),
+    packages=(
+        "fairlearn",
+        "plotly",
+        "pandas",
+        "onnxruntime",
+        "mmm-fair-cli",
+        "skl2onnx",
+    ),
 )
 def viz_fairness_report(
     dataset: Dataset,
@@ -44,7 +51,7 @@ def viz_fairness_report(
         It helps teams assess group-level equity in model behavior using interpretable, tabular summaries.
     </p>
     """
-    from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
+    from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
     import numpy as np
 
     if hasattr(model, "mmm"):

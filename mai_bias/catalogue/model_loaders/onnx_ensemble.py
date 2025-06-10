@@ -10,7 +10,7 @@ import zipfile
     namespace="mammotheu",
     version="v0043",
     python="3.13",
-    packages=("onnxruntime", "mmm-fair", "skl2onnx"),
+    packages=("onnxruntime", "mmm-fair-cli", "skl2onnx"),
 )
 def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
     """<p>This ONNX Ensemble Module enables predictions using a <a href="https://scikit-learn.org/stable/modules/ensemble.html" target="_blank">boosting ensemble</a> mechanism, ideal for combining multiple weak learners to improve prediction accuracy. Boosting, a powerful technique in machine learning, focuses on training a series of simple models (weak learners) – often single-depth <a href="https://scikit-learn.org/stable/modules/tree.html#classification" target="_blank">decision trees</a> – and combining them into a strong ensemble model. However, the model loader module allows any model converted to <a href="https://onnxruntime.ai/docs/tutorials/traditional-ml.html#convert-model-to-onnx">ONNX</a> format and zipped inside a directory path along with other meta-informations (if any) stored in <a href="https://numpy.org/doc/2.1/reference/generated/numpy.save.html">.npy</a> format.</p>
@@ -38,6 +38,7 @@ def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
             if file_name.endswith(".npy"):
                 with myzip.open(file_name) as param_file:
                     params = np.load(param_file, allow_pickle=True)
+
             elif file_name.endswith(".onnx"):
                 model_names.append(file_name)
 
@@ -48,4 +49,5 @@ def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
             with myzip.open(file_name) as model_file:
                 model_bytes = model_file.read()
                 models.append(model_bytes)
-    return ONNXEnsemble(models, **dict(params.item()))
+    params_dict = dict(params.item()) if params is not None else {"-": None}
+    return ONNXEnsemble(models, **params_dict)

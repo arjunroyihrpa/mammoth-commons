@@ -15,7 +15,7 @@ class ONNXEnsemble(Predictor):
         sensitives=None,
         **kwargs,
     ):
-        from mmm_fair.onnx_utils import ONNX_MMM
+        from mmm_fair_cli.onnx_utils import ONNX_MMM
 
         assert (
             _ is None
