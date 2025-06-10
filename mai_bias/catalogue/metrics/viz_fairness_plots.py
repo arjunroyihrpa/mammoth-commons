@@ -46,7 +46,7 @@ def viz_fairness_plots(
     """
 
     # Import the existing function from mmm-fair
-    from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
+    from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
     import numpy as np
 
     if hasattr(model, "mmm"):

@@ -9,7 +9,7 @@ def test_multiattribute_bias_mitigation():
         dataset_name = "data/credit.csv"
         target = "class"
         dataset = env.data_read_any(dataset_path=dataset_name, target=target)
-        model_path = "data/model_MMM_Fair_GBT.zip"
+        model_path = 'data/my_local_model.zip'#"data/model_MMM_Fair_GBT.zip"
         model = env.model_onnx_ensemble(model_path)
         sensitive = ["SEX", "MARRIAGE"]  # None #["X2", "X4", "X5"]
         # X=dataset.to_pred(sensitive=sensitive)

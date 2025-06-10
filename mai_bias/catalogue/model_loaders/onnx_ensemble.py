@@ -38,6 +38,7 @@ def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
             if file_name.endswith(".npy"):
                 with myzip.open(file_name) as param_file:
                     params = np.load(param_file, allow_pickle=True)
+                
             elif file_name.endswith(".onnx"):
                 model_names.append(file_name)
 
@@ -48,4 +49,5 @@ def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:
             with myzip.open(file_name) as model_file:
                 model_bytes = model_file.read()
                 models.append(model_bytes)
-    return ONNXEnsemble(models, **dict(params.item()))
+    params_dict = dict(params.item()) if params is not None else {"-": None}
+    return ONNXEnsemble(models, **params_dict)

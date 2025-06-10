@@ -44,7 +44,7 @@ def viz_fairness_report(
         It helps teams assess group-level equity in model behavior using interpretable, tabular summaries.
     </p>
     """
-    from mmm_fair.fairlearn_report import generate_reports_from_fairlearn
+    from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
     import numpy as np
 
     if hasattr(model, "mmm"):

@@ -45,7 +45,7 @@ def multi_objective_report(
     times when the number of Pareto solutions is high.</span>
     """
     from fairbench import v1 as fb
-    from mmm_fair.viz_trade_offs import plot3d
+    from mmm_fair_cli.viz_trade_offs import plot3d
 
     # obtain predictions
     if hasattr(model, "mmm"):
