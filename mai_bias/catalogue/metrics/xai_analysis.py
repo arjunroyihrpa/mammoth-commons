@@ -11,7 +11,7 @@ from mammoth_commons.integration import metric
     namespace="mammotheu",
     version="v0043",
     python="3.13",
-    packages=("torch", "torchvision", "timm", "facextool"),
+    packages=("torch", "torchvision", "timm", "facextool", "numpy"),
 )
 def facex_regions(
     dataset: Image,
