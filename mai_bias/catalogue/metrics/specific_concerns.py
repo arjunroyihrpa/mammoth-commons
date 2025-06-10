@@ -16,7 +16,7 @@ def specific_concerns(
     dataset: Dataset,
     model: Predictor,
     sensitive: List[str],
-    intersectional: bool = False,
+    intersections: Options("Base", "All", "Subgroups") = "Base",
     base_measure: Options(
         "Accuracy",
         "True positive rate",
@@ -57,7 +57,7 @@ def specific_concerns(
     ignored in the analysis. The report may also include information about built-in datasets.</p>
 
     Args:
-        intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
+        intersections: Whether to consider only the provided groups, all non-empty group intersections, or all non-empty intersections while ignoring larger groups during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         base_measure: A base measure of algorithmic performance to be computed on each group.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
         reduction: The strategy with which to reduce all measure comparisons to one value.
@@ -66,17 +66,18 @@ def specific_concerns(
     import fairbench as fb
 
     assert len(sensitive) != 0, "At least one sensitive attribute should be selected"
+
     predictions = model.predict(dataset, sensitive)
+    dataset = dataset.to_csv(sensitive)
+    sensitive = fb.Dimensions({s: fb_categories(dataset.df[s]) for s in sensitive})
+    if intersections != "Base":
+        sensitive = sensitive.intersectional()
+    if intersections == "Subgroups":
+        sensitive = sensitive.strict()
+    assert len(sensitive.branches()) != 0, "Could not find any intersections"
     predictions, labels = align_predictions(predictions, dataset.labels)
     predictions = predictions.columns
     labels = labels.columns if labels else None
-
-    sensitive = fb.Dimensions(
-        {attr: fb_categories(dataset.df[attr]) for attr in sensitive}
-    )
-
-    if intersectional:
-        sensitive = sensitive.intersectional()
 
     fb_measures = {
         "Accuracy": "acc",
