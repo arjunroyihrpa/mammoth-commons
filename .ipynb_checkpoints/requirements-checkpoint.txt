@@ -1,3 +1,0 @@
-numpy
-markdown2
-dill

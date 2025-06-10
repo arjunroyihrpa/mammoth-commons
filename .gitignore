@@ -28,3 +28,5 @@ local_outputs
 canary/
 data/data/
 data/dev/
+__pycache__/
+.ipynb_checkpoints/
