@@ -57,7 +57,7 @@ def specific_concerns(
     ignored in the analysis. The report may also include information about built-in datasets.</p>
 
     Args:
-        intersections: Whether to consider only the provided groups, all non-empty group intersections, or all non-empty intersections while ignoring larger groups during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
+        intersections: Whether to consider only the provided groups (Base), all non-empty group intersections (All), or all non-empty intersections while ignoring larger groups during analysis (Subgroups). For example, the last option may not contain a `White` dimension if `White Men` is an existing dimension. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         base_measure: A base measure of algorithmic performance to be computed on each group.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
         reduction: The strategy with which to reduce all measure comparisons to one value.
