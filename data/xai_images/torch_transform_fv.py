@@ -13,6 +13,7 @@ def to_bgr(img):
     else:
         raise ValueError(f"Unexpected image shape: {img.shape}")
 
+
 def img_loader(img_path, url_str=""):
     """
     If img_path is already a URL or not a string, it returns img_path as is.
@@ -28,19 +29,21 @@ def img_loader(img_path, url_str=""):
     elif url_str == "":
         image = PILImage.open(img_path).convert("RGB")
         return image
-    else: 
+    else:
         full_url = f"{url_str}/{img_path}"
         try:
             # Fetch the image content from the URL
             # Use stream=True and iter_content for large files if needed
             response = requests.get(full_url)
-            response.raise_for_status() # Raise an exception for HTTP errors (4xx or 5xx)
+            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
 
             # Open the image using PIL from the fetched content
             image = PILImage.open(BytesIO(response.content)).convert("RGB")
             return image
         except requests.exceptions.RequestException as e:
-            raise RuntimeError(f"Failed to load image from URL '{full_url}': {e}") from e
+            raise RuntimeError(
+                f"Failed to load image from URL '{full_url}': {e}"
+            ) from e
 
 
 # Important note: make sure that your transforms have resize and normalize!
