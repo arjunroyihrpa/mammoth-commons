@@ -18,7 +18,7 @@ def data_images(
     data_transform_path: str = "",
     transform_variable: str = "transform",
     num_workers: int = 0,
-    safe_libraries="numpy,torch,torchvision,PIL",
+    safe_libraries="numpy,torch,torchvision,PIL,io,requests,urllib",
 ) -> Image:
     """
     Loads image data from a CSV file holding their sensitive and predictive attribute
