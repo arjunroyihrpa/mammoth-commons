@@ -8,7 +8,7 @@ import zipfile
 
 @loader(
     namespace="mammotheu",
-    version="v0043",
+    version="v0044",
     python="3.13",
     packages=("onnxruntime", "mmm-fair-cli", "skl2onnx"),
 )
