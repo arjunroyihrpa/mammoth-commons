@@ -22,8 +22,6 @@ def img_loader(img_path, base_url=""):
     else: 
         full_url = urllib.parse.urljoin(base_url, img_path)
 
-
-        print(full_url)
         try:
             # Fetch the image content from the URL
             # Use stream=True and iter_content for large files if needed
