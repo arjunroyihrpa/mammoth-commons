@@ -8,10 +8,13 @@ class ONNX(Predictor):
         self.includes_sensitive = includes_sensitive
 
     def predict(self, dataset, sensitive: list[str]):
+        includes_sensitive = (
+            not self.includes_sensitive
+        )  # TODO: investigate to_pred if this matches its semnatics in the following line
         x = (
             dataset
             if isinstance(dataset, np.ndarray)
-            else dataset.to_pred(sensitive if self.includes_sensitive else list())
+            else dataset.to_pred(sensitive if includes_sensitive else list())
         )
         import onnxruntime as rt
         from onnxruntime.capi.onnxruntime_pybind11_state import InvalidArgument

@@ -5,6 +5,7 @@ MAMMOth_commons_deployment.egg-info/
 MAI_Bias.egg-info/
 venv
 venv_test
+venvtemp
 dist
 build
 Dockerfile

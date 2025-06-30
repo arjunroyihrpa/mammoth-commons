@@ -1,6 +1,5 @@
 from typing import Iterable
 import importlib
-import numpy as np
 from mammoth_commons.datasets.dataset import Dataset, Labels
 
 
@@ -43,7 +42,7 @@ class CSV(Dataset):
         self.df = df
         self.num = num
         self.cat = cat
-        self.cols = num + cat
+        self.cols = num + cat  # TODO: add variable to keep transformed col names too
         sens = set() if sens is None else set(sens)
         if isinstance(labels, str):
             sens.add(labels)
@@ -85,3 +84,6 @@ class CSV(Dataset):
 
     def to_csv(self, sensitive: list[str]):
         return self
+
+    def to_pandas(self):
+        raise NotImplemented

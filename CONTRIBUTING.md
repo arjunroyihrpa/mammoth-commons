@@ -167,7 +167,7 @@ like so:
 
 ```Python
 import mammoth_commons
-from modules import dataloader, modelloader, metric  # import your modules here
+from mammoth_commons import dataloader, modelloader, metric  # import your modules here
 
 with mammoth_commons.testing.Env(dataloader, modelloader, metric) as env:
     data = env.dataloader("data_url", data_kwarg1=..., data_kwarg2=..., ...)

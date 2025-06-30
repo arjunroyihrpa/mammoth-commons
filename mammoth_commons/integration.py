@@ -2,9 +2,7 @@
 import inspect
 from typing import get_type_hints, Dict, List, get_origin, get_args, Union
 import os
-import pickle
 from functools import wraps
-
 
 _default_python = "3.13"
 _default_packages = ()  # appended to ["mammoth_commons[deployment]"]

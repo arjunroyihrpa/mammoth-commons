@@ -9,6 +9,7 @@ import zipfile
 import bz2
 import pathlib
 import shutil
+import re
 
 
 def get_import_list(code):
@@ -229,3 +230,85 @@ def pd_read_csv(url, **kwargs):
     except Exception:
         delimiter = None
     return pd.read_csv(path, delimiter=delimiter, **kwargs)
+
+
+def format_name(name):
+    ret = " ".join(name.split("_")).replace("data ", "").replace("model ", "")
+    ret = ret[0].upper() + ret[1:]
+    return ret
+
+
+def format_description(description, desktopmode=False):
+    def transform_doc(doc):
+        pre_blocks = re.findall(r"<pre>.*?</pre>", doc, flags=re.DOTALL)
+        placeholders = [f"MAMMOTHCOMMONSPREBLOCK{i}" for i in range(len(pre_blocks))]
+        for i, block in enumerate(pre_blocks):
+            doc = doc.replace(block, placeholders[i])
+        doc = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", doc)
+        doc = re.sub(r"\*(.+?)\*", r"<i>\1</i>", doc)
+        doc = re.sub(r"`(.+?)`", r"<code>\1</code>", doc)
+
+        def list_replacer(match):
+            items = match.group(0).strip().splitlines()
+            items = [f"<li>{item[2:].strip()}</li>" for item in items]
+            return "<ul>" + "".join(items) + "</ul>"
+
+        doc = re.sub(
+            r"(?:^|\n)(- .+(?:\n- .+)*)", list_replacer, doc, flags=re.MULTILINE
+        )
+        doc = (
+            doc.replace("\n\n", "<br><br>")
+            .replace("\n", " ")
+            .replace("_", " ")
+            .replace("  ", " ")
+        )
+        for i, block in enumerate(pre_blocks):
+            doc = doc.replace(placeholders[i], block)
+        return doc
+
+    doc = ""
+    args_desc = dict()
+    args_options = dict()
+    started_args = False
+    separator_title = " "
+    sep_title = separator_title
+    started_options = False
+    for line in description.split("\n"):
+        line = line.strip()
+        if line.startswith("Options:"):
+            started_options = True
+        elif line.startswith("Args:"):
+            started_args = True
+        elif line.endswith(" args:"):
+            separator_title = line[:-5].strip()
+            sep_title = separator_title
+            if separator_title:
+                separator_title = "<br><h3>" + separator_title + "</h3>"
+        elif started_options and ":" in line:
+            splt = line.split(":", maxsplit=2)
+            args_options[splt[0]] = [option.strip() for option in splt[1].split(",")]
+        elif started_args and ":" in line:
+            splt = line.split(":", maxsplit=2)
+            name = format_name(splt[0]).replace(sep_title + " ", "")
+            name = name[0].upper() + name[1:]
+            # args_desc[splt[0]] = f"{separator_title}<i>{name} - </i> {splt[1]}"
+            args_desc[splt[0]] = (
+                f"""<h1>{separator_title} {name}</h1> {splt[1]}"""
+                if desktopmode
+                else f"""<button
+                              type="button"
+                              class="btn btn-light"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="{splt[1]}"
+                              data-description="{splt[1]}"
+                              data-name="{name}"
+                              onclick="showDescriptionModal(this)">
+                              <i class="bi bi-info-circle"></i> {name}
+                            </button>"""
+            )
+
+            separator_title = ""
+        else:
+            doc += line + "\n"
+    return transform_doc(doc), args_desc, args_options

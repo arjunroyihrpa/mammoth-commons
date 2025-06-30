@@ -31,7 +31,7 @@ def test_bias_exploration():
         )
 
         model_path = "file://localhost//" + os.path.abspath("./data/model.onnx")
-        model = env.model_onnx(model_path, trained_with_sensitive=False)
+        model = env.model_onnx(model_path, trained_with_sensitive=True)
 
         markdown_result = env.specific_concerns(
             dataset, model, sensitive, base_measure="Accuracy", reduction="Min"
