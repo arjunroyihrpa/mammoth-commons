@@ -14,7 +14,7 @@ from typing import List
 
 @metric(
     namespace="mammotheu",
-    version="v0044",
+    version="v0045",
     python="3.13",
     packages=(
         "fairlearn",

@@ -4,7 +4,7 @@ from mammoth_commons.integration import loader
 from mammoth_commons.externals import safeexec
 
 
-@loader(namespace="mammotheu", version="v0044", python="3.13")
+@loader(namespace="mammotheu", version="v0045", python="3.13")
 def model_torch(
     state_path: str = "",
     model_path: str = "",
