@@ -28,7 +28,14 @@ def test_bias_exploration():
             delimiter=";",
         )
 
+        # age, duration, campaign, pdays, previous
+        # job, marital, education, default, housing, loan, contact, poutcome
+        # y ;
+
         model_path = "file://localhost//" + os.path.abspath("./data/model.onnx")
+        print(
+            model_path
+        )  # e.g., file://localhost///home/maniospas/Documents/mammoth-commons/data/model.onnx
         model = env.model_onnx(model_path, trained_with_sensitive=True)
 
         markdown_result = env.model_card(dataset, model, sensitive)

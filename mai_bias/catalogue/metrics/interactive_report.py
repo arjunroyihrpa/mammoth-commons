@@ -8,7 +8,7 @@ from mammoth_commons.externals import fb_categories
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
@@ -19,7 +19,9 @@ def interactive_report(
     intersectional: bool = False,
     compare_groups: Options("Pairwise", "To the total population") = None,
 ) -> HTML:
-    """Creates an interactive report using the FairBench library. The report creates traceable evaluations that
+    """<img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
+
+    Creates an interactive report using the FairBench library. The report creates traceable evaluations that
     you can shift through to find actual sources of unfairness.
 
     Args:

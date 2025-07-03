@@ -4,10 +4,13 @@ from mammoth_commons.externals import prepare
 
 
 @loader(
-    namespace="mammotheu", version="v0045", python="3.13", packages=("onnxruntime",)
+    namespace="mammotheu", version="v0046", python="3.13", packages=("onnxruntime",)
 )
 def model_onnx(path: str = "", trained_with_sensitive: bool = True) -> ONNX:
-    """Loads an inference model stored in <a href="https://onnx.ai/">ONNx</a> format.
+    """
+    <img src="https://onnx.ai/images/ONNX-Logo.svg" alt="Based on ONNX" style="background-color: #000055; float: left; margin-right: 15px; margin-top: 5px; margin-bottom: 5px; height: 40px;"/>
+
+    Loads an inference model stored in <a href="https://onnx.ai/">ONNx</a> format.
     This is a generic cross-platform format for representing machine learning models with a common set of operations.
     Several machine learning frameworks can export to this format.
     The loaded model should be compatible with the dataset being analysed. For example,

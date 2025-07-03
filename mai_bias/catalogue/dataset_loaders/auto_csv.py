@@ -6,12 +6,15 @@ from mammoth_commons.externals import pd_read_csv
 
 @loader(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("pandas",),
 )
 def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:
-    """Loads a CSV file that contains numeric, categorical, and predictive data columns.
+    """
+    <img src="https://pandas.pydata.org/static/img/pandas_white.svg" alt="Based on Pandas" style="background-color: #000099; float: left; margin-right: 15px; margin-top: 5px; margin-bottom: 5px; height: 60px;"/>
+
+    Loads a CSV file that contains numeric, categorical, and predictive data columns.
     This automatically detects the characteristics of the dataset being loaded,
     namely the delimiter that separates the columns, and whether each column contains
     numeric or categorical data. A <a href="https://pandas.pydata.org/">pandas</a>
@@ -25,6 +28,7 @@ def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:
     mammoth-commons core to retrieve <a href="https://numpy.org/">numpy</a>
     arrays *X,y* of dataset features and of categorical labels respectively.
 
+    <small>
     <pre>
     % pip install --upgrade pandas
     % pip install --upgrade mammoth_commons
@@ -48,6 +52,7 @@ def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:
     X = X.astype(np.float32)
     y = df[cat[-1]]
     </pre>
+    </small>
 
 
     Args:

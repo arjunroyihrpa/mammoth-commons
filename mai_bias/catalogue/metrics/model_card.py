@@ -10,7 +10,7 @@ from mammoth_commons.externals import fb_categories, align_predictions
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
@@ -24,6 +24,8 @@ def model_card(
     show_non_problematic: bool = False,
 ) -> HTML:
     """
+    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
+
     <p>Generates a fairness and bias report using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
     library. This explores many kinds of bias to paint a broad picture and help you decide on what is problematic
     and what is acceptable behavior.

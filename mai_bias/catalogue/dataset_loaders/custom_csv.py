@@ -6,7 +6,7 @@ from mammoth_commons.externals import pd_read_csv
 
 @loader(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("pandas",),
 )
@@ -22,7 +22,10 @@ def data_custom_csv(
     label: Optional[str] = None,
     skip_invalid_lines: bool = True,
 ) -> CSV:
-    """Loads a CSV file that contains numeric, categorical, and predictive data columns
+    """
+    <img src="https://pandas.pydata.org/static/img/pandas_white.svg" alt="Based on Pandas" style="background-color: #000099; float: left; margin-right: 15px; margin-top: 5px; margin-bottom: 5px; height: 60px;"/>
+
+    Loads a CSV file that contains numeric, categorical, and predictive data columns
     separated by a user-defined delimiter. Each row corresponds to a different data sample,
     with the first one sometimes holding column names (this is automatically detected).
     To use all data in the file and automate discovery of numerical and categorical columns,

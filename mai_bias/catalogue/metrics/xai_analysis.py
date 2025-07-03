@@ -9,7 +9,7 @@ from mammoth_commons.integration import metric
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("torch", "torchvision", "timm", "facextool", "numpy"),
 )
@@ -20,7 +20,10 @@ def facex_regions(
     target_class: int = 1,
     target_layer: str = None,
 ) -> HTML:
-    """<a href="https://github.com/gsarridis/faceX">FaceX</a> is a tool designed to help you understand how
+    """
+        <img src="https://github.com/gsarridis/faceX/raw/main/images/facex.JPG" alt="Based on Facex" style="max-width: 600px;"/>
+
+        <a href="https://github.com/gsarridis/faceX">FaceX</a> is a tool designed to help you understand how
         face attribute classifiers make decisions. It
         provides clear explanations by analyzing 19 key regions of the face, such as the eyes, nose, mouth,
         hair, and skin. This method helps reveal which parts of the face the model focuses on when making

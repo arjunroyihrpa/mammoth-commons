@@ -29,6 +29,9 @@ class Registry:
         doc, args_desc, args_options = format_description(
             component.__doc__, desktopmode=self.desktopmode
         )
+        # args_desc = {k: markdown2.markdown(v) for k,v in args_desc.items()}
+
+        doc = markdown2.markdown(doc)
         args = list()
         args_to_classes = dict()
         for pname, parameter in signature.parameters.items():

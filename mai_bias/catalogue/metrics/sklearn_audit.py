@@ -10,7 +10,7 @@ from mammoth_commons.externals import fb_categories
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=(
         "fairbench",
@@ -33,6 +33,8 @@ def sklearn_audit(
     top_recommendations: int = 3,
 ) -> HTML:
     """
+    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
+
     <p>One way to evaluate the fairness of a dataset is by testing for biases using simple models with limited
     degrees of freedom. This module audits datasets by training such models provided by the
     <a href="https://scikit-learn.org/stable/index.html">scikit-learn</a> library on half of the dataset.

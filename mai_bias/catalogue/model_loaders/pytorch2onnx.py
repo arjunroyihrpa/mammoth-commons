@@ -6,18 +6,28 @@ from mammoth_commons.externals import safeexec
 import tempfile
 
 
-@loader(namespace="mammotheu", version="v0045", python="3.13")
+@loader(
+    namespace="mammotheu",
+    version="v0046",
+    python="3.13",
+    packages=("numpy", "torch", "torchvision"),
+)
 def model_torch2onnx(
     state_path: str = "",
     model_path: str = "",
     model_name: str = "model",
     input_width: int = 224,
     input_height: int = 224,
-    safe_libraries: str = "numpy, torch, torchvision",
+    safe_libraries: str = "numpy, torch, torchvision, PIL, io, requests",
     multiclass_threshold: float = 0,
 ) -> ONNX:
-    """Loads a ONNX model that comprises a Python code initializing the
-    architecture and a file of trained parameters. For safety, the architecture's
+    """
+
+    <img src="https://github.com/pytorch/pytorch/raw/main/docs/source/_static/img/pytorch-logo-dark.png" alt="Based on PyTorch" style="float: left; margin-right: 5px; margin-bottom: 5px; margin-top: 10px; height: 30px;"/>
+
+    Loads a <a href="https://pytorch.org/">pytorch</a> model that comprises a Python code initializing the
+    architecture and a file of trained parameters, and converts into ONNX format to support processing by
+    modules not supporting GPU compute. For safety, the architecture's
     definition is allowed to directly import only specified libraries.
 
     Args:

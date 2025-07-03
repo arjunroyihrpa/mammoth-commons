@@ -2,8 +2,10 @@ from mammoth_commons.models import EmptyModel
 from mammoth_commons.integration import loader
 
 
-@loader(namespace="mammotheu", version="v0045", python="3.13")
+@loader(namespace="mammotheu", version="v0046", python="3.13")
 def no_model() -> EmptyModel:
-    """Signifies that the analysis should focus solely on the fairness of the dataset."""
+    """Signifies that the analysis should focus solely on the fairness of the dataset.
+    Not treating bias at early steps may irrevocably embed it in the dataflow in ways that are hard to catch and quantify later.
+    """
 
     return EmptyModel()

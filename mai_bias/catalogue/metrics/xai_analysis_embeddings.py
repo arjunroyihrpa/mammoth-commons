@@ -9,7 +9,7 @@ from mammoth_commons.integration import metric
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("torch", "torchvision", "timm", "facextool", "numpy"),
 )
@@ -20,7 +20,8 @@ def facex_embeddings(
     target_class: int = 1,
     target_layer: str = None,
 ) -> HTML:
-    """<a href="https://github.com/gsarridis/faceX">FaceX</a> for feature extractors is designed to help you
+    """
+        <a href="https://github.com/gsarridis/faceX">FaceX</a> for feature extractors is designed to help you
         understand how face verification models process
         images by comparing feature embeddings. In tasks like face recognition, models
         generate a feature vector (embedding) for each image. These embeddings capture the unique

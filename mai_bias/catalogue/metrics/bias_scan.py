@@ -8,7 +8,7 @@ from mammoth_commons.integration import metric
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=(
         "aif360",

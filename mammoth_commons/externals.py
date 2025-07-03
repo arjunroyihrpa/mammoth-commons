@@ -256,12 +256,12 @@ def format_description(description, desktopmode=False):
         doc = re.sub(
             r"(?:^|\n)(- .+(?:\n- .+)*)", list_replacer, doc, flags=re.MULTILINE
         )
-        doc = (
-            doc.replace("\n\n", "<br><br>")
-            .replace("\n", " ")
-            .replace("_", " ")
-            .replace("  ", " ")
-        )
+        # doc = (
+        #     doc.replace("\n\n", "<br><br>")
+        #     .replace("\n", " ")
+        #     .replace("_", " ")
+        #     .replace("  ", " ")
+        # )
         for i, block in enumerate(pre_blocks):
             doc = doc.replace(placeholders[i], block)
         return doc

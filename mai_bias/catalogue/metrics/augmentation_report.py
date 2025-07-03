@@ -625,7 +625,7 @@ def apply_class_ratio_sampling(df, protected_attribute, target_column):
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=(
         "fairbench",
@@ -641,6 +641,8 @@ def augmentation_report(
     sensitive: List[str],
 ) -> HTML:
     """
+    <img src="https://raw.githubusercontent.com/arjunroyihrpa/MMM_fair/main/images/mmm-fair.png" alt="Based on MMM-Fair" style="float: left; margin-right: 5px; margin-bottom: 5px; height: 80px;"/>
+
     This module generates an interactive HTML report featuring a
     <a href="https://plotly.com/python/sunburst-charts/" target="_blank">Plotly sunburst pie chart</a> visualization
     to explore imbalances in the dataset based on subgroups defined by sensitive attributes and the target variable.

@@ -4,15 +4,23 @@ from mammoth_commons.integration import loader
 from mammoth_commons.externals import safeexec
 
 
-@loader(namespace="mammotheu", version="v0045", python="3.13")
+@loader(
+    namespace="mammotheu",
+    version="v0046",
+    python="3.13",
+    packages=("numpy", "torch", "torchvision"),
+)
 def model_torch(
     state_path: str = "",
     model_path: str = "",
     model_name: str = "model",
-    safe_libraries: str = "numpy, torch, torchvision",
+    safe_libraries: str = "numpy, torch, torchvision, PIL, io, requests",
     multiclass_threshold: float = 0,
 ) -> Pytorch:
-    """Loads a pytorch model that comprises a Python code initializing the
+    """
+    <img src="https://github.com/pytorch/pytorch/raw/main/docs/source/_static/img/pytorch-logo-dark.png" alt="Based on PyTorch" style="float: left; margin-right: 5px; margin-bottom: 5px; margin-top: 10px; height: 30px;"/>
+
+    Loads a <a href="https://pytorch.org/">pytorch</a> model that comprises a Python code initializing the
     architecture and a file of trained parameters. For safety, the architecture's
     definition is allowed to directly import only specified libraries.
 

@@ -8,7 +8,7 @@ from mammoth_commons.integration import metric
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=(
         "aif360",
@@ -23,7 +23,8 @@ from mammoth_commons.integration import metric
 def optimal_transport(
     dataset: Dataset, model: Predictor, sensitive: List[str], threshold: float = 0.01
 ) -> HTML:
-    """Creates an optimal transport evaluation based on the implementation provided by the AIF360 library.
+    """
+    Creates an optimal transport evaluation based on the implementation provided by the AIF360 library.
     The evaluation computes the Wasserstein distance that reflects the cost of transforming the predictive
     distributions between sensitive attribute groups.
 

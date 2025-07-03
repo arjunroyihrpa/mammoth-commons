@@ -8,7 +8,7 @@ from mammoth_commons.externals import fb_categories, align_predictions
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
@@ -38,6 +38,8 @@ def specific_concerns(
     problematic_deviation: float = 0.1,
 ) -> HTML:
     """
+    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
+
     <p>Computes a fairness or bias measure that matches a specific type of numerical
     evaluation using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
     library. The measure is built by combining simpler options to form more than 300 valid alternatives.</p>

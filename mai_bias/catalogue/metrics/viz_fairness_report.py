@@ -14,7 +14,7 @@ from typing import List
 
 @metric(
     namespace="mammotheu",
-    version="v0045",
+    version="v0046",
     python="3.13",
     packages=(
         "fairlearn",
@@ -31,12 +31,11 @@ def viz_fairness_report(
     sensitive: List[str],
 ) -> HTML:
     """
+    <img src="https://raw.githubusercontent.com/fairlearn/fairlearn/29f6d6f67eea061ae5dae72e976f2069cb38772e/docs/static_landing_page/images/fairlearn_logo.svg" alt="Based on FairLearn" style="float: left; margin-right: 15px; margin-bottom: 5px; height: 50px;"/>
     <p>
         This module generates a structured fairness report using the <a href="https://fairlearn.org/" target="_blank">Fairlearn</a> library.
         It assesses whether a machine learning model behaves similarly across different population groups, as defined by sensitive attributes such as gender, race, or age.
-    </p>
-    <p>
-        The report includes two types of fairness metrics:
+        Two types of fairness metrics are considered:
     </p>
     <ul>
         <li><strong>Group-wise metrics</strong>: These show how the model performs for each group separately (e.g., true positive rates for Group A vs. Group B).</li>
