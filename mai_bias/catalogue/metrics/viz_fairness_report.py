@@ -79,18 +79,18 @@ def viz_fairness_report(
         report_type="table",
         sensitives=sensitive,
         mmm_classifier=model,
-        saIndex_test=raw_sa,               # use raw string values (e.g. "White", "Black")
+        saIndex_test=raw_sa,  # use raw string values (e.g. "White", "Black")
         y_pred=y_pred,
         y_test=y_true,
         launch_browser=False,
-        group_mappings=group_mappings,     # show real group names
+        group_mappings=group_mappings,  # show real group names
     )
 
     # Inject better layout into the HTML itself
     # Robust layout replacement to ensure fully responsive side-by-side display
     html_string = html_string.replace(
         '<div class="container">',
-        '''
+        """
         <div class="container"
             style="
                 display: flex;
@@ -102,12 +102,12 @@ def viz_fairness_report(
                 align-items: flex-start;
                 box-sizing: border-box;
             ">
-        '''
+        """,
     )
 
     html_string = html_string.replace(
         '<div class="report"',
-        '''
+        """
         <div class="report"
             style="
                 flex: 3 1 0;
@@ -117,12 +117,12 @@ def viz_fairness_report(
                 white-space: nowrap;
                 box-sizing: border-box;
             "
-        '''
+        """,
     )
 
     html_string = html_string.replace(
         '<div class="explanation"',
-        '''
+        """
         <div class="explanation"
             style="
                 flex: 1 1 0;
@@ -131,13 +131,12 @@ def viz_fairness_report(
                 overflow-wrap: anywhere;
                 box-sizing: border-box;
             "
-        '''
+        """,
     )
 
     # Optional: Patch <body> if needed to remove padding/margin conflicts
     html_string = html_string.replace(
-        "<body>",
-        '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
+        "<body>", '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
     )
 
     return HTML(html_string)

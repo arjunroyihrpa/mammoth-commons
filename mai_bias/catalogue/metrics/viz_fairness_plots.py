@@ -79,10 +79,10 @@ def viz_fairness_plots(
 
     # 6. Generate HTML-based Plotly report
     html_string = generate_reports_from_fairlearn(
-        report_type="html",              # ← this uses the Plotly charts
+        report_type="html",  # ← this uses the Plotly charts
         sensitives=sensitive,
         mmm_classifier=model,
-        saIndex_test=raw_sa,            # ← pass raw strings
+        saIndex_test=raw_sa,  # ← pass raw strings
         y_pred=y_pred,
         y_test=y_true,
         launch_browser=False,
@@ -91,8 +91,7 @@ def viz_fairness_plots(
 
     # 7. Optional: responsive layout injection (less needed for Plotly but still safe)
     html_string = html_string.replace(
-        "<body>",
-        '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
+        "<body>", '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
     )
 
     return HTML(html_string)
