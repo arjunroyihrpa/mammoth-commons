@@ -53,32 +53,91 @@ def viz_fairness_report(
     from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
     import numpy as np
 
+    # Unwrap model if needed
     if hasattr(model, "mmm"):
         model = model.mmm
+
+    # Predictions
     y_pred = model.predict(dataset, sensitive)
+
+    # Export to CSV style and get true label column name
     dataset = dataset.to_csv(sensitive)
     y_true = list(dataset.labels.columns.values())[-1]
 
+    # Extract sensitive attributes as raw values
     sa_df = dataset.df[sensitive].copy()
-    sa_matrix = sa_df.to_numpy()
+    raw_sa = sa_df.to_numpy()
 
-    # Force the first group in each sensitive column to be privileged (0), rest as 1
-    for col_idx, attr in enumerate(sensitive):
-        col = sa_matrix[:, col_idx]
-        first_group = col[0]  # Treat first seen value as privileged
-        sa_matrix[:, col_idx] = np.where(col == first_group, 0, 1)
+    # Build group mappings for label display
+    group_mappings = {}
+    for attr in sensitive:
+        vals = sa_df[attr].unique().tolist()
+        group_mappings[attr] = {val: i for i, val in enumerate(vals)}
 
-    sa_matrix = sa_matrix.astype(int)
-
-    # Call the original report function from mmm-fair (already supports console/table/html)
+    # Generate scrollable, wrapped HTML report from updated CLI
     html_string = generate_reports_from_fairlearn(
-        report_type="table",  # one could also use "table" if preferred
+        report_type="table",
         sensitives=sensitive,
         mmm_classifier=model,
-        saIndex_test=sa_matrix,
+        saIndex_test=raw_sa,               # use raw string values (e.g. "White", "Black")
         y_pred=y_pred,
         y_test=y_true,
-        launch_browser=False,  # suppresses opening in a new browser
+        launch_browser=False,
+        group_mappings=group_mappings,     # show real group names
+    )
+
+    # Inject better layout into the HTML itself
+    # Robust layout replacement to ensure fully responsive side-by-side display
+    html_string = html_string.replace(
+        '<div class="container">',
+        '''
+        <div class="container"
+            style="
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                width: 100%;
+                height: auto;
+                gap: 30px;
+                align-items: flex-start;
+                box-sizing: border-box;
+            ">
+        '''
+    )
+
+    html_string = html_string.replace(
+        '<div class="report"',
+        '''
+        <div class="report"
+            style="
+                flex: 3 1 0;
+                min-width: 0;
+                overflow-x: auto;
+                overflow-y: visible;
+                white-space: nowrap;
+                box-sizing: border-box;
+            "
+        '''
+    )
+
+    html_string = html_string.replace(
+        '<div class="explanation"',
+        '''
+        <div class="explanation"
+            style="
+                flex: 1 1 0;
+                min-width: 0;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+                box-sizing: border-box;
+            "
+        '''
+    )
+
+    # Optional: Patch <body> if needed to remove padding/margin conflicts
+    html_string = html_string.replace(
+        "<body>",
+        '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
     )
 
     return HTML(html_string)
