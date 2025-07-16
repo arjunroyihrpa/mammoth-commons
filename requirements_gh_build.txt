@@ -14,3 +14,4 @@ readchar
 rich
 click
 docker
+mlcroissant
