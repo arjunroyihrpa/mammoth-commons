@@ -58,7 +58,8 @@ def Exposure_distance(
             (
                 sum(ranking_position_protected_attribute[:Min_size])
                 - sum(ranking_position_non_protected_attribute[:Min_size])
-            ),
+            )
+            * (Min_size * 2),
             2,
         )
     except Exception as e:

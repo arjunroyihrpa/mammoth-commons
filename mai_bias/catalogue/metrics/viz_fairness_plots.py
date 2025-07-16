@@ -56,32 +56,42 @@ def viz_fairness_plots(
     from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
     import numpy as np
 
+    # 1. Unwrap model if needed
     if hasattr(model, "mmm"):
         model = model.mmm
+
+    # 2. Predictions
     y_pred = model.predict(dataset, sensitive)
+
+    # 3. Get label column from CSV version
     dataset = dataset.to_csv(sensitive)
     y_true = list(dataset.labels.columns.values())[-1]
 
+    # 4. Raw sensitive values (not encoded)
     sa_df = dataset.df[sensitive].copy()
-    sa_matrix = sa_df.to_numpy()
+    raw_sa = sa_df.to_numpy()
 
-    # Force the first group in each sensitive column to be privileged (0), rest as 1
-    for col_idx, attr in enumerate(sensitive):
-        col = sa_matrix[:, col_idx]
-        first_group = col[0]  # Treat first seen value as privileged
-        sa_matrix[:, col_idx] = np.where(col == first_group, 0, 1)
+    # 5. Group label mappings
+    group_mappings = {}
+    for attr in sensitive:
+        vals = sa_df[attr].unique().tolist()
+        group_mappings[attr] = {val: i for i, val in enumerate(vals)}
 
-    sa_matrix = sa_matrix.astype(int)
-
-    # Call the original report function from mmm-fair (already supports console/table/html)
+    # 6. Generate HTML-based Plotly report
     html_string = generate_reports_from_fairlearn(
-        report_type="html",  # one could also use "table" if preferred
+        report_type="html",  # ← this uses the Plotly charts
         sensitives=sensitive,
         mmm_classifier=model,
-        saIndex_test=sa_matrix,
+        saIndex_test=raw_sa,  # ← pass raw strings
         y_pred=y_pred,
         y_test=y_true,
-        launch_browser=False,  # suppresses opening in a new browser
+        launch_browser=False,
+        group_mappings=group_mappings,
+    )
+
+    # 7. Optional: responsive layout injection (less needed for Plotly but still safe)
+    html_string = html_string.replace(
+        "<body>", '<body style="margin: 0; padding: 20px; box-sizing: border-box;">'
     )
 
     return HTML(html_string)
