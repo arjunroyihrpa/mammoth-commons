@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 @loader(
     namespace="mammotheu",
-    version="v0046",
+    version="v0047",
     python="3.12",
     packages=("pandas", "ucimlrepo"),
 )

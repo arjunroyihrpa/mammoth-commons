@@ -6,8 +6,8 @@ from mammoth_commons.externals import safeexec
 
 @loader(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=("numpy", "torch", "torchvision"),
 )
 def model_torch(

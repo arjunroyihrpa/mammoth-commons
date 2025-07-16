@@ -6,8 +6,8 @@ from mammoth_commons.externals import pd_read_csv
 
 @loader(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=("pandas",),
 )
 def data_custom_csv(

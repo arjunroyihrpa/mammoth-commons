@@ -10,7 +10,7 @@
 This repository is created by the [MAMMOth](https://mammoth-ai.eu/)
 project and holds the mammoth-commons library, which contains 
 supporting datatypes and decorators for developing fairness modules.
-It also hosts a catalogue of 20+ modules. 
+It also hosts a catalogue of 30+ modules. 
 Finally, find desktop and terminal applications that 
 run those modules in your local machine.
 
@@ -18,7 +18,7 @@ run those modules in your local machine.
 
 ## 🔬 Run locally
 
-1. Make **sure** you are on Python 3.13.
+1. Make **sure** you are on Python 3.12+ (some modules rely on third-party libraries that do not yet support 3.13).
 2. Install the *mai-bias* package. This will take time due to supporting many AI tools.
 3. Launch the desktop app.
 
@@ -44,6 +44,22 @@ source venv/bin/activate
 python3 install mai-bias
 python3 -m mai_bias.app
 ```
+</details>
+
+
+<details><summary>Linux: How to build Python 3.12 from source if deadsnakes not supported in new distros.</summary>
+
+```bash
+wget https://www.python.org/ftp/python/3.12.4/Python-3.12.4.tgz
+tar -xf Python-3.12.4.tgz
+cd Python-3.12.4
+./configure --enable-optimizations--with-ensurepip=install
+make -j $(nproc)
+sudo make altinstall
+```
+
+Use `python3.12` instead of `python` when creating a venv.
+
 </details>
 
 <details><summary>Windows: WSL missing .so files</summary>

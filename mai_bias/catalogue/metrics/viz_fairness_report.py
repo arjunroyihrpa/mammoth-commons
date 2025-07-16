@@ -14,8 +14,8 @@ from typing import List
 
 @metric(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=(
         "fairlearn",
         "plotly",

@@ -10,8 +10,8 @@ from mammoth_commons.externals import fb_categories, align_predictions
 
 @metric(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
 def model_card(

@@ -58,8 +58,8 @@ def manual_install_wheel(wheel_url_or_path):
 
 @metric(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=(
         "dbias --no-deps --upgrade",
         "tensorflow",

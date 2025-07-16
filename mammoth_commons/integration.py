@@ -4,7 +4,7 @@ from typing import get_type_hints, Dict, List, get_origin, get_args, Union
 import os
 from functools import wraps
 
-_default_python = "3.13"
+_default_python = "3.12"
 _default_packages = ()  # appended to ["mammoth_commons[deployment]"]
 
 
@@ -59,6 +59,10 @@ class Options:
 
 
 def metric(namespace, version, python=_default_python, packages=_default_packages):
+    if "numpy" not in packages:
+        packages = ["numpy"] + list(
+            packages
+        )  # this forces the numpy installation to be fixed
     packages = [fixed_version(package) for package in packages]
     from mammoth_commons import custom_kfp
     import yaml

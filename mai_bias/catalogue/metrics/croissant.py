@@ -8,8 +8,8 @@ import json
 
 @metric(
     namespace="mammotheu",
-    version="v0046",
-    python="3.13",
+    version="v0047",
+    python="3.12",
     packages=(
         "fairbench",
         "pandas",
@@ -34,7 +34,8 @@ def croissant(
     standardized how datasets may be indexed and loaded. If your dataset is stored locally, such as
     in minio instances, you can consider either sharing the metadata to explain to others what you
     are working with, or using publicly hosted data by providing https links for files.
-    Metadata are displayed as HTML to help you get an overview and are presented as a copy-able block of json."""
+    Metadata are displayed as HTML to help you get an overview and are presented as a copy-able block of json.
+    """
     import pandas as pd
 
     if isinstance(qualitative_creators, str):
@@ -43,7 +44,6 @@ def croissant(
     # This line likely shouldn't be here since model is unused, but preserved if intentional
     predictions = pd.Series(model.predict(dataset, sensitive))
     dataset = dataset.to_csv(sensitive)
-
 
     context = {
         "@language": "en",
@@ -54,21 +54,12 @@ def croissant(
         "conformsTo": "dct:conformsTo",
         "cr": "http://mlcommons.org/croissant/",
         "rai": "http://mlcommons.org/croissant/RAI/",
-        "data": {
-            "@id": "cr:data",
-            "@type": "@json"
-        },
+        "data": {"@id": "cr:data", "@type": "@json"},
         "dataBiases": "cr:dataBiases",
         "dataCollection": "cr:dataCollection",
-        "dataType": {
-            "@id": "cr:dataType",
-            "@type": "@vocab"
-        },
+        "dataType": {"@id": "cr:dataType", "@type": "@vocab"},
         "dct": "http://purl.org/dc/terms/",
-        "examples": {
-            "@id": "cr:examples",
-            "@type": "@json"
-        },
+        "examples": {"@id": "cr:examples", "@type": "@json"},
         "extract": "cr:extract",
         "field": "cr:field",
         "fileProperty": "cr:fileProperty",
@@ -93,15 +84,13 @@ def croissant(
         "separator": "cr:separator",
         "source": "cr:source",
         "subField": "cr:subField",
-        "transform": "cr:transform"
+        "transform": "cr:transform",
     }
 
     metadata = {
         "@context": context,
         "@type": "sc:Dataset",
-        "distribution": [
-
-        ],
+        "distribution": [],
         "@language": language,
         "@vocab": "https://schema.org/",
         "conformsTo": "http://mlcommons.org/croissant/1.1",
@@ -109,25 +98,40 @@ def croissant(
         "description": description,
         "license": license,
         "citeAs": citation,
-        #"url":url
+        # "url":url
         "creator": [{"name": creator} for creator in qualitative_creators],
         "data": [],
         "columns": [
             {
                 "name": col,
-                "description": f"Column '{col}' in the dataset.",
-                "datatype": "string" if col in dataset.cat else "float",
+                "description": f"Column '{col}' in the dataset. "
+                + f"Contains {len(set(dataset.df[col]))} distinct values out of {len(dataset.df[col])} entries. "
+                + (
+                    "It serves as metadata information for each entry. "
+                    if col in dataset.cat or col in dataset.num
+                    else "It is used for data loading and does not serve as metadata. "
+                ),
+                "datatype": (
+                    "string"
+                    if col in dataset.cat
+                    else "float" if col in dataset.num else "string"
+                ),
                 "isSensitive": col in sensitive,
             }
             for col in dataset.df.columns
         ],
     }
 
-    json_string = json.dumps(metadata, indent=2).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    json_string = (
+        json.dumps(metadata, indent=2)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
 
     html = f"""
     <div class="container mt-4">
-        <h1 class="text-success">Croissant Metadata</h1>
+        <h1 class="text-success">Croissant metadata</h1>
         <b>Title:</b> {name}<br/>
         <b>Description:</b> {description}<br/>
         <b>Citation:</b> {citation}<br/>
