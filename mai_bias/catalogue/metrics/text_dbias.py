@@ -67,7 +67,7 @@ def manual_install_wheel(wheel_url_or_path):
         "tf-keras",
         "spacy",
         "plotly",
-        "torch"
+        "torch",
     ),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
