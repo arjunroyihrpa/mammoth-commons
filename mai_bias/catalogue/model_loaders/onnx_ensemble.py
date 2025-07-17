@@ -8,8 +8,8 @@ import zipfile
 
 @loader(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=("onnxruntime", "mmm-fair-cli", "skl2onnx"),
 )
 def model_onnx_ensemble(path: str = "") -> ONNXEnsemble:

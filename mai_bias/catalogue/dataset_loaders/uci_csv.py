@@ -7,8 +7,8 @@ from collections import OrderedDict
 
 @loader(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=("pandas", "ucimlrepo"),
 )
 def data_uci(

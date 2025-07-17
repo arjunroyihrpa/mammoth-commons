@@ -8,8 +8,8 @@ import tempfile
 
 @loader(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=("numpy", "torch", "torchvision"),
 )
 def model_torch2onnx(

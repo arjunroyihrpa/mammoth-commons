@@ -58,8 +58,8 @@ def manual_install_wheel(wheel_url_or_path):
 
 @metric(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=(
         "dbias --no-deps --upgrade",
         "tensorflow",
@@ -106,7 +106,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     #   I do not know why people keep freezing versions of numpy without good reason. *Everyone* uses numpy
     #   in AI and this is the easiest way to create a mess.
     # - We also install the latest version of spacy, because older ones often do not compile (I am failing
-    #   to compile the required one in kubuntu with Python 3.12 and refuse to investigate a library that should be
+    #   to compile the required one in kubuntu with Python 3.13 and refuse to investigate a library that should be
     #   working out of the box but failing because everyone is too hyped by new technologies to create maintainable
     #   software)
     # - Thankfully, more recent versions (currently 3.2.0 which I will not freeze because it more likely that it

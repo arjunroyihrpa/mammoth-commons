@@ -36,8 +36,8 @@ def data_local(raw_data: pd.DataFrame, target: str = None) -> CSV:
 
 @loader(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=("pandas",),
 )
 def data_read_any(

@@ -9,8 +9,8 @@ from mammoth_commons.integration import metric
 
 @metric(
     namespace="mammotheu",
-    version="v0047",
-    python="3.12",
+    version="v0048",
+    python="3.13",
     packages=("torch", "torchvision", "timm", "facextool", "numpy"),
 )
 def facex_embeddings(
