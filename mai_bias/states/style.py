@@ -32,21 +32,38 @@ class Styled(QWidget):
         button.setStyleSheet(
             """
             QPushButton {
-                background-color: #3A3A3A;
-                color: white;
-                border-radius: 2px;
+                color: #222;
+                border-radius: 10px;
                 font-size: 12px;
-                border: 1px solid black;
+                border: 0px solid #bbb;
             }
             QPushButton:hover {
-                border: 2px solid black;
-                background-color: #5A5A5A;
+                border-radius: 10px;
+                border: 2px solid #888;
+                background-color: #f5f5f5;
             }
             QPushButton:pressed {
-                background-color: #7A7A7A;
+                background-color: #dddddd;
             }
-        """
+            """
         )
+
+        # button.setStyleSheet("""
+        #     QPushButton {
+        #         border-radius: 7px;
+        #         background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #e0f2fe, stop:1 #bae6fd);
+        #         color: #0369a1;
+        #         padding: 2px 10px;
+        #         font-size: 13px;
+        #         border: 1.2px solid #7dd3fc;
+        #         font-weight: 500;
+        #     }
+        #     QPushButton:hover {
+        #         background: #38bdf8;
+        #         color: white;
+        #         border: 1.5px solid #0ea5e9;
+        #     }
+        # """)
         button.setFixedHeight(20)
 
         button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)

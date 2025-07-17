@@ -63,8 +63,11 @@ def manual_install_wheel(wheel_url_or_path):
     packages=(
         "dbias --no-deps --upgrade",
         "tensorflow",
-        "transformers" "tf-keras",
-        "spacy]",
+        "transformers",
+        "tf-keras",
+        "spacy",
+        "plotly",
+        "torch"
     ),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
