@@ -670,15 +670,30 @@ def exposure_distance_comparison(
         ranking_variable: This refers to the main criteria by which ranking is done.  One of *Degree*, *Citations* or *Productivity*.
     """
 
-    fragments = {
+
+    # High-Level Flow:
+    # ----------------
+    # 1.  Unpack node-attributes from the dataset
+    # 2.  For each possible *protected value* (e.g. first for “female” then for “male”):
+    #     a. Slice DF by every category of `sampling_attribute` (eg: High-Income, Low-Income etc.)
+    #     b. Rank twice per slice: baseline (normal, perhaps unfair ranking) and mitigation (fairer ranking)
+    #     c. Compute Exposure-Distance on both
+    #     d. Collect results & plots
+    # 3.  Assemble an HTML report comparing baseline vs. mitigated exposure.
+
+
+
+    # This dict will contain a generated HTML fragment for each possible protected group
+    html_fragments = {
         "male": "",
         "female": ""
     }
-    for protected in ["female", "male"]:
+
+    for protected_group in ["female", "male"]:    # TODO: should not be just "female and male"!!
         n_runs = int(n_runs)
 
-        # initialize our own baseline model
-        model_baseline = model.baseline_rank
+        # Baseline (potentially unfair) ranking model
+        model_baseline = model.baseline_rank            # Callable from loader
 
         researchers_graph = dataset.G
         Dataframe_nodes = {"id": []}
@@ -692,17 +707,19 @@ def exposure_distance_comparison(
 
         data = pd.DataFrame(Dataframe_nodes)
 
-        # Plot the network if it is small enough
+
+        # Network Plotting Section
         attribute_color_nodes = sampling_attribute
         Dict_attribute = {data['id'][i]: data[attribute_color_nodes][i] for i in data.index}
 
+        # build a color per node category
         color_nodes = [str(Dict_attribute[n]) for n in researchers_graph.nodes()]
         np.random.seed(40)
         color = list(np.random.choice(range(256), size=len(set(color_nodes))))
         color_categories = {list(set(color_nodes))[i]:cm.viridis(color[i]) if list(set(color_nodes))[i] !='nan' else  'lightgrey' for i in range(len(set(color_nodes))) }
         color_nodes = [color_categories[n] for n in color_nodes ]
-        print(f"{color_nodes=}")
 
+        # Plot the network if it is small enough
         if len(researchers_graph.nodes) < 2500:
             network_image = plot_network(
                 G=researchers_graph,
@@ -714,12 +731,12 @@ def exposure_distance_comparison(
         else:
             network_image = image_to_base64("./data/researchers/network.png")
 
-        # Only consider those rows where the sampling attribute is not missing
+        # Keep only those rows where the sampling attribute is not missing
         dataframe_sampling = data[~data[sampling_attribute].isnull()]
 
         Old_ranking_variable = ranking_variable
-        sensitive_attribute = sensitive[0]
-        protected_attribute = protected
+        sensitive_attribute = sensitive[0]                   # e.g. "Gender"
+        protected_attribute = protected_group                # e.g. "female"
 
         ER_Old = {}
         ER_Mitigation = {}
@@ -727,6 +744,8 @@ def exposure_distance_comparison(
         ranked_dataframe_normal = pd.DataFrame()
         ranked_dataframe_mitigation = pd.DataFrame()
 
+
+        # Iterate over each possible category (eg: High-Income, Low-income etc.)
         for category in sorted(set(dataframe_sampling[sampling_attribute])):
 
             dataframe_filtered = dataframe_sampling[
@@ -735,7 +754,7 @@ def exposure_distance_comparison(
 
             print(f"{len(dataframe_filtered)} researchers in the category {category}")
 
-            # Rank the rows using the model
+            # Rank the rows using the baseline (potentially non-fair) ranking
             if callable(model_baseline):
                 ranked_dataframe_normal_category = model_baseline(
                     dataframe_filtered, ranking_variable
@@ -744,7 +763,6 @@ def exposure_distance_comparison(
                 ranked_dataframe_normal_category = model_baseline.rank(
                     dataframe_filtered, ranking_variable
                 )
-
             # Compute the exposure distance for the normal ranking
             ER_Old[category] = Exposure_distance(
                 ranked_dataframe_normal_category,
@@ -756,10 +774,10 @@ def exposure_distance_comparison(
                 [ranked_dataframe_normal, ranked_dataframe_normal_category]
             )
 
-            # Compute the exposure distance for the normal ranking
+            # Compute the exposure distance for the mitigation ranking
+            # but get the average over `n_runs` runs
             ER_Mitigation[category] = {}
             ranked_dataframe_mitigation_category_runs = []
-
             for r in range(n_runs):
                 # Rank the rows using the model
                 if callable(model):
@@ -768,7 +786,7 @@ def exposure_distance_comparison(
                     )
                 else:
                     ranked_dataframe_mitigation_category = model.rank(
-                        dataframe_filtered, ranking_variable
+                        dataframe_filtered, ranking_variable, sensitive_attribute, protected_attribute
                     )
 
                 ER_Mitigation[category][r] = Exposure_distance(
@@ -800,6 +818,7 @@ def exposure_distance_comparison(
                 [ranked_dataframe_mitigation, mean_ranking_df]
             )
 
+        # Build distribution plots
         normal_distribution_image = boxplots_rankings(
             ranked_dataframe_normal,
             hue_variable=sensitive_attribute,
@@ -824,7 +843,8 @@ def exposure_distance_comparison(
             n_runs=n_runs,
         )
 
-        fragments[protected] = generate_html_fragment(
+        # Build the final HTML fragment for this protected group
+        html_fragments[protected_group] = generate_html_fragment(
             ranking_variable=ranking_variable,
             ER_Old=ER_Old,
             ER_Mitigation=ER_Mitigation,
@@ -835,13 +855,14 @@ def exposure_distance_comparison(
             n_runs=n_runs,
         )
     
-    # Now create the full report
+    # Now create the full report from the fragments
+    # TODO: rename from female_fragment to group_1 fragment and so on
     return generate_html_report(
         dataset=data,
         sensitive_attribute=sensitive,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
-        female_fragment=fragments["female"],
-        male_fragment=fragments["male"],
+        female_fragment=html_fragments["female"],
+        male_fragment=html_fragments["male"],
         n_runs=n_runs,
     )

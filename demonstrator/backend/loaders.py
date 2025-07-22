@@ -15,7 +15,7 @@ from catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
 from catalogue.model_loaders.pytorch import model_torch
 from catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 from catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
-from catalogue.model_loaders.compute_researcher_ranking import model_mitigation_ranking
+from catalogue.model_loaders.compute_researcher_ranking import model_mitigation_ranking, model_fair_ranking, model_hyperfair_ranking
 
 # metrics
 from catalogue.metrics.model_card import model_card
@@ -58,6 +58,8 @@ registry.model(model_torch, compatible=[data_images, data_image_pairs])
 registry.model(model_torch2onnx, compatible=[data_images, data_image_pairs])
 registry.model(model_fair_node_ranking, compatible=[data_graph])
 registry.model(model_mitigation_ranking, compatible=[data_researchers])
+registry.model(model_hyperfair_ranking, compatible=[data_researchers])
+registry.model(model_fair_ranking, compatible=[data_researchers])
 
 registry.analysis(model_card)
 registry.analysis(interactive_report)
@@ -68,5 +70,5 @@ registry.analysis(facex_embeddings)
 registry.analysis(Multi_objective_report)
 registry.analysis(
     exposure_distance_comparison,
-    compatible=[model_mitigation_ranking],
+    compatible=[model_mitigation_ranking, model_fair_ranking, model_hyperfair_ranking],
 )
