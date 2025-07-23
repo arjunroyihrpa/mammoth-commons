@@ -1,6 +1,6 @@
 import setuptools
 
-# Developer self-reminder for uploading in pypi:
+# Developer self-reminder for uploading to pypi:
 # - install: wheel, twine
 # - build  : python setup.py bdist_wheel
 # - deploy : twine upload dist/*
@@ -15,7 +15,7 @@ with open("requirements.txt", "r") as file:
 
 setuptools.setup(
     name="MAMMOth-commons",
-    version="0.1.7",
+    version="0.1.8",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Component interfaces of the MAI-BIAS toolkit.",
