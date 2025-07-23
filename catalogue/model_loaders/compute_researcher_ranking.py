@@ -2,7 +2,7 @@ from functools import partial
 import math
 from mammoth.integration import loader
 from mammoth.models.researcher_ranking import ResearcherRanking
-from random import choices
+import random
 
 import fairsearchcore
 from fairsearchcore import Fair
@@ -31,7 +31,11 @@ def Compute_mitigation_strategy(
     protected_attribute,
 ):
     """Function for several mitigation strategies"""
+
+    # Only consider rows where the sensitive attribute (eg: "Gender") isn't missing
     Dataframe_ranking = dataset[~dataset[sensitive_attribute].isnull()]
+
+    # Split the data into protected and non-protected groups
     Chosen_groups, Chosen_researchers = {}, {}
     sensitive = set(Dataframe_ranking[sensitive_attribute])
     Ranking_sets = {
@@ -40,24 +44,31 @@ def Compute_mitigation_strategy(
         ]
         for attribute in sensitive
     }
-
     non_protected_attribute = [i for i in sensitive if i != protected_attribute][0]
     Len_groups = Dataframe_ranking[sensitive_attribute].value_counts()
 
+    
+    # TODO: Remove all other mitigation_methods
     if mitigation_method == "Statistical_parity":
+        # Chosen_groups would be a list with a desired ranking of group members
+        # eg: ["female", "male", "male", "female", ...]
         Chosen_groups = []
         Len_group_in_ranking = Len_groups
-        for i in range(Dataframe_ranking.shape[0]):
+        for i in range(Dataframe_ranking.shape[0]):               # Go through every rank slot
+
+            # Probability that the next slot should be protected
             P_minority = Len_group_in_ranking[protected_attribute] / (
                 Len_group_in_ranking[protected_attribute]
                 + Len_group_in_ranking[non_protected_attribute]
             )
+            # The next chosen group label as per the probability
             Chosen_groups += [
-                choices(
+                random.choices(
                     [protected_attribute, non_protected_attribute],
                     [P_minority, 1 - P_minority],
                 )[0]
             ]
+            # Decrement the remaining-count pool for the chosen group
             Len_group_in_ranking[Chosen_groups[-1]] -= 1
     elif mitigation_method == "Equal_parity":
         P_minority = 0.5
@@ -70,6 +81,7 @@ def Compute_mitigation_strategy(
             "Internal_group_fairness method is not implemented yet."
         )
 
+    # Determine which positions each group will occupy
     Positions = {
         non_protected_attribute: [
             i for i, j in enumerate(Chosen_groups) if j == non_protected_attribute
@@ -79,6 +91,7 @@ def Compute_mitigation_strategy(
         ],
     }
 
+    # Pick concrete researcher IDs to fill the positions from above
     Chosen_researchers = {
         i_ranking: Ranking_sets[non_protected_attribute].iloc[i_position]["id"]
         for i_position, i_ranking in enumerate(Positions[non_protected_attribute])
@@ -90,6 +103,7 @@ def Compute_mitigation_strategy(
 
     New_ranking = {r: i for i, r in Chosen_researchers.items()}
 
+    # Write the rank column 
     Dataframe_ranking["Ranking_" + ranking_variable] = [
         New_ranking[i] + 1 for i in Dataframe_ranking.id
     ]
@@ -157,7 +171,7 @@ def model_hyperfair_ranking(
                 f"Expected a binary sensitive attribute, got {labels!r}"
             )
 
-        # Make the protected group ➜ 1, the other ➜ 0
+        # Make the protected group = 1, the other = 0
         binary_dict = {
             labels[0]: 1 if labels[0] == protected_value else 0,
             labels[1]: 1 if labels[1] == protected_value else 0,
@@ -170,15 +184,10 @@ def model_hyperfair_ranking(
             id_attribute="id",
             order_by = ranking_variable,
             protected_attribute = sensitive_attr,
-            #binary_dict={'male': 0, 'female': 1}          # TODO: this should work based on protected_value
             binary_dict=binary_dict
         )
 
-        # TODO: parametrize
-        random_seed = 42
-        #k = len(df_sorted) // 10 or 1
-        k = math.floor(len(df_sorted) * float(k_pc)) or 1       # TODO: wtf is it complaining that "must be real number, not str"
-        #n_exp = 100
+        k = math.floor(len(df_sorted) * float(k_pc)) or 1
 
         _, generatedData = measure_fairness_multiple_points(
             x_seq=hf_data, 
@@ -186,12 +195,11 @@ def model_hyperfair_ranking(
             test_side='lower', 
             n_exp=int(n_exp), 
             verbose=True, 
-            plot=False, 
-        seed=random_seed)
+            plot=False
+        )
 
 
-
-        # ---- run the re-ranking ------------------------------------------
+        # run the re-ranking
         new_data, new_ids, _ = adjust_ranking(
             hf_data,
             ids=ids,
@@ -215,7 +223,7 @@ def model_fair_ranking(
     p: float = 0.25,
     k_pc: float = 0.1
 ) -> ResearcherRanking:
-    """FA*IR mitigation using fixed p = 0.3 for minimum protected group representation in top-k."""
+    """FA*IR mitigation using for minimum protected group representation in top-k."""
 
     def mitigation_strategy(
             df, 
@@ -230,18 +238,15 @@ def model_fair_ranking(
         df_sorted_full = df.sort_values(ranking_variable, ascending=False).reset_index(drop=True)
 
 
-        # TODO: this truncation should be explained
-        #df_sorted = df_sorted_full.head(100)
-        k = math.floor(len(df_sorted_full) * float(k_pc)) or 10       # TODO: wtf is it complaining that "must be real number, not str"
+        k = math.floor(len(df_sorted_full) * float(k_pc)) or 10
+
+        # The FAI*R library works on a list consisting of the top-k, so we must work with that subset
         df_sorted = df_sorted_full.head(k)
 
         docs = [
             FairScoreDoc(str(i), row[ranking_variable], row[sensitive_attribute] == protected_attribute)
             for i, row in df_sorted.iterrows()
         ]
-
-        #k = len(docs)
-        #k = math.floor(len(docs) * float(k_pc)) or 10       # TODO: wtf is it complaining that "must be real number, not str"
 
         fair = Fair(k, float(p), float(alpha))
         new_docs = fair.re_rank(docs)
