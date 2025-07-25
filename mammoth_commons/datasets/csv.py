@@ -87,3 +87,62 @@ class CSV(Dataset):
 
     def to_pandas(self):
         raise NotImplemented
+
+    def to_aif360(
+        self,
+        label_col: str,
+        sensitive_cols: list[str],
+        favorable_label=1,
+        unfavorable_label=0,
+    ) -> tuple:
+        """
+        Converts this dataset into a BinaryLabelDataset and returns:
+        (BinaryLabelDataset, List of transformed sensitive column names)
+        """
+        import pandas as pd
+        from aif360.datasets import BinaryLabelDataset
+        from sklearn.preprocessing import LabelBinarizer
+
+        df = self.df.copy()
+        new_sensitive_cols = []
+
+        # 1. One-hot encode non-sensitive, non-label categorical columns
+        encode_cols = [
+            c
+            for c in df.columns
+            if c not in sensitive_cols + [label_col]
+            and not pd.api.types.is_numeric_dtype(df[c])
+        ]
+        if encode_cols:
+            df = pd.get_dummies(df, columns=encode_cols, drop_first=False)
+
+        # 2. Convert label to binary
+        if (
+            not pd.api.types.is_numeric_dtype(df[label_col])
+            or df[label_col].nunique() != 2
+        ):
+            lb = LabelBinarizer()
+            y = lb.fit_transform(df[label_col])
+            if y.shape[1] != 1:
+                raise ValueError(f"Label column '{label_col}' must be binary.")
+            df[label_col] = y.reshape(-1)
+
+        # 3. Handle sensitive attributes
+        for col in sensitive_cols:
+            if pd.api.types.is_numeric_dtype(df[col]) and df[col].nunique() == 2:
+                new_sensitive_cols.append(col)
+            else:
+                dummies = pd.get_dummies(df[col], prefix=col)
+                df = pd.concat([df.drop(columns=[col]), dummies], axis=1)
+                new_sensitive_cols.extend(dummies.columns.tolist())
+
+        # 4. Create AIF360 dataset
+        aif_dataset = BinaryLabelDataset(
+            df=df,
+            label_names=[label_col],
+            protected_attribute_names=new_sensitive_cols,
+            favorable_label=favorable_label,
+            unfavorable_label=unfavorable_label,
+        )
+
+        return aif_dataset, new_sensitive_cols

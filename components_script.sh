@@ -30,6 +30,8 @@ kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/c
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/fair_node_ranking.py
 docker system prune -a --force --volumes
+kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/manual_predictor.py
+docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/no_model.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/onnx_ensemble.py
@@ -46,6 +48,8 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/augmentation_report.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/bias_scan.py
+docker system prune -a --force --volumes
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/aif360.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/image_bias_analysis.py
 docker system prune -a --force --volumes
