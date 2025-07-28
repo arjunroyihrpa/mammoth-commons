@@ -21,7 +21,7 @@ def model_card(
     intersections: Options("Base", "All", "Subgroups") = "Base",
     compare_groups: Options("Pairwise", "To the total population") = None,
     problematic_deviation: float = 0.1,
-    show_non_problematic: bool = False,
+    show_non_problematic: bool = True,
 ) -> HTML:
     """
     <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>

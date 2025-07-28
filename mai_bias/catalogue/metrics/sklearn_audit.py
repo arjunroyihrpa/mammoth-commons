@@ -26,10 +26,10 @@ def sklearn_audit(
     model: EmptyModel,
     sensitive: List[str],
     predictor: Options("Logistic regression", "Gaussian naive Bayes") = None,
-    intersectional: bool = False,
+    intersections: Options("Base", "All", "Subgroups") = "Base",
     compare_groups: Options("Pairwise", "To the total population") = None,
     problematic_deviation: float = 0.1,
-    show_non_problematic: bool = False,
+    show_non_problematic: bool = True,
     top_recommendations: int = 3,
 ) -> HTML:
     """
@@ -66,7 +66,7 @@ def sklearn_audit(
 
     Args:
         predictor: Which simple model should be used.
-        intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
+        intersections: Whether to consider only the provided groups, all non-empty group intersections, or all non-empty intersections while ignoring larger groups during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify non-problematic values as green and the rest as either orange or red.
@@ -125,9 +125,10 @@ def sklearn_audit(
     sensitive = fb.Dimensions(
         {attr + " ": fb_categories(dataset.df[attr][idx_test]) for attr in sensitive}
     )
-
-    if intersectional:
+    if intersections != "Base":
         sensitive = sensitive.intersectional()
+    if intersections == "Subgroups":
+        sensitive = sensitive.strict()
     report_type = (
         fb.reports.pairwise if compare_groups == "Pairwise" else fb.reports.vsall
     )
@@ -176,7 +177,7 @@ def sklearn_audit(
                 dataset_desc += f"<h3>{key}</h3>" + value.replace("\n", "<br>") + "<br>"
         else:
             raise Exception(
-                f"Dataset description must be a string or a dictionary, not {self.description}."
+                f"Dataset description must be a string or a dictionary, not {type(dataset.description)}."
             )
 
     html_content = f"""
