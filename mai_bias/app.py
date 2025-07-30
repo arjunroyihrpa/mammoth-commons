@@ -197,7 +197,7 @@ class MainWindow(QMainWindow):
                 | registry.analysis_methods
             ).items()
         }
-        self.setWindowTitle("MAI bias")
+        self.setWindowTitle("MAI-BIAS local runner")
         self.setGeometry(100, 100, 1024, 768)
         self.stacked_widget = SlidingStackedWidget()
         self.stacked_widget.addWidget(Dashboard(self.stacked_widget, items, tags))

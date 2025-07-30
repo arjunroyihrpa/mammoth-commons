@@ -6,15 +6,12 @@ from mammoth_commons.exports import HTML
 from typing import List
 from mammoth_commons.integration import metric
 from mammoth_commons.externals import align_predictions
+import json
 
 
 def render_metric_bars(rows, sensitive):
-    import json
-
     constant_metrics = []
     varying_metrics = []
-
-    # Split metrics into constant and varying across groups
     for row in rows:
         metric = row["Metric"]
         values = [row.get(attr) for attr in sensitive]
@@ -29,8 +26,6 @@ def render_metric_bars(rows, sensitive):
             constant_metrics.append({"Metric": metric, "Value": numeric_values[0]})
         else:
             varying_metrics.append(row)
-
-    # Prepare D3 data for varying metrics
     chart_data = []
     for row in varying_metrics:
         metric = row["Metric"]
@@ -49,7 +44,6 @@ def render_metric_bars(rows, sensitive):
             )
     data_json = json.dumps(chart_data)
 
-    # Render table of constant metrics
     def render_constant_table():
         if not constant_metrics:
             return ""
@@ -65,7 +59,6 @@ def render_metric_bars(rows, sensitive):
         </table>
         """
 
-    # D3 script for varying metrics
     d3_script = f"""
 <div id="chart-container"></div>
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -130,7 +123,6 @@ def render_metric_bars(rows, sensitive):
 }})();
 </script>
     """
-
     return render_constant_table() + d3_script
 
 
@@ -150,8 +142,8 @@ def aif360(
     """
     <img src="https://ai-fairness-360.org/" alt="Based on AIF360" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
     <p>This module evaluates fairness using IBM's <a href="https://aif360.readthedocs.io">AIF360</a> library.
-    It computes standard group fairness metrics for each sensitive attribute provided. IF attributes are non-binary, they are
-    binarized into one-hot encoded columns.</p>
+    It computes standard group fairness metrics for each sensitive attribute provided. If attributes are non-binary, they are
+    binarized into one-hot encoded columns. Only categorical attributes are allowed.</p>
 
     Args:
         favorable_label: The prediction label value which is considered favorable (i.e. "positive"). Default is 1 for binary classifiers.
@@ -166,17 +158,13 @@ def aif360(
         sensitive = [sens.strip() for sens in sensitive.split(",")]
     original_sensitive_len = len(sensitive)
 
-    # Step 1: Predict and align
     y_pred = model.predict(dataset, sensitive)
+    dataset = dataset.to_csv(sensitive)
     y_pred, y_true = align_predictions(y_pred, dataset.labels)
     label_col = list(y_true.columns)[0]
     pred_col = list(y_pred.columns)[0]
 
-    # Step 2: Inject aligned labels into dataset.df
-    dataset = dataset.to_csv(sensitive)
     dataset.df["label"] = y_true[label_col]
-
-    # Step 3: Convert to BinaryLabelDataset
     aif_dataset_true, sensitive = dataset.to_aif360(
         label_col="label",
         sensitive_cols=sensitive,
@@ -184,16 +172,13 @@ def aif360(
         unfavorable_label=unfavorable_label,
     )
 
-    # Step 4: Create predicted dataset
     df = dataset.df.copy()
     df["y_pred"] = y_pred[pred_col]
     aif_dataset_pred = aif_dataset_true.copy()
     aif_dataset_pred.labels = df[["y_pred"]].values
 
-    # Step 5: Evaluate many metrics for each sensitive group
     metrics_by_group = {}
     all_metric_names = set()
-
     classification_metrics = {
         "Accuracy": "accuracy",
         "Average Abs Odds Difference": "average_abs_odds_difference",
@@ -268,7 +253,6 @@ def aif360(
         "True Positive Rate": "true_positive_rate",
         "True Positive Rate Difference": "true_positive_rate_difference",
     }
-
     for attr in sensitive:
         privileged = [{attr: 1}]
         unprivileged = [{attr: 0}]
@@ -293,7 +277,6 @@ def aif360(
         metrics_by_group[attr] = metrics
         all_metric_names.update(metrics_by_group[attr].keys())
 
-    # Step 6: Invert the table (metrics as rows)
     all_metric_names = sorted(all_metric_names)
     rows = []
     for metric in all_metric_names:
