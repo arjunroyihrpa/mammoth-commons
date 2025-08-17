@@ -59,15 +59,18 @@ def manual_install_wheel(wheel_url_or_path):
 @metric(
     namespace="mammotheu",
     version="v0048",
-    python="3.13",
+    python="3.11",
     packages=(
         "dbias --no-deps --upgrade",
+        "protobuf==4.25.8",
         "tensorflow",
         "transformers",
         "tf-keras",
-        "spacy",
+        "spacy==3.2.0",
         "plotly",
         "torch",
+        "pandas",
+        "spacy-transformers",
     ),
 )
 def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
@@ -95,8 +98,8 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     # forever. To be clear: I am mainly bashing transformers and the huggingface ecosystem's hype
     # and not dbias (who is at most guilty of a couple questionable engineering choices - like we all are).
     #
-    # If you follow instructions from the dbias repo prepare for a world of pain. In fact I have suggested
-    # the solution in this file to that repository as more helpful (!) alternative to installing stuff.
+    # If you follow instructions from the dbias repo prepare for a world of pain. In fact, I have suggested
+    # the solution in this file to that repository as a more helpful (!) alternative to installing stuff.
     # And I still needed to create a fork of the repo, remove dependency freezes,
     # and orchestrate a git installation.
     #
@@ -109,7 +112,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     #   to compile the required one in kubuntu with Python 3.13 and refuse to investigate a library that should be
     #   working out of the box but failing because everyone is too hyped by new technologies to create maintainable
     #   software)
-    # - Thankfully, more recent versions (currently 3.2.0 which I will not freeze because it more likely that it
+    # - Thankfully, more recent versions (currently 3.2.0 which I will not freeze because it is more likely that it
     #   will not be maintained than a new release is to break backwards compatibility) still properly load the packaged
     #   models, despite throwing a ton of warnings.
     # - Lastly we manually unpack `en_pipeline-any-py3-none-any.whl` into site-packages WITHOUT INSTALLING ITS
@@ -176,7 +179,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
             <h1 class="mb-4">{'Biased text fixes' if 'Biased'==classification[0]['label'] else 'Neutral text'}</h1>
 
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white">Original Text</div>
+                <div class="card-header bg-primary text-white">Original text</div>
                 <div class="card-body">
                     <p>{text}</p>
                 </div>
@@ -207,7 +210,7 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     </html>
     """
 
-    # resore the original CUDA devices
+    # restore the original CUDA devices
     if original_cuda_visible_devices is not None:
         os.environ["CUDA_VISIBLE_DEVICES"] = original_cuda_visible_devices
     else:

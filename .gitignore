@@ -4,6 +4,8 @@ MAMMOth_commons.egg-info/
 MAMMOth_commons_deployment.egg-info/
 MAI_Bias.egg-info/
 venv
+venv311
+venv312
 venv_test
 venvtemp
 dist

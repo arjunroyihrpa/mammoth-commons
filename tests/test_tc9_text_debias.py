@@ -1,4 +1,4 @@
-"""from mammoth_commons import testing
+from mammoth_commons import testing
 from mai_bias.catalogue.dataset_loaders.free_text import data_free_text
 from mai_bias.catalogue.model_loaders.no_model import no_model
 from mai_bias.catalogue.metrics.text_dbias import text_debias
@@ -12,4 +12,4 @@ def test_bias_exploration():
 
 
 if __name__ == "__main__":
-    test_bias_exploration()"""
+    test_bias_exploration()

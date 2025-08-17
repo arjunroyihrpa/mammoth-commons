@@ -285,17 +285,45 @@ def aif360(
             row[attr] = metrics_by_group.get(attr, {}).get(metric, math.nan)
         rows.append(row)
 
+    # html = f"""
+    # <h1>AIF360 Fairness Report</h1>
+    # <p>This report shows metric distributions across sensitive groups.</p>
+    # <p>See <a href="https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html" target="_blank">AIF360 metric documentation</a> for metric definitions.</p>
+    #
+    # <details><summary>In total {len(sensitive)} protected groups were analysed. </summary><i>{', '.join(sensitive).replace('_', ' ')}</i><br></details>
+    # <details><summary>Metrics</summary><i>{'<table class="table table-sm"><tr><th>Function</th><th>Report Name</th></tr>' + ''.join(f'<tr><td>{method.replace('_', ' ')}</td><td>{label}</td></tr>' for label, method in classification_metrics.items()) + '</table>'}</i><br></details>
+    # {'<p class="text-warning"><i>Some sensitive attributes that were not binary have been automatically expanded via one-hot encoding.</i></p>' if original_sensitive_len != len(sensitive) else ''}
+    #
+    # {render_metric_bars(rows, sensitive)}
+    #
+    # <div class="mt-4">{dataset.to_description()}</div>
+    # """
+
+    # Build the metrics table separately
+    metrics_table = (
+            '<table class="table table-sm"><tr><th>Function</th><th>Report Name</th></tr>'
+            + ''.join(
+        f"<tr><td>{method.replace('_', ' ')}</td><td>{label}</td></tr>"
+        for label, method in classification_metrics.items()
+    )
+            + "</table>"
+    )
+
+    # Now safely embed everything in the f-string
     html = f"""
     <h1>AIF360 Fairness Report</h1>
     <p>This report shows metric distributions across sensitive groups.</p>
     <p>See <a href="https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html" target="_blank">AIF360 metric documentation</a> for metric definitions.</p>
-
-    <details><summary>In total {len(sensitive)} protected groups were analysed. </summary><i>{', '.join(sensitive).replace('_', ' ')}</i><br></details>
-    <details><summary>Metrics</summary><i>{'<table class="table table-sm"><tr><th>Function</th><th>Report Name</th></tr>' + ''.join(f'<tr><td>{method.replace('_', ' ')}</td><td>{label}</td></tr>' for label, method in classification_metrics.items()) + '</table>'}</i><br></details>
-    {'<p class="text-warning"><i>Some sensitive attributes that were not binary have been automatically expanded via one-hot encoding.</i></p>' if original_sensitive_len != len(sensitive) else ''}
-
+    <details>
+      <summary>In total {len(sensitive)} protected groups were analysed.</summary>
+      <i>{', '.join(sensitive).replace('_', ' ')}</i><br>
+    </details>
+    <details>
+      <summary>Metrics</summary>
+      <i>{metrics_table}</i><br>
+    </details>
+    {('<p class="text-warning"><i>Some sensitive attributes that were not binary have been automatically expanded via one-hot encoding.</i></p>'if original_sensitive_len != len(sensitive) else '')}
     {render_metric_bars(rows, sensitive)}
-
     <div class="mt-4">{dataset.to_description()}</div>
     """
 
