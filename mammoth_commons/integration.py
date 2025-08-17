@@ -39,7 +39,6 @@ def install_package(package, record_file="installed.txt"):
     return True
 
 
-
 def unpack_optionals(arg_type):
     # Check if the type is Optional (which is the same as Union[type, None])
     if get_origin(arg_type) is Union and type(None) in get_args(arg_type):
