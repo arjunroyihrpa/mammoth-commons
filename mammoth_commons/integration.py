@@ -1,11 +1,43 @@
 # autoflake: skip_file
-import inspect
 from typing import get_type_hints, Dict, List, get_origin, get_args, Union
-import os
 from functools import wraps
+import subprocess
+import inspect
+import sys
+import os
 
 _default_python = "3.12"
 _default_packages = ()  # appended to ["mammoth_commons[deployment]"]
+
+
+def install_package(package, record_file="installed.txt"):
+    command_line = f"{sys.executable} -m pip install {package}"
+    if not os.path.exists(record_file):
+        open(record_file, "w").close()
+    with open(record_file, "r") as f:
+        installed = {line.strip() for line in f}
+    if command_line not in installed:
+        try:
+            print(f"Installing: {package}")
+            result = subprocess.run(
+                [sys.executable, "-m", "pip", "install"] + package.split(" "),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+            for line in result.stdout.splitlines():
+                if not line.startswith("Requirement already satisfied:"):
+                    print(line)
+            if result.returncode != 0:
+                raise subprocess.CalledProcessError(
+                    result.returncode, result.args, output=result.stdout
+                )
+        except subprocess.CalledProcessError as e:
+            raise Exception(f"Failed to install: {package}: {e.output}")
+        with open(record_file, "a") as f:
+            f.write(command_line + "\n")
+    return True
+
 
 
 def unpack_optionals(arg_type):
@@ -73,31 +105,14 @@ def metric(namespace, version, python=_default_python, packages=_default_package
         @wraps(method)
         def wrapper_with_installation_outiside_kfp(*args, **kwargs):
             from mammoth_commons.externals import notify_progress, notify_end
-            import subprocess
-            import sys
             import importlib
 
             for i, package in enumerate(packages):
+                install_package(package)
                 notify_progress(
                     i / len(packages),
                     "Verifying and installing dependencies: " + package,
                 )
-                try:
-                    result = subprocess.run(
-                        [sys.executable, "-m", "pip", "install"] + package.split(" "),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT,
-                        text=True,
-                    )
-                    for line in result.stdout.splitlines():
-                        if not line.startswith("Requirement already satisfied:"):
-                            print(line)
-                    if result.returncode != 0:
-                        raise subprocess.CalledProcessError(
-                            result.returncode, result.args, output=result.stdout
-                        )
-                except subprocess.CalledProcessError as e:
-                    raise Exception(f"Failed to install: {package}: {e.output}")
             notify_end()
             return method(*args, **kwargs)
 
@@ -244,27 +259,13 @@ def loader(
         @wraps(method)
         def wrapper_with_installation_outiside_kfp(*args, **kwargs):
             from mammoth_commons.externals import notify_progress, notify_end
-            import subprocess
-            import sys
-            import importlib
 
             for i, package in enumerate(packages):
-                try:
-                    result = subprocess.run(
-                        [sys.executable, "-m", "pip", "install"] + package.split(" "),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT,
-                        text=True,
-                    )
-                    for line in result.stdout.splitlines():
-                        if not line.startswith("Requirement already satisfied:"):
-                            print(line)
-                    if result.returncode != 0:
-                        raise subprocess.CalledProcessError(
-                            result.returncode, result.args, output=result.stdout
-                        )
-                except subprocess.CalledProcessError as e:
-                    raise Exception(f"Failed to install: {package}: {e.output}")
+                notify_progress(
+                    i / len(packages),
+                    "Verifying and installing dependencies: " + package,
+                )
+                install_package(package)
             notify_end()
             return method(*args, **kwargs)
 

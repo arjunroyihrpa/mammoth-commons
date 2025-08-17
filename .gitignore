@@ -19,6 +19,7 @@ __pycache__/
 .cache/
 fairbench.log
 history.json
+installed.txt
 .coverage
 coverage.xml
 coverage.html
@@ -33,3 +34,4 @@ data/data/
 data/dev/
 __pycache__/
 .ipynb_checkpoints/
+tmp.png
