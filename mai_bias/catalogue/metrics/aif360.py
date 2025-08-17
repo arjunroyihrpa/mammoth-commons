@@ -301,12 +301,12 @@ def aif360(
 
     # Build the metrics table separately
     metrics_table = (
-            '<table class="table table-sm"><tr><th>Function</th><th>Report Name</th></tr>'
-            + ''.join(
-        f"<tr><td>{method.replace('_', ' ')}</td><td>{label}</td></tr>"
-        for label, method in classification_metrics.items()
-    )
-            + "</table>"
+        '<table class="table table-sm"><tr><th>Function</th><th>Report Name</th></tr>'
+        + "".join(
+            f"<tr><td>{method.replace('_', ' ')}</td><td>{label}</td></tr>"
+            for label, method in classification_metrics.items()
+        )
+        + "</table>"
     )
 
     # Now safely embed everything in the f-string
