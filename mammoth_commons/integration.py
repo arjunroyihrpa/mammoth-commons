@@ -21,6 +21,8 @@ def fixed_version(library):
         return "numpy>=2.0.0"
     if library == "skl2onnx":
         return "skl2onnx>=1.19.1"
+    if library == "mmm-fair-cli":
+        return "mmm-fair-cli --ignore-requires-python"
     #    return "git+https://github.com/onnx/sklearn-onnx.git@7322ef5753ec9ed5774c83b3809a75deaa0aee29"
     return library
 

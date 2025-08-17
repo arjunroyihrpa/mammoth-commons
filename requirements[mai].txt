@@ -1,7 +1,7 @@
 mammoth-commons[deployment]>=0.1.6
 pandas
 PyYAML
-kfp
+kfp===2.11.0
 onnx
 onnxruntime
 docker

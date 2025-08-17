@@ -12,7 +12,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="MAI-Bias",
-    version="0.2.8",
+    version="0.2.9",
     author="Emmanouil (Manios) Krasanakis",
     author_email="maniospas@hotmail.com",
     description="Desktop app version of the MAI-Bias toolkit.",
@@ -24,6 +24,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.13",
+    python_requires=">=3.11",
     install_requires=["mammoth-commons[mai]"],
 )
