@@ -448,7 +448,7 @@ class Step:
         print(f"{coloring.warn}{'Cancel'.ljust(80)}{colors.reset}")
         coloring = colorsbg if -1 == self.selection else colors
         print(
-            f"{coloring.element}{'Loader'.ljust(30)} {"← "+format_name(module_name).center(44)+" → "}{colors.reset}"
+            f"{coloring.element}{'Loader'.ljust(30)} {'← '+format_name(module_name).center(44)+' → '}{colors.reset}"
         )
 
         if self.module_discovery not in self.run:
@@ -513,7 +513,7 @@ class Step:
                     option_position
                 ]
                 print(
-                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+self.run[self.module_discovery]["params"][name].center(44)+" → "}{colors.reset}"
+                    f"{coloring.neutral}{format_name(name).ljust(30)} {'← '+self.run[self.module_discovery]['params'][name].center(44)+' → '}{colors.reset}"
                 )
             elif param_type == "bool":
                 if self.modifying_pos != 0 and i == self.selection:
@@ -523,7 +523,7 @@ class Step:
                         else "False"
                     )
                 print(
-                    f"{coloring.neutral}{format_name(name).ljust(30)} {"← "+str(self.run[self.module_discovery]["params"][name]).center(44)+" → "}{colors.reset}"
+                    f"{coloring.neutral}{format_name(name).ljust(30)} {'← '+str(self.run[self.module_discovery]['params'][name]).center(44)+' → '}{colors.reset}"
                 )
             else:
                 print(
@@ -881,21 +881,21 @@ class Step:
                         + [
                             (
                                 lambda col: getattr(col, "neutral")
-                                + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
+                                + f'Info: {run.get("dataset", dict()).get("module", "No data loader")}'.ljust(
                                     80
                                 ),
                                 "data_loader",
                             ),
                             (
                                 lambda col: getattr(col, "neutral")
-                                + f"Info: {run.get("model", dict()).get("module", "No model loader")}".ljust(
+                                + f'Info: {run.get("model", dict()).get("module", "No model loader")}'.ljust(
                                     80
                                 ),
                                 "model_loader",
                             ),
                             (
                                 lambda col: getattr(col, "neutral")
-                                + f"Info: {run.get("analysis", dict()).get("module", "No analysis method")}".ljust(
+                                + f'Info: {run.get("analysis", dict()).get("module", "No analysis method")}'.ljust(
                                     80
                                 ),
                                 "analysis_method",
@@ -1041,21 +1041,21 @@ class Dashboard:
                     + [
                         (
                             lambda col: getattr(col, "neutral")
-                            + f"Info: {run.get("dataset", dict()).get("module", "No data loader")}".ljust(
+                            + f'Info: {run.get("dataset", dict()).get("module", "No data loader")}'.ljust(
                                 80
                             ),
                             "data_loader",
                         ),
                         (
                             lambda col: getattr(col, "neutral")
-                            + f"Info: {run.get("model", dict()).get("module", "No model loader")}".ljust(
+                            + f'Info: {run.get("model", dict()).get("module", "No model loader")}'.ljust(
                                 80
                             ),
                             "model_loader",
                         ),
                         (
                             lambda col: getattr(col, "neutral")
-                            + f"Info: {run.get("analysis", dict()).get("module", "No analysis method")}".ljust(
+                            + f'Info: {run.get("analysis", dict()).get("module", "No analysis method")}'.ljust(
                                 80
                             ),
                             "analysis_method",
