@@ -92,10 +92,10 @@ class Options:
 
 
 def metric(namespace, version, python=_default_python, packages=_default_packages):
-    if "numpy" not in packages:
-        packages = ["numpy"] + list(
-            packages
-        )  # this forces the numpy installation to be fixed
+    #if "numpy" not in packages:
+    #    packages = ["numpy"] + list(
+    #        packages
+    #    )  # this forces the numpy installation to be fixed
     packages = [fixed_version(package) for package in packages]
     from mammoth_commons import custom_kfp
     import yaml
@@ -104,7 +104,6 @@ def metric(namespace, version, python=_default_python, packages=_default_package
         @wraps(method)
         def wrapper_with_installation_outiside_kfp(*args, **kwargs):
             from mammoth_commons.externals import notify_progress, notify_end
-            import importlib
 
             for i, package in enumerate(packages):
                 install_package(package)

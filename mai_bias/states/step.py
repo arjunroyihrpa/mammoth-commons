@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QDialog,
     QListWidget,
+    QScrollArea
 )
 from PySide6.QtCore import Qt, QLocale
 from PySide6.QtGui import QIntValidator, QDoubleValidator, QIcon
@@ -90,11 +91,30 @@ class Step(Styled):
         self.description_label = QLabel(
             "Select a module to see its description and parameters to fill in.",
             self,
-            openExternalLinks=True,
         )
+        self.description_label.setOpenExternalLinks(True)
         self.description_label.setWordWrap(True)
-        self.description_label.setStyleSheet("font-size: 14px; margin-top: 5px;")
-        layout.addWidget(self.description_label)
+        self.description_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.description_label.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self.description_label.setStyleSheet("""
+            font-size: 14px;
+            margin-top: 5px;
+            background-color: white;
+        """)
+
+        # Wrap QLabel inside a scroll area
+        scroll = QScrollArea(self)
+        scroll.setWidgetResizable(True)
+        scroll.setFixedHeight(300)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        # White background for scroll area as well
+        scroll.setStyleSheet("background-color: white; border: none;")
+
+        scroll.setWidget(self.description_label)
+
+        # Add scroll area instead of the raw label
+        layout.addWidget(scroll)
 
         separator = QFrame()
         separator.setFrameShape(QFrame.Shape.HLine)

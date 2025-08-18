@@ -22,6 +22,7 @@ from mai_bias.catalogue.model_loaders.fair_node_ranking import model_fair_node_r
 from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
     model_mitigation_ranking,
 )
+from mai_bias.catalogue.model_loaders.ollama import ollama_model
 
 # metrics
 from mai_bias.catalogue.metrics.model_card import model_card
@@ -43,6 +44,7 @@ from mai_bias.catalogue.metrics.augmentation_report import (
     augmentation_report,
 )
 from mai_bias.catalogue.metrics.text_dbias import text_debias
+from mai_bias.catalogue.metrics.self_critic import llm_audit
 
 from mai_bias.backend.registry import Registry
 
@@ -67,6 +69,12 @@ registry.model(
         data_uci,
         data_read_any,
         data_images,
+        data_free_text,
+    ],
+)
+registry.model(
+    ollama_model,
+    compatible=[
         data_free_text,
     ],
 )
@@ -124,3 +132,4 @@ registry.analysis(
 )
 registry.analysis(augmentation_report)
 registry.analysis(text_debias)
+registry.analysis(llm_audit)
