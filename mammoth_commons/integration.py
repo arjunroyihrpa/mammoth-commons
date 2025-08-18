@@ -92,7 +92,7 @@ class Options:
 
 
 def metric(namespace, version, python=_default_python, packages=_default_packages):
-    #if "numpy" not in packages:
+    # if "numpy" not in packages:
     #    packages = ["numpy"] + list(
     #        packages
     #    )  # this forces the numpy installation to be fixed

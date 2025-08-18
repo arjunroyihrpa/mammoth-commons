@@ -12,9 +12,9 @@ class LLM(Model):
             "model": self.name,
             "messages": [
                 {"role": "system", "content": context},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": prompt},
             ],
-            "stream": False  # disable streaming for simplicity
+            "stream": False,  # disable streaming for simplicity
         }
         response = requests.post(f"{self.url}/api/chat", json=payload)
         if response.status_code != 200:

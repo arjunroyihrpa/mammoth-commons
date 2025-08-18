@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QDialog,
     QListWidget,
-    QScrollArea
+    QScrollArea,
 )
 from PySide6.QtCore import Qt, QLocale
 from PySide6.QtGui import QIntValidator, QDoubleValidator, QIcon
@@ -96,11 +96,13 @@ class Step(Styled):
         self.description_label.setWordWrap(True)
         self.description_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.description_label.setTextInteractionFlags(Qt.TextBrowserInteraction)
-        self.description_label.setStyleSheet("""
+        self.description_label.setStyleSheet(
+            """
             font-size: 14px;
             margin-top: 5px;
             background-color: white;
-        """)
+        """
+        )
 
         # Wrap QLabel inside a scroll area
         scroll = QScrollArea(self)
