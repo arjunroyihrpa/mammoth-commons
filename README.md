@@ -19,7 +19,7 @@ run those modules in your local machine.
 ## 🔬 Run locally
 
 1. Make **sure** you are on Python 3.11 or later. Most modules also work in Python 3.13, with the exception of text debiasing.
-2. Install the *mai-bias* package. This will take time due to supporting many AI tools.
+2. Install the *mai-bias* package.
 3. Launch the desktop app.
 
 ```bash
@@ -28,6 +28,8 @@ python --version
 pip install mai-bias
 python -m mai_bias.app
 ```
+
+Modules will install further missing dependencies they need to run. **This may take some time, especially for modules depending on torch or tensorflow.**
 
 ![App demo](docs/app_demo.gif)
 

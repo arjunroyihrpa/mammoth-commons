@@ -27,7 +27,7 @@ def llm_audit(
     from mammoth_commons.externals import notify_progress, notify_end
 
     if isinstance(sensitive, str):
-        sensitive = sensitive.split()
+        sensitive = sensitive.split(",")
 
     commentaries = list()
     sentiment = 0
