@@ -1,9 +1,9 @@
 import os
 
-from mammoth import testing
-from catalogue.dataset_loaders.custom_csv import data_custom_csv
-from catalogue.model_loaders.onnx import model_onnx
-from catalogue.metrics.interactive_report import interactive_report
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.custom_csv import data_custom_csv
+from mai_bias.catalogue.model_loaders.onnx import model_onnx
+from mai_bias.catalogue.metrics.interactive_report import interactive_report
 
 
 def test_bias_exploration():
@@ -30,7 +30,7 @@ def test_bias_exploration():
         )
 
         model_path = "file://localhost//" + os.path.abspath("./data/model.onnx")
-        model = env.model_onnx(model_path)
+        model = env.model_onnx(model_path, trained_with_sensitive=True)
 
         html_result = env.interactive_report(dataset, model, sensitive)
         html_result.show()

@@ -1,10 +1,8 @@
 import os
-
-from mammoth import testing
-
-from catalogue.dataset_loaders.custom_csv import data_custom_csv
-from catalogue.model_loaders.onnx import model_onnx
-from catalogue.metrics.model_card import model_card
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.custom_csv import data_custom_csv
+from mai_bias.catalogue.model_loaders.onnx import model_onnx
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_bias_exploration():
@@ -30,8 +28,15 @@ def test_bias_exploration():
             delimiter=";",
         )
 
+        # age, duration, campaign, pdays, previous
+        # job, marital, education, default, housing, loan, contact, poutcome
+        # y ;
+
         model_path = "file://localhost//" + os.path.abspath("./data/model.onnx")
-        model = env.model_onnx(model_path)
+        print(
+            model_path
+        )  # e.g., file://localhost///home/maniospas/Documents/mammoth-commons/data/model.onnx
+        model = env.model_onnx(model_path, trained_with_sensitive=True)
 
         markdown_result = env.model_card(dataset, model, sensitive)
         markdown_result.show()

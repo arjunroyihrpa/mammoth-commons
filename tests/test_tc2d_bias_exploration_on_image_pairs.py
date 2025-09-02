@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.image_pairs import data_image_pairs
-from catalogue.model_loaders.pytorch import model_torch
-from catalogue.metrics.interactive_report import interactive_report
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.image_pairs import data_image_pairs
+from mai_bias.catalogue.model_loaders.pytorch import model_torch
+from mai_bias.catalogue.metrics.interactive_report import interactive_report
 
 
 def test_bias_exploration():
@@ -18,7 +18,7 @@ def test_bias_exploration():
         # model_path = "./data/torch_model/adaface.py"
         # model_dict = "./data/torch_model/ir50_adaface.pth"
         # target_layer = "body.23.res_layer.4"
-
+        num_workers = 0  # 4
         model_path = "./data/torch_model/adaface_toy.py"
         model_dict = "./data/torch_model/toy_adaface.pth"
         target_layer = "conv3"
@@ -30,6 +30,7 @@ def test_bias_exploration():
             data_transform_path="./data/xai_images/torch_transform_fv.py",
             batch_size=1,
             shuffle=False,
+            num_workers=num_workers,
         )
 
         model = env.model_torch(

@@ -23,7 +23,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
 
     - name: Install kfp and docker
       run: |
@@ -40,4 +40,4 @@ jobs:
 
     - name: Build with minimal dependencies
       run: |
-        kfp component build . --component-filepattern catalogue/model_loaders/no_model.py --no-push-image
+        kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/no_model.py --no-push-image

@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.images import data_images
-from catalogue.model_loaders.no_model import no_model
-from catalogue.metrics.image_bias_analysis import image_bias_analysis
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.images import data_images
+from mai_bias.catalogue.model_loaders.no_model import no_model
+from mai_bias.catalogue.metrics.image_bias_analysis import image_bias_analysis
 
 
 def test_facex():

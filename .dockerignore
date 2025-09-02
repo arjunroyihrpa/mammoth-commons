@@ -3,10 +3,10 @@ build/
 dist/
 venv/
 mammoth/
-demonstrator/
 tests/
 venv_test/
 data/
+.cache/
 __pycache__/
 MAMMOth_commons.egg-info/
 MAMMOth_commons_deployment.egg-info/
