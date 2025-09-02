@@ -58,6 +58,7 @@ def model_card(
     fb = importlib.import_module("fairbench")
     reps = fb.reports
     prob = float(problematic_deviation)
+    min_group_size = int(min_group_size)
     assert len(sensitive) != 0, "At least one sensitive attribute should be provided"
     assert 0 <= prob <= 1, "Problematic deviation should be in [0,1]"
     report_type = reps.pairwise if compare_groups == "Pairwise" else reps.vsall
@@ -144,7 +145,7 @@ def model_card(
        Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
        </p>
        <p>
-       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
+       Presented values combine a base performance measure, computed on each group or subgroup with at least {min_group_size} members, and an aggregated value across all data samples.
        Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
        Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
        literature definitions alongside caveats and recommendations.

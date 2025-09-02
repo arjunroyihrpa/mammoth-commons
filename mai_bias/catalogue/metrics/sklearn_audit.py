@@ -31,6 +31,7 @@ def sklearn_audit(
     problematic_deviation: float = 0.1,
     show_non_problematic: bool = True,
     top_recommendations: int = 3,
+    min_group_size: int = 1,
 ) -> HTML:
     """
     <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
@@ -71,10 +72,12 @@ def sklearn_audit(
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify non-problematic values as green and the rest as either orange or red.
         top_recommendations: The number of top recommendations in evaluation that emulates showing the respective data samples to users when querying the trained model to give examples for each class in the dataset. Common values in the literature are 1,3,5,10.
+        min_group_size: The minimum number of samples per group that should be considered during analysis - groups with less memers are ignored.
     """
     import fairbench as fb
     from sklearn import model_selection
 
+    min_group_size = int(min_group_size)
     assert len(sensitive) != 0, "Set at least one sensitive attribute"
     reject = not bool(show_non_problematic)
     X = dataset.to_pred(sensitive)
@@ -126,7 +129,7 @@ def sklearn_audit(
         {attr + " ": fb_categories(dataset.df[attr][idx_test]) for attr in sensitive}
     )
     if intersections != "Base":
-        sensitive = sensitive.intersectional()
+        sensitive = sensitive.intersectional(min_size=min_group_size)
     if intersections == "Subgroups":
         sensitive = sensitive.strict()
     report_type = (
@@ -238,7 +241,7 @@ def sklearn_audit(
        Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
        </p>
        <p>
-       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
+       Presented values combine a base performance measure, computed on each group or subgroup with at least {min_group_size} members, and an aggregated value across all data samples.
        Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
        Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
        literature definitions alongside caveats and recommendations.
