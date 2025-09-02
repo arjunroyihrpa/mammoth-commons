@@ -45,6 +45,7 @@ def img_loader(img_path, url_str=""):
                 f"Failed to load image from URL '{full_url}': {e}"
             ) from e
 
+
 # Important note: make sure that your transforms have resize and normalize!
 # Transformation pipeline
 transform = transforms.Compose(
