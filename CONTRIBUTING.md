@@ -23,7 +23,7 @@ that contributions are compliant with all technical requirements of the toolkit.
 Use the *black* linter, though this can be fixed upon merging too. 
 Pull requests with errors other than linting ones will be rejected.
 
-Creating a module is as simple as adding a file in the `mai_bias/catalogue/` 
+Creating a module is as simple as adding a file in the `mai_bias/catalogue/`
 directory, adding an function with typehints, and decorating the latter.
 The decorator works as a buffer between
 your code and various interfaces. Here are some details: 
@@ -32,7 +32,7 @@ your code and various interfaces. Here are some details:
 from `mammoth_commons.datasets` and `mammoth_commons.models` respectively. 
 Use them to annotate your method's argument
 and return types. *Type annotations are mandatory for 
-all arguments.* 
+all arguments.*
 
 2. *Parameters.* In addition to some mandatory positional
 arguments for each type of module, you may add any number of 
@@ -45,7 +45,7 @@ what information to give to the users working with your module. Use the substrin
 to have a loading dialog in MAI-BIAS, *delimiter* to enable automatic detection of delimiters,
 as well as one of *numeric*, *categorical*, *attribute*, *ignored*, or *target*
 to indicate to the UI that it should try to select among CSV column names in provided data by
-peeking at them. Delimiters and column names are recognized to 
+peeking at them. Delimiters and column names are recognized to
 correspond to the last previous path.
 
 3. You must also create
@@ -60,7 +60,7 @@ the `@mammoth.integration.loader(namespace, version, python="3.13", packages=(..
 These require at least one argument to denote
 the module's version. The namespace refers to whom the module
 should be accredited to (if you are not using continuous integration, it should be the same as your DockerHub 
-username). Finally, packaged dependencies to be a tuple of strings 
+username). Finally, packaged dependencies to be a tuple of strings
 (take care to write something like `packages=("pandas",)` **comma included** if you only have one dependency).
 These dependencies are any packages other than the few found in `requirements.txt`, and need to include
 any dependencies. For example, add *pandas* as a package dependency if you use or load the `CSV` datatype
@@ -95,7 +95,6 @@ def new_metric(
         threshold: This is some user-provided threshold.
     """
     return Markdown("#Results\nThese are the results.")
-
 ```
 </details>
 

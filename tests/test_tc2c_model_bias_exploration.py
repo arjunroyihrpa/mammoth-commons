@@ -1,5 +1,4 @@
 import os
-
 from mammoth_commons import testing
 from mai_bias.catalogue.dataset_loaders.custom_csv import data_custom_csv
 from mai_bias.catalogue.model_loaders.onnx import model_onnx
