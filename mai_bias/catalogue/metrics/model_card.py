@@ -22,6 +22,7 @@ def model_card(
     compare_groups: Options("Pairwise", "To the total population") = None,
     problematic_deviation: float = 0.1,
     show_non_problematic: bool = True,
+    min_group_size: int = 1,
 ) -> HTML:
     """
     <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
@@ -52,6 +53,7 @@ def model_card(
         compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
         problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
         show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify problematic values as red.
+        min_group_size: The minimum number of samples per group that should be considered during analysis - groups with less memers are ignored.
     """
     fb = importlib.import_module("fairbench")
     reps = fb.reports
@@ -64,7 +66,7 @@ def model_card(
     dataset = dataset.to_csv(sensitive)
     sensitive = fb.Dimensions({s: fb_categories(dataset.df[s]) for s in sensitive})
     if intersections != "Base":
-        sensitive = sensitive.intersectional()
+        sensitive = sensitive.intersectional(min_size=min_group_size)
     if intersections == "Subgroups":
         sensitive = sensitive.strict()
     assert len(sensitive.branches()) != 0, "Could not find any intersections"
