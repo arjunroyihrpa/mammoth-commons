@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QDialog,
     QListWidget,
-    QScrollArea,
 )
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QLocale
 from PySide6.QtGui import QIntValidator, QDoubleValidator, QIcon
 import json
@@ -88,35 +88,9 @@ class Step(Styled):
         layout.addWidget(self.dataset_selector)
 
         # Dataset description section
-        self.description_label = QLabel(
-            "Select a module to see its description and parameters to fill in.",
-            self,
-        )
-        self.description_label.setOpenExternalLinks(True)
-        self.description_label.setWordWrap(True)
-        self.description_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        self.description_label.setTextInteractionFlags(Qt.TextBrowserInteraction)
-        self.description_label.setStyleSheet(
-            """
-            font-size: 14px;
-            margin-top: 5px;
-            background-color: white;
-        """
-        )
-
-        # Wrap QLabel inside a scroll area
-        scroll = QScrollArea(self)
-        scroll.setWidgetResizable(True)
-        scroll.setFixedHeight(300)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
-        # White background for scroll area as well
-        scroll.setStyleSheet("background-color: white; border: none;")
-
-        scroll.setWidget(self.description_label)
-
-        # Add scroll area instead of the raw label
-        layout.addWidget(scroll)
+        self.description_label = QWebEngineView(self)
+        self.description_label.setFixedHeight(300)
+        layout.addWidget(self.description_label)
 
         separator = QFrame()
         separator.setFrameShape(QFrame.Shape.HLine)
@@ -187,17 +161,18 @@ class Step(Styled):
         self.param_inputs.clear()
 
         if dataset_name not in self.dataset_loaders:
-            self.description_label.setText(
+            self.description_label.setHtml(
                 "Select a dataset loader to see its description."
             )
             return
 
         loader = self.dataset_loaders[dataset_name]
-        self.description_label.setText(
+        self.description_label.setHtml(
             loader.get(
                 "description", f"No description available:<br><b>{dataset_name}</b>"
             )
         )
+
 
         self.last_url = None
         self.last_delimiter = None  # never set, placeholder for the future perhaps?
