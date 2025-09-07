@@ -194,7 +194,7 @@ def model_hyperfair_ranking(
             k=k, alpha=float(alpha), 
             test_side='lower', 
             n_exp=int(n_exp), 
-            verbose=True, 
+            verbose=False, 
             plot=False
         )
 

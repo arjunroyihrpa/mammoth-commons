@@ -561,19 +561,21 @@ def generate_html_report(
     sensitive_attribute,
     sampling_attribute,
     ranking_variable,
-    female_fragment,
-    male_fragment,
+    fragments,
     n_runs
 ):
 
+
+    male_fragment=fragments['male']
+    female_fragment=fragments['female']
 
     html_content = template.format(
         sensitive_attribute=sensitive_attribute,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
         group_stats=generate_group_stats(dataset, sampling_attribute),
-        female_fragment=female_fragment,
         male_fragment=male_fragment,
+        female_fragment=female_fragment,
         n_runs=n_runs,
     )
     return HTML(html_content)
@@ -684,29 +686,29 @@ def exposure_distance_comparison(
 
 
     # This dict will contain a generated HTML fragment for each possible protected group
-    html_fragments = {
-        "male": "",
-        "female": ""
-    }
+    html_fragments = { }
 
-    for protected_group in ["female", "male"]:    # TODO: should not be just "female and male"!!
-        n_runs = int(n_runs)
+    researchers_graph = dataset.G
+    Dataframe_nodes = {"id": []}
+    for i in researchers_graph.nodes():
+        Dataframe_nodes["id"] += [i]
+        for k, v in researchers_graph.nodes[i].items():
+            try:
+                Dataframe_nodes[k] += [v]
+            except:
+                Dataframe_nodes[k] = [v]
 
-        # Baseline (potentially unfair) ranking model
-        model_baseline = model.baseline_rank            # Callable from loader
+    data = pd.DataFrame(Dataframe_nodes)
 
-        researchers_graph = dataset.G
-        Dataframe_nodes = {"id": []}
-        for i in researchers_graph.nodes():
-            Dataframe_nodes["id"] += [i]
-            for k, v in researchers_graph.nodes[i].items():
-                try:
-                    Dataframe_nodes[k] += [v]
-                except:
-                    Dataframe_nodes[k] = [v]
+    all_groups = [g for g in set(data[sensitive[0]]) if pd.notna(g)]
 
-        data = pd.DataFrame(Dataframe_nodes)
+    n_runs = int(n_runs)
 
+    # Baseline (potentially unfair) ranking model
+    model_baseline = model.baseline_rank            # Callable from loader
+
+    # Iterate over each possible groups, treating each as the "protected" group in turn
+    for protected_group in all_groups:
 
         # Network Plotting Section
         attribute_color_nodes = sampling_attribute
@@ -854,15 +856,13 @@ def exposure_distance_comparison(
             distribution_img_str=distribution_image,
             n_runs=n_runs,
         )
-    
+
     # Now create the full report from the fragments
-    # TODO: rename from female_fragment to group_1 fragment and so on
     return generate_html_report(
         dataset=data,
         sensitive_attribute=sensitive,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
-        female_fragment=html_fragments["female"],
-        male_fragment=html_fragments["male"],
+        fragments=html_fragments,
         n_runs=n_runs,
     )

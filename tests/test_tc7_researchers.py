@@ -9,7 +9,7 @@ def test_researchers_ranking_comparison():
         data_researchers,
         model_mitigation_ranking,
         #model_fair_ranking,
-        #model_hyperfair_ranking,
+        model_hyperfair_ranking,
         exposure_distance_comparison,
     ) as env:
         dataset = env.data_researchers(
@@ -19,7 +19,7 @@ def test_researchers_ranking_comparison():
 
         model_mitigation = env.model_mitigation_ranking()
         #model_mitigation = env.model_fair_ranking()
-        #model_mitigation = env.model_hyperfair_ranking()
+        model_mitigation = env.model_hyperfair_ranking()
 
         analysis_outcome_mitigation = env.exposure_distance_comparison(
             dataset,
