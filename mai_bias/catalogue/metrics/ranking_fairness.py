@@ -5,17 +5,24 @@ from mammoth_commons.exports import HTML
 from mammoth_commons.integration import metric
 from mammoth_commons.models.researcher_ranking import ResearcherRanking
 from mammoth_commons.datasets.graph_csh import Graph_CSH
-import pandas as pd
-import numpy as np
 from io import BytesIO
 import base64
 import statistics
 
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import seaborn as sns
+import base64
+import statistics
+from . import networks_layouts
+import networkx as nx
+
+
 def b(k):
-    """Function defining the position bias. the highest ranked candidates receive more attention from users than candidates at lower ranks,
-    and here is adoptedwith algorithmic discount with smooth reduction and favorable theoretical properties
-    (https://proceedings.mlr.press/v30/Wang13.html)."""
+    """Function defining the position bias: the highest ranked candidates receive more attention from users than candidates at lower ranks, and here is adoptedwith algorithmic discount with smooth reduction and favorable theoretical properties (https://proceedings.mlr.press/v30/Wang13.html)."""
     return 1 / np.log2(k + 1)
 
 
@@ -58,8 +65,7 @@ def Exposure_distance(
             (
                 sum(ranking_position_protected_attribute[:Min_size])
                 - sum(ranking_position_non_protected_attribute[:Min_size])
-            )
-            * (Min_size * 2),
+            ),
             2,
         )
     except Exception as e:
@@ -68,13 +74,7 @@ def Exposure_distance(
     return EDr
 
 
-def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable):
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    import networkx as nx
-    import matplotlib
-
-    matplotlib.use("Agg")
+def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable, title=None):
     # Set figure size based on number of categories
     n_categories = len(dataframe[y_variable].unique())
     height = min(7, max(4, n_categories * 0.5))  # Adaptive height
@@ -109,6 +109,9 @@ def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable):
 
     ax.yaxis.grid(True, linestyle="--", alpha=0.7)
 
+    if title:
+        ax.set_title(title, fontsize=12, fontweight="bold", pad=10)
+
     plt.margins(y=0.02)
 
     # Save and encode
@@ -120,10 +123,6 @@ def boxplots_mitigation_strategies_pretty(
     ER_Old, ER_Mitigation, Method, sampling_attribute=None, n_runs=1
 ):
     """Compare the old results with possible mitigation strategies"""
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    import networkx as nx
-
     plt.rcParams["mathtext.fontset"] = "dejavusans"
     plt.rcParams["figure.autolayout"] = True
 
@@ -567,18 +566,21 @@ def generate_html_report(
     sensitive_attribute,
     sampling_attribute,
     ranking_variable,
-    female_fragment,
-    male_fragment,
-    n_runs,
+    fragments,
+    n_runs
 ):
+
+
+    male_fragment=fragments['male']
+    female_fragment=fragments['female']
 
     html_content = template.format(
         sensitive_attribute=sensitive_attribute,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
         group_stats=generate_group_stats(dataset, sampling_attribute),
-        female_fragment=female_fragment,
         male_fragment=male_fragment,
+        female_fragment=female_fragment,
         n_runs=n_runs,
     )
     return HTML(html_content)
@@ -592,12 +594,11 @@ def plot_network(
     amplyfing_size_nodes=2,
     division_size_edges=100,
     size_edges=1,
+    dict_color_nodes=None, 
+    color_categories=None,
+    label_nodes = None,
+    node_colors = None
 ):
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    import networkx as nx
-    from . import networks_layouts
-
     degree = dict(G.degree(weight="weight"))
     weights = [G[u][v]["weight"] for u, v in G.edges()]
     pos = networks_layouts.forceatlas2_layout(
@@ -616,31 +617,41 @@ def plot_network(
         seed=10,
         dim=2,
     )
-    ncols = 1
-    nrows = 1
 
-    fig, axes = plt.subplots(ncols=ncols, nrows=nrows, figsize=(10, 10))
-
-    nx.draw_networkx(
-        G,
-        with_labels=False,
-        pos=pos,
-        node_color=(255 / 256, 102 / 256, 102 / 256, 0.7),
-        node_size=[i * amplyfing_size_nodes + 1 for i in list(degree.values())],
-        edge_color="lightgray",
-        width=np.array(weights) / division_size_edges + size_edges,
-        arrowsize=3,
-        ax=axes,
-    )
+    ncols=1
+    nrows=1
+    fig, axes = plt.subplots(ncols=ncols, nrows=nrows,figsize=(10,10))
+    if dict_color_nodes==None:
+        nx.draw_networkx(G, with_labels = False,
+                         pos=pos, node_color=(255/256, 102/256, 102/256,0.7),
+                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
+                         edge_color = 'lightgray',
+                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
+                         ax=axes)
+    else:
+         nx.draw_networkx(G, with_labels = False,
+                         pos=pos, node_color=dict_color_nodes,
+                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
+                         edge_color = 'lightgray',
+                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
+                         ax=axes)
+         #nx.draw_networkx_labels(G,pos,label_nodes,font_size=10,font_color='r')
+         pos_text=1000
+         for i,v in color_categories.items():
+            plt.scatter(1200,pos_text,s=50, c=v)
+            plt.text(1250,pos_text-25,i)
+            pos_text-=100
+    plt.text(0,0.85,'Numbers of nodes: '+str(G.number_of_nodes()),transform=axes.transAxes)
+    plt.text(0,0.81,'Numbers of edges: '+str(G.number_of_edges()),transform=axes.transAxes)
+    plt.text(0,0.77,'Density: ' + str(np.round(nx.density(G),3)),transform=axes.transAxes)
     if directed == False:
         Connected_componets = sorted(nx.connected_components(G), key=len, reverse=True)
     else:
-        Connected_componets = sorted(
-            nx.weakly_connected_components(G), key=len, reverse=True
-        )
-
-    plt.title(title, fontweight="bold", fontsize=20)
-    for axis in ["top", "bottom", "left", "right"]:
+        Connected_componets = sorted(nx.weakly_connected_components(G), key=len, reverse=True)
+    plt.text(0,0.72,'LCC: ' + str(np.round(len(Connected_componets[0])/G.number_of_nodes(),2)),transform=axes.transAxes)
+    plt.text(0,0.68,'CC: ' + str(len(Connected_componets)),transform=axes.transAxes)
+    plt.title(title, fontweight='bold',fontsize=20)
+    for axis in ['top','bottom','left','right']:
         axes.spines[axis].set_linewidth(0)
 
     # Save and encode
@@ -649,15 +660,7 @@ def plot_network(
     return enc_str
 
 
-@metric(
-    namespace="mammotheu",
-    version="v0048",
-    python="3.13",
-    packages=(
-        "seaborn",
-        "matplotlib",
-    ),
-)
+@metric(namespace="mammotheu", version="v0037", python="3.11")
 def exposure_distance_comparison(
     dataset: Graph_CSH,
     model: ResearcherRanking,
@@ -670,21 +673,61 @@ def exposure_distance_comparison(
 ) -> HTML:
     """
     Compute the exposure distance between the protected and non-protected groups in the dataset and ranking.
-    Sensitive attributes is a comma-separated list of the attributes relevant for fairness analysis. Currently, only *Gender* is supported.
+    Sensitive attributes is a comma-separated list of the attributes relevant for fairness analysis. WCurrently, only *Gender* is supported.
     Args:
         n_runs: Choose a natural number between 1 and 100.
         sampling_attribute: The value by which we group the analysis for finer-grained results. One of *Nationality&#95;IncomeGroup* or *Nationality&#95;Region*.
         ranking_variable: This refers to the main criteria by which ranking is done.  One of *Degree*, *Citations* or *Productivity*.
     """
 
-    fragments = {"male": "", "female": ""}
-    for protected in ["female", "male"]:
-        n_runs = int(n_runs)
 
-        # initialize our own baseline model
-        model_baseline = model.baseline_rank
+    # High-Level Flow:
+    # ----------------
+    # 1.  Unpack node-attributes from the dataset
+    # 2.  For each possible *protected value* (e.g. first for “female” then for “male”):
+    #     a. Slice DF by every category of `sampling_attribute` (eg: High-Income, Low-Income etc.)
+    #     b. Rank twice per slice: baseline (normal, perhaps unfair ranking) and mitigation (fairer ranking)
+    #     c. Compute Exposure-Distance on both
+    #     d. Collect results & plots
+    # 3.  Assemble an HTML report comparing baseline vs. mitigated exposure.
 
-        researchers_graph = dataset.G
+
+
+    # This dict will contain a generated HTML fragment for each possible protected group
+    html_fragments = { }
+
+    researchers_graph = dataset.G
+    Dataframe_nodes = {"id": []}
+    for i in researchers_graph.nodes():
+        Dataframe_nodes["id"] += [i]
+        for k, v in researchers_graph.nodes[i].items():
+            try:
+                Dataframe_nodes[k] += [v]
+            except:
+                Dataframe_nodes[k] = [v]
+
+    data = pd.DataFrame(Dataframe_nodes)
+
+    all_groups = [g for g in set(data[sensitive[0]]) if pd.notna(g)]
+
+    n_runs = int(n_runs)
+
+    # Baseline (potentially unfair) ranking model
+    model_baseline = model.baseline_rank            # Callable from loader
+
+    # Iterate over each possible groups, treating each as the "protected" group in turn
+    for protected_group in all_groups:
+
+        # Network Plotting Section
+        attribute_color_nodes = sampling_attribute
+        Dict_attribute = {data['id'][i]: data[attribute_color_nodes][i] for i in data.index}
+
+        # build a color per node category
+        color_nodes = [str(Dict_attribute[n]) for n in researchers_graph.nodes()]
+        np.random.seed(40)
+        color = list(np.random.choice(range(256), size=len(set(color_nodes))))
+        color_categories = {list(set(color_nodes))[i]:cm.viridis(color[i]) if list(set(color_nodes))[i] !='nan' else  'lightgrey' for i in range(len(set(color_nodes))) }
+        color_nodes = [color_categories[n] for n in color_nodes ]
 
         # Plot the network if it is small enough
         if len(researchers_graph.nodes) < 2500:
@@ -692,27 +735,18 @@ def exposure_distance_comparison(
                 G=researchers_graph,
                 title=" Co-authorship network",
                 name_plot="Co-authorship_network.pdf",
+                dict_color_nodes=color_nodes,
+                color_categories=color_categories,
             )
         else:
             network_image = image_to_base64("./data/researchers/network.png")
 
-        Dataframe_nodes = {"id": []}
-        for i in researchers_graph.nodes():
-            Dataframe_nodes["id"] += [i]
-            for k, v in researchers_graph.nodes[i].items():
-                try:
-                    Dataframe_nodes[k] += [v]
-                except:
-                    Dataframe_nodes[k] = [v]
-
-        data = pd.DataFrame(Dataframe_nodes)
-
-        # Only consider those rows where the sampling attribute is not missing
+        # Keep only those rows where the sampling attribute is not missing
         dataframe_sampling = data[~data[sampling_attribute].isnull()]
 
         Old_ranking_variable = ranking_variable
-        sensitive_attribute = sensitive[0]
-        protected_attribute = protected
+        sensitive_attribute = sensitive[0]                   # e.g. "Gender"
+        protected_attribute = protected_group                # e.g. "female"
 
         ER_Old = {}
         ER_Mitigation = {}
@@ -720,6 +754,8 @@ def exposure_distance_comparison(
         ranked_dataframe_normal = pd.DataFrame()
         ranked_dataframe_mitigation = pd.DataFrame()
 
+
+        # Iterate over each possible category (eg: High-Income, Low-income etc.)
         for category in sorted(set(dataframe_sampling[sampling_attribute])):
 
             dataframe_filtered = dataframe_sampling[
@@ -728,7 +764,7 @@ def exposure_distance_comparison(
 
             print(f"{len(dataframe_filtered)} researchers in the category {category}")
 
-            # Rank the rows using the model
+            # Rank the rows using the baseline (potentially non-fair) ranking
             if callable(model_baseline):
                 ranked_dataframe_normal_category = model_baseline(
                     dataframe_filtered, ranking_variable
@@ -737,7 +773,6 @@ def exposure_distance_comparison(
                 ranked_dataframe_normal_category = model_baseline.rank(
                     dataframe_filtered, ranking_variable
                 )
-
             # Compute the exposure distance for the normal ranking
             ER_Old[category] = Exposure_distance(
                 ranked_dataframe_normal_category,
@@ -749,10 +784,10 @@ def exposure_distance_comparison(
                 [ranked_dataframe_normal, ranked_dataframe_normal_category]
             )
 
-            # Compute the exposure distance for the normal ranking
+            # Compute the exposure distance for the mitigation ranking
+            # but get the average over `n_runs` runs
             ER_Mitigation[category] = {}
             ranked_dataframe_mitigation_category_runs = []
-
             for r in range(n_runs):
                 # Rank the rows using the model
                 if callable(model):
@@ -761,7 +796,7 @@ def exposure_distance_comparison(
                     )
                 else:
                     ranked_dataframe_mitigation_category = model.rank(
-                        dataframe_filtered, ranking_variable
+                        dataframe_filtered, ranking_variable, sensitive_attribute, protected_attribute
                     )
 
                 ER_Mitigation[category][r] = Exposure_distance(
@@ -781,7 +816,6 @@ def exposure_distance_comparison(
             numeric_cols = all_runs_df.select_dtypes(include=[np.number]).columns
             mean_ranking_df = all_runs_df[numeric_cols].groupby(level=0).mean()
 
-            # If you need non-numeric columns, take the first occurrence (e.g., string columns remain unchanged)
             non_numeric_df = (
                 all_runs_df.select_dtypes(exclude=[np.number]).groupby(level=0).first()
             )
@@ -794,11 +828,13 @@ def exposure_distance_comparison(
                 [ranked_dataframe_mitigation, mean_ranking_df]
             )
 
+        # Build distribution plots
         normal_distribution_image = boxplots_rankings(
             ranked_dataframe_normal,
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
+            title="Distribution Across Categories"
         )
 
         distribution_image = boxplots_rankings(
@@ -806,6 +842,7 @@ def exposure_distance_comparison(
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
+            title="Post-Mitigation distribution Across Categories"
         )
 
         mitigation_strategies_image = boxplots_mitigation_strategies_pretty(
@@ -816,7 +853,8 @@ def exposure_distance_comparison(
             n_runs=n_runs,
         )
 
-        fragments[protected] = generate_html_fragment(
+        # Build the final HTML fragment for this protected group
+        html_fragments[protected_group] = generate_html_fragment(
             ranking_variable=ranking_variable,
             ER_Old=ER_Old,
             ER_Mitigation=ER_Mitigation,
@@ -827,13 +865,12 @@ def exposure_distance_comparison(
             n_runs=n_runs,
         )
 
-    # Now create the full report
+    # Now create the full report from the fragments
     return generate_html_report(
         dataset=data,
         sensitive_attribute=sensitive,
         sampling_attribute=sampling_attribute,
         ranking_variable=ranking_variable,
-        female_fragment=fragments["female"],
-        male_fragment=fragments["male"],
+        fragments=html_fragments,
         n_runs=n_runs,
     )
