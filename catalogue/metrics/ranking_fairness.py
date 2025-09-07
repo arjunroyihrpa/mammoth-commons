@@ -519,6 +519,7 @@ protected_fragment = """
     </div>
 """
 
+
 def generate_html_fragment(
     ranking_variable,
     ER_Old,
@@ -556,6 +557,7 @@ def generate_html_fragment(
 
     return html_content
 
+
 def generate_html_report(
     dataset,
     sensitive_attribute,
@@ -579,6 +581,7 @@ def generate_html_report(
         n_runs=n_runs,
     )
     return HTML(html_content)
+
 
 def plot_network(
     G,
@@ -661,7 +664,9 @@ def exposure_distance_comparison(
     sensitive: List[str] = "Gender",
     n_runs: int = 1,
     sampling_attribute: str = "Nationality_IncomeGroup",
-    ranking_variable: mammoth.integration.Options("Degree", "Citations", "Productivity") = "Degree"
+    ranking_variable: mammoth.integration.Options(
+        "Degree", "Citations", "Productivity"
+    ) = "Degree",
 ) -> HTML:
     """
     Compute the exposure distance between the protected and non-protected groups in the dataset and ranking.

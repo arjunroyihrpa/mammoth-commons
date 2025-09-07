@@ -2,8 +2,12 @@ temp.html
 .idea
 MAMMOth_commons.egg-info/
 MAMMOth_commons_deployment.egg-info/
+MAI_Bias.egg-info/
 venv
+venv311
+venv312
 venv_test
+venvtemp
 dist
 build
 Dockerfile
@@ -12,8 +16,10 @@ runtime-requirements.txt
 **/__pycache__/
 *.pyc
 __pycache__/
+.cache/
 fairbench.log
 history.json
+installed.txt
 .coverage
 coverage.xml
 coverage.html
@@ -23,3 +29,9 @@ __pycache__/**
 component_metadata
 **/component_metadata
 local_outputs
+canary/
+data/data/
+data/dev/
+__pycache__/
+.ipynb_checkpoints/
+tmp.png

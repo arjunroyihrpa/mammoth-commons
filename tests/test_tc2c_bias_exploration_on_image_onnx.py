@@ -1,9 +1,9 @@
-from mammoth import testing
-from catalogue.dataset_loaders.images import data_images
-from catalogue.model_loaders.pytorch2onnx import model_torch2onnx
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.images import data_images
+from mai_bias.catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 
-# from catalogue.metrics.interactive_report import interactive_report
-from catalogue.metrics.model_card import model_card
+# from mai_bias.catalogue.metrics.interactive_report import interactive_report
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_bias_exploration():
@@ -14,10 +14,6 @@ def test_bias_exploration():
         model_dict = "./data/torch_model/resnet18.pt"
         data_dir = "./data/xai_images/race_per_7000"
         csv_dir = "./data/xai_images/bupt_anno.csv"
-
-        # additional arguements needed for faceX
-        target_class = 1
-        target_layer = "layer4"
 
         dataset = env.data_images(
             path=csv_dir,
@@ -31,12 +27,12 @@ def test_bias_exploration():
         model = env.model_torch2onnx(
             state_path=model_dict,
             model_path=model_path,
-            input_size=dataset.input_size,
+            input_width=dataset.input_size[0],
+            input_height=dataset.input_size[1],
         )
 
-        result = env.model_card(dataset, model, [protected])
-        print(result.text())
-        # html_result.show()
+        result = env.model_card(dataset, model, [protected], problematic_deviation=0)
+        result.show()
 
 
 if __name__ == "__main__":

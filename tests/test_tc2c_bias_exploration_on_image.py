@@ -1,7 +1,7 @@
-from mammoth import testing
-from catalogue.dataset_loaders.images import data_images
-from catalogue.model_loaders.pytorch import model_torch
-from catalogue.metrics.interactive_report import interactive_report
+from mammoth_commons import testing
+from mai_bias.catalogue.dataset_loaders.images import data_images
+from mai_bias.catalogue.model_loaders.pytorch import model_torch
+from mai_bias.catalogue.metrics.interactive_report import interactive_report
 
 
 def test_bias_exploration():
@@ -16,6 +16,7 @@ def test_bias_exploration():
         # additional arguements needed for faceX
         target_class = 1
         target_layer = "layer4"
+        num_workers = 0  # 4
 
         dataset = env.data_images(
             path=csv_dir,
@@ -24,6 +25,7 @@ def test_bias_exploration():
             data_transform_path="./data/xai_images/torch_transform.py",
             batch_size=1,
             shuffle=False,
+            num_workers=num_workers,
         )
 
         model = env.model_torch(
