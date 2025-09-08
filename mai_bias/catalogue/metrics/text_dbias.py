@@ -66,6 +66,7 @@ def manual_install_wheel(wheel_url_or_path):
         "tensorflow",
         "transformers",
         "tf-keras",
+        "catalogue==2.0.6",
         "spacy==3.2.0",
         "plotly",
         "torch",
