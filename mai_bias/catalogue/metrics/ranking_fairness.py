@@ -6,19 +6,8 @@ from mammoth_commons.integration import metric
 from mammoth_commons.models.researcher_ranking import ResearcherRanking
 from mammoth_commons.datasets.graph_csh import Graph_CSH
 from io import BytesIO
-import base64
-import statistics
-
-
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import seaborn as sns
 import base64
-import statistics
-from . import networks_layouts
-import networkx as nx
 
 
 def b(k):
@@ -77,6 +66,9 @@ def Exposure_distance(
 def boxplots_rankings(
     dataframe, hue_variable, ranking_variable, y_variable, title=None
 ):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
     # Set figure size based on number of categories
     n_categories = len(dataframe[y_variable].unique())
     height = min(7, max(4, n_categories * 0.5))  # Adaptive height
@@ -124,6 +116,10 @@ def boxplots_rankings(
 def boxplots_mitigation_strategies_pretty(
     ER_Old, ER_Mitigation, Method, sampling_attribute=None, n_runs=1
 ):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
     """Compare the old results with possible mitigation strategies"""
     plt.rcParams["mathtext.fontset"] = "dejavusans"
     plt.rcParams["figure.autolayout"] = True
@@ -230,6 +226,8 @@ def image_to_base64(image_path):
 
 
 def generate_group_metrics_rows(ER_Old, ER_Mitigation, n_runs):
+    import statistics
+
     rows = []
     for group in ER_Old.keys():
         mitigation_values = [ER_Mitigation[group][r] for r in range(n_runs)]
@@ -251,6 +249,8 @@ def generate_group_metrics_rows(ER_Old, ER_Mitigation, n_runs):
 
 
 def generate_group_stats(dataset, sampling_attribute):
+    import pandas as pd
+
     stats = []
     unique_values = [x for x in dataset[sampling_attribute].unique() if pd.notna(x)]
     for group in sorted(unique_values):
@@ -535,6 +535,8 @@ def generate_html_fragment(
     distribution_img_str,
     n_runs,
 ):
+    import statistics
+
     # Calculate summary statistics
     max_disparity_old = max(ER_Old.values()) - min(ER_Old.values())
     mean_mitigation_by_group = {
@@ -600,6 +602,10 @@ def plot_network(
     label_nodes=None,
     node_colors=None,
 ):
+    import matplotlib.pyplot as plt
+    from . import networks_layouts
+    import networkx as nx
+
     degree = dict(G.degree(weight="weight"))
     weights = [G[u][v]["weight"] for u, v in G.edges()]
     pos = networks_layouts.forceatlas2_layout(
@@ -690,7 +696,12 @@ def plot_network(
     return enc_str
 
 
-@metric(namespace="mammotheu", version="v0037", python="3.11")
+@metric(
+    namespace="mammotheu",
+    version="v0037",
+    python="3.11",
+    packages=("matplotlib", "statistics", "seaborn"),
+)
 def exposure_distance_comparison(
     dataset: Graph_CSH,
     model: ResearcherRanking,
@@ -719,6 +730,8 @@ def exposure_distance_comparison(
     #     c. Compute Exposure-Distance on both
     #     d. Collect results & plots
     # 3.  Assemble an HTML report comparing baseline vs. mitigated exposure.
+    import pandas as pd
+    import matplotlib.cm as cm
 
     # This dict will contain a generated HTML fragment for each possible protected group
     html_fragments = {}

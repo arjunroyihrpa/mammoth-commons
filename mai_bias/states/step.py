@@ -173,7 +173,6 @@ class Step(Styled):
             )
         )
 
-
         self.last_url = None
         self.last_delimiter = None  # never set, placeholder for the future perhaps?
         for name, param_type, default, description in loader["parameters"]:
