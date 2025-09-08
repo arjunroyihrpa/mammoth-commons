@@ -31,13 +31,11 @@ def data_researchers(
     """
     try:
         # Read paper files for information of the papers:
-        DF_papers = pd.read_csv(
-            paper_graph_path, sep=paper_graph_delimiter, compression="bz2"
-        )
+        DF_papers = pd.read_csv(paper_graph_path, sep=paper_graph_delimiter)
 
         # Affiliations for the information of the authors
         DF_Affiliations = pd.read_csv(
-            paper_affiliations_path, sep=paper_affiliation_delimiter, compression="bz2"
+            paper_affiliations_path, sep=paper_affiliation_delimiter
         )
 
     except:
