@@ -235,7 +235,12 @@ def model_mitigation_ranking() -> ResearcherRanking:
     namespace="csh",
     version="v003",
     python="3.11",
-    packages=("pandas", "numpy", "hyperfair", "fairsearchcore"),  # Mammoth will pip-install these
+    packages=(
+        "pandas",
+        "numpy",
+        "hyperfair",
+        "fairsearchcore",
+    ),  # Mammoth will pip-install these
 )
 def model_hyperfair_ranking(
     alpha: float = 0.05,
