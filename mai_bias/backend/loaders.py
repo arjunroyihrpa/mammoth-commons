@@ -20,7 +20,9 @@ from mai_bias.catalogue.model_loaders.pytorch import model_torch
 from mai_bias.catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 from mai_bias.catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
 from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
-    model_mitigation_ranking, model_fair_ranking, model_hyperfair_ranking
+    model_mitigation_ranking,
+    model_fair_ranking,
+    model_hyperfair_ranking,
 )
 from mai_bias.catalogue.model_loaders.ollama import ollama_model
 

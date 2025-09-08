@@ -74,7 +74,9 @@ def Exposure_distance(
     return EDr
 
 
-def boxplots_rankings(dataframe, hue_variable, ranking_variable, y_variable, title=None):
+def boxplots_rankings(
+    dataframe, hue_variable, ranking_variable, y_variable, title=None
+):
     # Set figure size based on number of categories
     n_categories = len(dataframe[y_variable].unique())
     height = min(7, max(4, n_categories * 0.5))  # Adaptive height
@@ -567,12 +569,11 @@ def generate_html_report(
     sampling_attribute,
     ranking_variable,
     fragments,
-    n_runs
+    n_runs,
 ):
 
-
-    male_fragment=fragments['male']
-    female_fragment=fragments['female']
+    male_fragment = fragments["male"]
+    female_fragment = fragments["female"]
 
     html_content = template.format(
         sensitive_attribute=sensitive_attribute,
@@ -594,10 +595,10 @@ def plot_network(
     amplyfing_size_nodes=2,
     division_size_edges=100,
     size_edges=1,
-    dict_color_nodes=None, 
+    dict_color_nodes=None,
     color_categories=None,
-    label_nodes = None,
-    node_colors = None
+    label_nodes=None,
+    node_colors=None,
 ):
     degree = dict(G.degree(weight="weight"))
     weights = [G[u][v]["weight"] for u, v in G.edges()]
@@ -618,40 +619,69 @@ def plot_network(
         dim=2,
     )
 
-    ncols=1
-    nrows=1
-    fig, axes = plt.subplots(ncols=ncols, nrows=nrows,figsize=(10,10))
-    if dict_color_nodes==None:
-        nx.draw_networkx(G, with_labels = False,
-                         pos=pos, node_color=(255/256, 102/256, 102/256,0.7),
-                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
-                         edge_color = 'lightgray',
-                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
-                         ax=axes)
+    ncols = 1
+    nrows = 1
+    fig, axes = plt.subplots(ncols=ncols, nrows=nrows, figsize=(10, 10))
+    if dict_color_nodes == None:
+        nx.draw_networkx(
+            G,
+            with_labels=False,
+            pos=pos,
+            node_color=(255 / 256, 102 / 256, 102 / 256, 0.7),
+            node_size=[i * amplyfing_size_nodes + 1 for i in list(degree.values())],
+            edge_color="lightgray",
+            width=np.array(weights) / division_size_edges + size_edges,
+            arrowsize=3,
+            ax=axes,
+        )
     else:
-         nx.draw_networkx(G, with_labels = False,
-                         pos=pos, node_color=dict_color_nodes,
-                         node_size=[i*amplyfing_size_nodes+1 for i in list(degree.values())],
-                         edge_color = 'lightgray',
-                         width = np.array(weights)/division_size_edges+size_edges,arrowsize=3,
-                         ax=axes)
-         #nx.draw_networkx_labels(G,pos,label_nodes,font_size=10,font_color='r')
-         pos_text=1000
-         for i,v in color_categories.items():
-            plt.scatter(1200,pos_text,s=50, c=v)
-            plt.text(1250,pos_text-25,i)
-            pos_text-=100
-    plt.text(0,0.85,'Numbers of nodes: '+str(G.number_of_nodes()),transform=axes.transAxes)
-    plt.text(0,0.81,'Numbers of edges: '+str(G.number_of_edges()),transform=axes.transAxes)
-    plt.text(0,0.77,'Density: ' + str(np.round(nx.density(G),3)),transform=axes.transAxes)
+        nx.draw_networkx(
+            G,
+            with_labels=False,
+            pos=pos,
+            node_color=dict_color_nodes,
+            node_size=[i * amplyfing_size_nodes + 1 for i in list(degree.values())],
+            edge_color="lightgray",
+            width=np.array(weights) / division_size_edges + size_edges,
+            arrowsize=3,
+            ax=axes,
+        )
+        # nx.draw_networkx_labels(G,pos,label_nodes,font_size=10,font_color='r')
+        pos_text = 1000
+        for i, v in color_categories.items():
+            plt.scatter(1200, pos_text, s=50, c=v)
+            plt.text(1250, pos_text - 25, i)
+            pos_text -= 100
+    plt.text(
+        0,
+        0.85,
+        "Numbers of nodes: " + str(G.number_of_nodes()),
+        transform=axes.transAxes,
+    )
+    plt.text(
+        0,
+        0.81,
+        "Numbers of edges: " + str(G.number_of_edges()),
+        transform=axes.transAxes,
+    )
+    plt.text(
+        0, 0.77, "Density: " + str(np.round(nx.density(G), 3)), transform=axes.transAxes
+    )
     if directed == False:
         Connected_componets = sorted(nx.connected_components(G), key=len, reverse=True)
     else:
-        Connected_componets = sorted(nx.weakly_connected_components(G), key=len, reverse=True)
-    plt.text(0,0.72,'LCC: ' + str(np.round(len(Connected_componets[0])/G.number_of_nodes(),2)),transform=axes.transAxes)
-    plt.text(0,0.68,'CC: ' + str(len(Connected_componets)),transform=axes.transAxes)
-    plt.title(title, fontweight='bold',fontsize=20)
-    for axis in ['top','bottom','left','right']:
+        Connected_componets = sorted(
+            nx.weakly_connected_components(G), key=len, reverse=True
+        )
+    plt.text(
+        0,
+        0.72,
+        "LCC: " + str(np.round(len(Connected_componets[0]) / G.number_of_nodes(), 2)),
+        transform=axes.transAxes,
+    )
+    plt.text(0, 0.68, "CC: " + str(len(Connected_componets)), transform=axes.transAxes)
+    plt.title(title, fontweight="bold", fontsize=20)
+    for axis in ["top", "bottom", "left", "right"]:
         axes.spines[axis].set_linewidth(0)
 
     # Save and encode
@@ -680,7 +710,6 @@ def exposure_distance_comparison(
         ranking_variable: This refers to the main criteria by which ranking is done.  One of *Degree*, *Citations* or *Productivity*.
     """
 
-
     # High-Level Flow:
     # ----------------
     # 1.  Unpack node-attributes from the dataset
@@ -691,10 +720,8 @@ def exposure_distance_comparison(
     #     d. Collect results & plots
     # 3.  Assemble an HTML report comparing baseline vs. mitigated exposure.
 
-
-
     # This dict will contain a generated HTML fragment for each possible protected group
-    html_fragments = { }
+    html_fragments = {}
 
     researchers_graph = dataset.G
     Dataframe_nodes = {"id": []}
@@ -713,21 +740,30 @@ def exposure_distance_comparison(
     n_runs = int(n_runs)
 
     # Baseline (potentially unfair) ranking model
-    model_baseline = model.baseline_rank            # Callable from loader
+    model_baseline = model.baseline_rank  # Callable from loader
 
     # Iterate over each possible groups, treating each as the "protected" group in turn
     for protected_group in all_groups:
 
         # Network Plotting Section
         attribute_color_nodes = sampling_attribute
-        Dict_attribute = {data['id'][i]: data[attribute_color_nodes][i] for i in data.index}
+        Dict_attribute = {
+            data["id"][i]: data[attribute_color_nodes][i] for i in data.index
+        }
 
         # build a color per node category
         color_nodes = [str(Dict_attribute[n]) for n in researchers_graph.nodes()]
         np.random.seed(40)
         color = list(np.random.choice(range(256), size=len(set(color_nodes))))
-        color_categories = {list(set(color_nodes))[i]:cm.viridis(color[i]) if list(set(color_nodes))[i] !='nan' else  'lightgrey' for i in range(len(set(color_nodes))) }
-        color_nodes = [color_categories[n] for n in color_nodes ]
+        color_categories = {
+            list(set(color_nodes))[i]: (
+                cm.viridis(color[i])
+                if list(set(color_nodes))[i] != "nan"
+                else "lightgrey"
+            )
+            for i in range(len(set(color_nodes)))
+        }
+        color_nodes = [color_categories[n] for n in color_nodes]
 
         # Plot the network if it is small enough
         if len(researchers_graph.nodes) < 2500:
@@ -745,15 +781,14 @@ def exposure_distance_comparison(
         dataframe_sampling = data[~data[sampling_attribute].isnull()]
 
         Old_ranking_variable = ranking_variable
-        sensitive_attribute = sensitive[0]                   # e.g. "Gender"
-        protected_attribute = protected_group                # e.g. "female"
+        sensitive_attribute = sensitive[0]  # e.g. "Gender"
+        protected_attribute = protected_group  # e.g. "female"
 
         ER_Old = {}
         ER_Mitigation = {}
 
         ranked_dataframe_normal = pd.DataFrame()
         ranked_dataframe_mitigation = pd.DataFrame()
-
 
         # Iterate over each possible category (eg: High-Income, Low-income etc.)
         for category in sorted(set(dataframe_sampling[sampling_attribute])):
@@ -796,7 +831,10 @@ def exposure_distance_comparison(
                     )
                 else:
                     ranked_dataframe_mitigation_category = model.rank(
-                        dataframe_filtered, ranking_variable, sensitive_attribute, protected_attribute
+                        dataframe_filtered,
+                        ranking_variable,
+                        sensitive_attribute,
+                        protected_attribute,
                     )
 
                 ER_Mitigation[category][r] = Exposure_distance(
@@ -834,7 +872,7 @@ def exposure_distance_comparison(
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
-            title="Distribution Across Categories"
+            title="Distribution Across Categories",
         )
 
         distribution_image = boxplots_rankings(
@@ -842,7 +880,7 @@ def exposure_distance_comparison(
             hue_variable=sensitive_attribute,
             y_variable=sampling_attribute,
             ranking_variable="Ranking_" + Old_ranking_variable,
-            title="Post-Mitigation distribution Across Categories"
+            title="Post-Mitigation distribution Across Categories",
         )
 
         mitigation_strategies_image = boxplots_mitigation_strategies_pretty(

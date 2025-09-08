@@ -31,9 +31,7 @@ def data_researchers(
     """
     try:
         # Read paper files for information of the papers:
-        DF_papers = pd.read_csv(
-            paper_graph_path, sep=paper_graph_delimiter
-        )
+        DF_papers = pd.read_csv(paper_graph_path, sep=paper_graph_delimiter)
 
         # Affiliations for the information of the authors
         DF_Affiliations = pd.read_csv(

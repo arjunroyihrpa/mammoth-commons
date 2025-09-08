@@ -1,7 +1,9 @@
 from mammoth_commons import testing
 from mai_bias.catalogue.dataset_loaders.data_researchers import data_researchers
 from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
-    model_mitigation_ranking, model_fair_ranking, model_hyperfair_ranking
+    model_mitigation_ranking,
+    model_fair_ranking,
+    model_hyperfair_ranking,
 )
 from mai_bias.catalogue.metrics.ranking_fairness import exposure_distance_comparison
 
@@ -10,7 +12,7 @@ def test_researchers_ranking_comparison():
     with testing.Env(
         data_researchers,
         model_mitigation_ranking,
-        #model_fair_ranking,
+        # model_fair_ranking,
         model_hyperfair_ranking,
         exposure_distance_comparison,
     ) as env:
@@ -20,7 +22,7 @@ def test_researchers_ranking_comparison():
         )
 
         model_mitigation = env.model_mitigation_ranking()
-        #model_mitigation = env.model_fair_ranking()
+        # model_mitigation = env.model_fair_ranking()
         model_mitigation = env.model_hyperfair_ranking()
 
         analysis_outcome_mitigation = env.exposure_distance_comparison(
