@@ -21,6 +21,8 @@ from mai_bias.catalogue.model_loaders.pytorch2onnx import model_torch2onnx
 from mai_bias.catalogue.model_loaders.fair_node_ranking import model_fair_node_ranking
 from mai_bias.catalogue.model_loaders.compute_researcher_ranking import (
     model_mitigation_ranking,
+    model_fair_ranking,
+    model_hyperfair_ranking,
 )
 from mai_bias.catalogue.model_loaders.ollama import ollama_model
 
@@ -111,6 +113,8 @@ registry.model(model_torch, compatible=[data_images, data_image_pairs])
 registry.model(model_torch2onnx, compatible=[data_images, data_image_pairs])
 registry.model(model_fair_node_ranking, compatible=[data_graph])
 registry.model(model_mitigation_ranking, compatible=[data_researchers])
+registry.model(model_hyperfair_ranking, compatible=[data_researchers])
+registry.model(model_fair_ranking, compatible=[data_researchers])
 
 registry.analysis(model_card)
 registry.analysis(specific_concerns)
@@ -128,7 +132,7 @@ registry.analysis(viz_fairness_report)
 registry.analysis(croissant)
 registry.analysis(
     exposure_distance_comparison,
-    compatible=[model_mitigation_ranking],
+    compatible=[model_mitigation_ranking, model_fair_ranking, model_hyperfair_ranking],
 )
 registry.analysis(augmentation_report)
 registry.analysis(text_debias)
