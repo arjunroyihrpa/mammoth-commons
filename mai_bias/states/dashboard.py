@@ -125,6 +125,8 @@ class Dashboard(Styled):
         self.refresh_dashboard()
 
     def filter_runs(self, text):
+        if not self.runs:
+            return
         prev = self.invisible_runs
         self.invisible_runs = set()
         for index, run in enumerate(self.runs):
@@ -529,7 +531,7 @@ class Dashboard(Styled):
         self.layout.addLayout(grid_layout)
         self.content_widget.adjustSize()
 
-        if not latest_per_group:
+        if not latest_per_group and self.runs:
             no_results_label = QLabel("No results found.", self)
             no_results_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             no_results_label.setStyleSheet(
@@ -543,7 +545,7 @@ class Dashboard(Styled):
             grid_layout.addWidget(no_results_label, row, 0, 1, max_cols)
             row += 1
 
-        if len(latest_per_group) <= 1:
+        if len(latest_per_group) <= 1 and self.search_field.text():
             # --- Clear Search Button ---
             clear_search_btn = QPushButton("Back", self)
             clear_search_btn.setCursor(Qt.CursorShape.PointingHandCursor)

@@ -1,7 +1,7 @@
 from mammoth_commons import testing
-from catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
-from catalogue.dataset_loaders.uci_csv import data_uci
-from catalogue.metrics.model_card import model_card
+from mai_bias.catalogue.model_loaders.onnx_ensemble import model_onnx_ensemble
+from mai_bias.catalogue.dataset_loaders.uci_csv import data_uci
+from mai_bias.catalogue.metrics.model_card import model_card
 
 
 def test_multiattribute_bias_mitigation():
