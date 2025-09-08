@@ -1,140 +1,159 @@
-from mammoth.datasets import Dataset
-from mammoth.models import Predictor
-from mammoth.exports import Markdown
+import importlib
+
+from mammoth_commons.datasets import Dataset, Labels
+from mammoth_commons.models import Predictor
+from mammoth_commons.exports import HTML
 from typing import Dict, List
-from mammoth.integration import metric, Options
-from fairbench import v1 as fb
-import numpy as np
-
-
-@fb.core.Transform
-def categories(iterable):
-    # print(iterable)
-    is_numeric = True
-    values = list()
-    for value in iterable:
-        try:
-            values.append(float(value))
-        except Exception:
-            is_numeric = False
-            break
-    if is_numeric:
-        values = np.array(values)
-        mx = values.max()
-        mn = values.min()
-        if mx == mn:
-            raise Exception(
-                "Numerical sensitive attribute has the same value everywhere"
-            )
-        values = (values - mn) / (mx - mn)
-        return {f"fuzzy min ({mn:.3f})": 1 - values, f"fuzzy max ({mx:.3f})": values}
-    return fb.categories @ iterable
+from mammoth_commons.integration import metric, Options
+from mammoth_commons.externals import fb_categories, align_predictions
 
 
 @metric(
     namespace="mammotheu",
-    version="v0036",
-    python="3.11",
+    version="v0048",
+    python="3.13",
     packages=("fairbench", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )
 def model_card(
     dataset: Dataset,
     model: Predictor,
     sensitive: List[str],
-    intersectional: bool = False,
+    intersections: Options("Base", "All", "Subgroups") = "Base",
     compare_groups: Options("Pairwise", "To the total population") = None,
-) -> Markdown:
-    """Creates a model card using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
-    library. The card includes several fairness stamps; these are specific measures of bias
-    or fairness that are commonly used in the algorithmic fairness literature. Only the most prominent
-    of those measures are used as stamps, and they correspond to a perfunctory fairness analysis.
+    problematic_deviation: float = 0.1,
+    show_non_problematic: bool = True,
+) -> HTML:
+    """
+    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
 
-    This module computes all applicable FairBench stamps, which
-    summarize behavior across all population groups or intersectional
-    subgroups.
-    Multiple sensitive attributes may be present, such as gender, age, and race.
-    Furthermore, each of those attributes may obtain multiple values, as happens when multiple genders or
-    races are considered. Numeric attributes, like age, are normalized to
-    the range [0,1] and we consider the result as truth values of membership to the group of the maximum
-    value - as opposed to membership to the group with minimum value.
-    A different stamp is computed for each prediction label.
+    <p>Generates a fairness and bias report using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
+    library. This explores many kinds of bias to paint a broad picture and help you decide on what is problematic
+    and what is acceptable behavior.
+    The generated report can be viewed in three different formats, where the model card contains a subset of
+    results but attaches to these socio-technical concerns to be taken into account:</p>
+    <ol>
+        <li>A summary table of results.</li>
+        <li>A simplified model card that includes concerns.</li>
+        <li>The full report, including details.</li>
+    </ol>
 
-    You may optionally create intersectional subgroups, that is, create
-    a separate subgroup for each combination of sensitive attribute values. Many of those groups will have few
-    members if there are too many attributes, and empty groups are ignored during the analysis.
+    <p>The module's report summarizes how a model behaves on a provided dataset across different population groups.
+    These groups are based on sensitive attributes like gender, age, and race. Each attribute can have multiple values,
+    such as several genders or races. Numeric attributes, like age, are normalized to the range [0,1] and treated
+    as fuzzy values, where 0 indicates membership to a fuzzy group of "small" values, and 1 indicates membership to
+    a fuzzy group of "large" values. A separate set of fairness metrics is calculated for each prediction label.</p>
 
-    The created model card contains exact descriptions of methods used to compute fairness under
-    the selected stamps, and it lists population groups that were taken into account
-    These come alongside an extensive list of
-    caveats and recommendations that help the reader get a grasp on how they should
-    account for the social context. This material is retrieved from FairBench's
-    online socio-technical database generated through MAMMOth's multidisciplinary activities.
-
-    Finally, the generated model card may contain details about out-of-the-box datasets.
-    To get the full picture, a detailed fairness report that also allows you to backtrack computations
-    is available in the `interactive report` module.
+    <p>If intersectional subgroup analysis is enabled, separate subgroups are created for each combination of sensitive
+    attribute values. However, if there are too many attributes, some groups will be small or empty. Empty groups are
+    ignored in the analysis. The report may also include information about built-in datasets.</p>
 
     Args:
-        intersectional: Whether to consider all non-empty group intersections during analysis. This does nothing if there is only one sensitive attribute, but may also be computationally intensive if too many group intersections are selected.
-        compare_groups: Whether to compare groups pairwise, or each group to the whole population. For example, if the 4/5ths rule stamp is applicable, it computes positive rates and obtains the minimum ratio, either across all pairs of groups (for pairwise comparison) or otherwise between each group and the total population.
+        intersections: Whether to consider only the provided groups, all non-empty group intersections, or all non-empty intersections while ignoring larger groups during analysis. This does nothing if there is only one sensitive attribute. It could be computationally intensive if too many group intersections are selected.
+        compare_groups: Whether to compare groups pairwise, or each group to the behavior of the whole population.
+        problematic_deviation: Sets up a threshold of when to consider deviation from ideal values as problematic. If nothing is considered problematic fairness is not necessarily achieved, but this is a good way to identify the most prominent biases. If value of 0 is set, all report values are shown, including those that have no ideal value.
+        show_non_problematic: Determine whether deviations less than the problematic one should be shown or not. If they are shown, the coloring scheme is adjusted to identify problematic values as red.
     """
-
-    text = ""
-
-    if len(sensitive) == 0:
-        raise Exception("At least one sensitive attribute should be selected")
-
-    # obtain predictions
+    fb = importlib.import_module("fairbench")
+    reps = fb.reports
+    prob = float(problematic_deviation)
+    assert len(sensitive) != 0, "At least one sensitive attribute should be provided"
+    assert 0 <= prob <= 1, "Problematic deviation should be in [0,1]"
+    report_type = reps.pairwise if compare_groups == "Pairwise" else reps.vsall
+    reject = not bool(show_non_problematic)
     predictions = model.predict(dataset, sensitive)
-
-    # declare sensitive attributes
-    labels = dataset.labels
-    sensitive = fb.Fork({attr: categories @ dataset.data[attr] for attr in sensitive})
-
-    # change behavior based on arguments
-    if intersectional:
+    dataset = dataset.to_csv(sensitive)
+    sensitive = fb.Dimensions({s: fb_categories(dataset.df[s]) for s in sensitive})
+    if intersections != "Base":
         sensitive = sensitive.intersectional()
-    report_type = fb.multireport if compare_groups == "Pairwise" else fb.unireport
-    # perform different analysis, depending on whether labels are provided
-    if labels is None:
-        report = report_type(predictions=predictions, sensitive=sensitive)
-        stamps = fb.combine(
-            fb.stamps.prule(report),
-            fb.stamps.four_fifths(report),
-        )
-        text += fb.modelcards.tomarkdown(stamps)
-    else:
-        for label in labels:
-            # TODO: the following analysis is only for one class label
-            report = report_type(
-                predictions=predictions,
-                labels=(
-                    labels[label].to_numpy()
-                    if hasattr(labels[label], "to_numpy")
-                    else labels[label]
-                ),
-                sensitive=sensitive,
-            )
-            stamps = fb.combine(
-                fb.stamps.prule(report),
-                fb.stamps.accuracy(report),
-                fb.stamps.four_fifths(report),
-                fb.stamps.dfpr(report),
-                fb.stamps.dfnr(report),
-                # fb.stamps.auc(report),
-                # fb.stamps.abroca(report),
-            )
-        text += fb.modelcards.tomarkdown(stamps)
+    if intersections == "Subgroups":
+        sensitive = sensitive.strict()
+    assert len(sensitive.branches()) != 0, "Could not find any intersections"
 
-    if hasattr(dataset, "description"):
-        text += "\n## Dataset\n"
-        if isinstance(dataset.description, str):
-            text += text + "\n"
-        elif isinstance(dataset.description, dict):
-            for key, value in dataset.description.items():
-                text += "#### " + key + "\n" + value.replace("\n", "\n\n") + "\n"
-        else:
-            raise Exception(
-                "Since the dataset's description field exist, it should be either string or dict from headers to descriptions"
-            )
-    return Markdown(text)
+    predictions, labels = align_predictions(predictions, dataset.labels)
+    predictions = predictions.columns
+    labels = labels.columns if labels else None
+    report = report_type(predictions=predictions, labels=labels, sensitive=sensitive)
+    if prob != 0:
+        report = report.filter(fb.investigate.DeviationsOver(prob, prune=reject))
+
+    views = {
+        "Summary": report.show(env=fb.export.HtmlTable(view=False, filename=None)),
+        "Stamps": report.filter(fb.investigate.Stamps).show(
+            env=fb.export.Html(view=False, filename=None),
+            depth=2 if isinstance(predictions, dict) else 1,
+        ),
+        "Full report": report.show(
+            env=fb.export.Html(view=False, filename=None),
+            depth=3 if isinstance(predictions, dict) else 2,
+        ),
+    }
+    tab_headers = "".join(
+        f'<button class="tablinks" data-tab="{key}">{key}</button>' for key in views
+    )
+    tab_contents = "".join(
+        f'<div id="{key}" class="tabcontent">{value}</div>'
+        for key, value in views.items()
+    )
+
+    html_content = f"""
+       <style>
+           .tablinks {{
+               background-color: #ddd;
+               padding: 10px;
+               cursor: pointer;
+               border: none;
+               border-radius: 5px;
+               margin: 5px;
+           }}
+           .tablinks:hover {{ background-color: #bbb; }}
+           .tablinks.active {{ background-color: #aaa; }}
+
+           .tabcontent {{
+               display: none;
+               padding: 10px;
+               border: 1px solid #ccc;
+           }}
+           .tabcontent.active {{ display: block; }}
+       </style>
+       <script>
+           document.addEventListener("DOMContentLoaded", function() {{
+               const tabContainer = document.querySelector("div");
+               tabContainer.addEventListener("click", function(event) {{
+                   if (event.target.classList.contains("tablinks")) {{
+                       let tabName = event.target.getAttribute("data-tab");
+                       document.querySelectorAll(".tablinks").forEach(tab => tab.classList.remove("active"));
+                       document.querySelectorAll(".tabcontent").forEach(content => content.classList.remove("active"));
+                       event.target.classList.add("active");
+                       document.getElementById(tabName).classList.add("active");
+                   }}
+               }});
+
+               // Show the first tab by default
+               let firstTab = document.querySelector(".tablinks");
+               if (firstTab) {{
+                   firstTab.classList.add("active");
+                   document.getElementById(firstTab.getAttribute("data-tab")).classList.add("active");
+               }}
+           }});
+       </script>
+       <h1>Report for {len(sensitive.branches())} groups</h1>
+       <p>A report was generated over several prospective biases to paint a broad picture
+       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if prob == 0 else f', but for simplicity only those that differ at least {prob:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
+       Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
+       </p>
+       <p>
+       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
+       Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
+       Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
+       literature definitions alongside caveats and recommendations.
+       </p>
+       <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
+       <details><summary>Summary of measures. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'measure' in key.role) + '</table>'}</i><br></details>
+       <details><summary>Summary of reductions. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'reduction' in key.role) + '</table>'}</i><br></details>
+       <br>
+       <div>{tab_headers}</div>
+       <div>{tab_contents}</div>
+       <div style="clear: both;">{dataset.to_description()}</div>
+       """
+
+    return HTML(html_content)
