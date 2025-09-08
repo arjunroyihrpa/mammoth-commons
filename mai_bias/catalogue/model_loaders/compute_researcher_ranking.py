@@ -1,22 +1,7 @@
-from functools import partial
 import math
 from mammoth_commons.integration import loader
 from mammoth_commons.models.researcher_ranking import ResearcherRanking
 import random
-
-import fairsearchcore
-from fairsearchcore import Fair
-from fairsearchcore.models import FairScoreDoc
-
-import pandas as pd
-
-from hyperfair.hyperfair import (
-    adjust_ranking,
-    measure_fairness_multiple_points,
-    measure_fairness_single_point,
-)
-from hyperfair.data_loader import load_data_from_pandas_df
-import numpy as np
 
 
 def normal_ranking(dataset, ranking_variable):
@@ -85,6 +70,12 @@ def Compute_mitigation_strategy(
     NotImplementedError
         If "Updated_statistical_parity" or "Internal_group_fairness" is selected as the mitigation method.
     """
+    from hyperfair.hyperfair import (
+        adjust_ranking,
+        measure_fairness_multiple_points,
+        measure_fairness_single_point,
+    )
+    from hyperfair.data_loader import load_data_from_pandas_df
 
     # Only consider rows where the sensitive attribute (eg: "Gender") isn't missing
     Dataframe_ranking = dataset[~dataset[sensitive_attribute].isnull()]
@@ -244,7 +235,7 @@ def model_mitigation_ranking() -> ResearcherRanking:
     namespace="csh",
     version="v003",
     python="3.11",
-    packages=("pandas", "numpy", "hyperfair"),  # Mammoth will pip-install these
+    packages=("pandas", "numpy", "hyperfair", "fairsearchcore"),  # Mammoth will pip-install these
 )
 def model_hyperfair_ranking(
     alpha: float = 0.05,
@@ -253,6 +244,13 @@ def model_hyperfair_ranking(
     k_pc: float = 0.1,
 ) -> ResearcherRanking:
     """HyperFair-based Ranking Loader"""
+    import pandas as pd
+    from hyperfair.hyperfair import (
+        adjust_ranking,
+        measure_fairness_multiple_points,
+        measure_fairness_single_point,
+    )
+    from hyperfair.data_loader import load_data_from_pandas_df
 
     def hyperfair_mitigation_strategy(
         df: pd.DataFrame,
@@ -328,6 +326,9 @@ def model_fair_ranking(
     alpha: float = 0.1, p: float = 0.25, k_pc: float = 0.1
 ) -> ResearcherRanking:
     """FA*IR mitigation using for minimum protected group representation in top-k."""
+    from fairsearchcore import Fair
+    from fairsearchcore.models import FairScoreDoc
+    import pandas as pd
 
     def mitigation_strategy(
         df, ranking_variable, sensitive_attribute, protected_attribute, **kwargs
