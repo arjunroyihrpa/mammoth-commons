@@ -180,8 +180,8 @@ class Step(Styled):
 
         loader = self.dataset_loaders[dataset_name]
         self.description_label.setHtml(
-            """<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">"""+
-            loader.get(
+            """<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">"""
+            + loader.get(
                 "description", f"No description available:<br><b>{dataset_name}</b>"
             )
         )
