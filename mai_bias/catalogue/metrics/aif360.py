@@ -52,7 +52,7 @@ def render_metric_bars(rows, sensitive):
             for entry in constant_metrics
         )
         return f"""
-        <h3>Same across groups</h3>
+        <h3>Overall performance</h3>
         <table class="table table-bordered table-sm">
             <thead><tr><th>Metric</th><th>Value</th></tr></thead>
             <tbody>{rows}</tbody>
@@ -141,9 +141,15 @@ def aif360(
 ) -> HTML:
     """
     <img src="https://ai-fairness-360.org/" alt="Based on AIF360" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
-    <p>This module evaluates fairness using IBM's <a href="https://aif360.readthedocs.io">AIF360</a> library.
+    <p>This module evaluates fairness using IBM's <a href="https://aif360.readthedocs.io" target="_blank">AIF360</a> library.
     It computes standard group fairness metrics for each sensitive attribute provided. If attributes are non-binary, they are
     binarized into one-hot encoded columns. Only categorical attributes are allowed.</p>
+
+    <span class="alert alert-warning alert-dismissible fade show" role="alert"
+        style="display: inline-block; padding: 10px;"> <i class="bi bi-exclamation-triangle-fill"></i>
+        This module is based on AIF360, which does not support generalized intersectional analysis.
+        When needed, generate sensitive intersectional group labels in your dataset. However, these
+        will always be computed against the rest of the population.</span>
 
     Args:
         favorable_label: The prediction label value which is considered favorable (i.e. "positive"). Default is 1 for binary classifiers.
@@ -309,20 +315,77 @@ def aif360(
         + "</table>"
     )
 
+    faq_style = """
+        <style>
+        .faq-container {
+          max-width: 600px;
+          margin: 20px auto;
+          font-family: Arial, sans-serif;
+        }
+        
+        .faq-box {
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 16px;
+          box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+          background: #fff;
+        }
+        
+        .faq-box h3 {
+          margin-top: 0;
+          font-size: 1.2em;
+          color: #333;
+        }
+        
+        .faq-box p {
+          margin: 0;
+          color: #555;
+        }
+        </style>
+    """
+
     # Now safely embed everything in the f-string
     html = f"""
     <h1>AIF360 Fairness Report</h1>
-    <p>This report shows metric distributions across sensitive groups.</p>
-    <p>See <a href="https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html" target="_blank">AIF360 metric documentation</a> for metric definitions.</p>
-    <details>
-      <summary>In total {len(sensitive)} protected groups were analysed.</summary>
-      <i>{', '.join(sensitive).replace('_', ' ')}</i><br>
-    </details>
-    <details>
-      <summary>Metrics</summary>
-      <i>{metrics_table}</i><br>
-    </details>
-    {('<p class="text-warning"><i>Some sensitive attributes that were not binary have been automatically expanded via one-hot encoding.</i></p>'if original_sensitive_len != len(sensitive) else '')}
+    {faq_style}
+    <hr/>
+    <div class="faq-container">
+        <div class="faq-box">
+              <h3>❓ What is this?</h3>
+              This is a fairness report computed with MAI-BIAS using the AIF360 library. 
+              Results correspond to specific dataset and model loaders and parameters.
+              <br/>
+              <br/>
+              You can see various metrics, grouped into those that assess the overall 
+              model, and those that are computed for each protected group, each corresponding to
+              a sensitive attribute value (see summary). Metric values should ideally be 
+              similar across groups for models to be considered fair. Do not neglect performance, 
+              and, after looking at everything, focus only on equalizing measures 
+              that matter for your application context
+              - it is impossible to optimize for everything. 
+        </div>
+        <div class="faq-box">
+              <h3>❓ Summary</h3>
+                <p>This report shows metric distributions across sensitive groups. See
+                <a href="https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html" 
+                target="_blank">AIF360 metric documentation</a> for metric definitions. Some fairness
+                metrics are computed for each group by comparing it with the rest of the population.</p>
+                <br/>
+                <details>
+                  <summary>In total {len(sensitive)} protected groups were analysed.</summary>
+                  <i>{', '.join(sensitive).replace('_', ' ')}</i><br>
+                </details>
+                <details>
+                  <summary>Metrics</summary>
+                  <i>{metrics_table}</i><br>
+                </details>
+                {('<p class="text-warning"><br><i>Some sensitive attributes that were not '
+                  'binary have been automatically expanded via one-hot encoding.'
+                  '</i></p>'if original_sensitive_len != len(sensitive) else '')}
+        </div>
+    </div>
+    <hr/>
     {render_metric_bars(rows, sensitive)}
     <div class="mt-4">{dataset.to_description()}</div>
     """

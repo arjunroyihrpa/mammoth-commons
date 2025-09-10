@@ -7,12 +7,24 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSpacerItem,
     QMessageBox,
+    QDialog,
 )
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from .step import save_all_runs
 from .style import Styled
 from datetime import datetime
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebEngineCore import QWebEnginePage
+import webbrowser
+
+
+class ExternalLinkPage(QWebEnginePage):
+    def acceptNavigationRequest(self, url, _type, isMainFrame):
+        if _type == QWebEnginePage.NavigationTypeLinkClicked:
+            webbrowser.open(url.toString())  # open in system browser
+            return False  # don’t navigate inside QWebEngineView
+        return super().acceptNavigationRequest(url, _type, isMainFrame)
 
 
 def format_run(run):
@@ -134,11 +146,50 @@ class Results(Styled):
             )
 
     def show_tag_description(self, tag):
-        """Show description of a tag."""
-        msg = QMessageBox()
-        msg.setWindowTitle("Module info")
-        msg.setText(self.tag_descriptions.get(tag, "No description available."))
-        msg.exec()
+        dialog = QDialog()
+        dialog.setWindowTitle("Module info")
+        layout = QVBoxLayout(dialog)
+        browser = QWebEngineView(self)
+        browser.setFixedHeight(300)
+        browser.setFixedWidth(800)
+        # Example inline CSS and image
+        html = self.tag_descriptions.get(tag, "No description available.")
+        html = f"""
+        <html>
+        <head>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                color: #333;
+                background-color: #fafafa;
+                padding: 10px;
+            }}
+            h1 {{
+                font-size: 18px;
+                color: #0055aa;
+            }}
+            img {{
+                max-width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }}
+        </style>
+        </head>
+        <body>
+            {html}
+        </body>
+        </html>
+        """
+        browser.setPage(ExternalLinkPage(browser))
+        browser.setHtml(html)
+
+        layout.addWidget(browser)
+        ok_button = QPushButton("OK")
+        ok_button.clicked.connect(dialog.accept)
+        layout.addWidget(ok_button)
+        dialog.exec()
 
     def edit_run(self):
         if not self.runs:

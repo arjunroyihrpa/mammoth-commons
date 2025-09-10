@@ -18,7 +18,8 @@ def model_torch(
     multiclass_threshold: float = 0,
 ) -> Pytorch:
     """
-    <img src="https://github.com/pytorch/pytorch/raw/main/docs/source/_static/img/pytorch-logo-dark.png" alt="Based on PyTorch" style="float: left; margin-right: 5px; margin-bottom: 5px; margin-top: 10px; height: 30px;"/>
+    <img src="https://github.com/pytorch/pytorch/raw/main/docs/source/_static/img/pytorch-logo-dark.png"
+    alt="Based on PyTorch" style="float: left; margin-right: 5px; margin-bottom: 5px; margin-top: 10px; height: 30px;"/>
 
     Loads a <a href="https://pytorch.org/">pytorch</a> model that comprises a Python code initializing the
     architecture and a file of trained parameters. For safety, the architecture's

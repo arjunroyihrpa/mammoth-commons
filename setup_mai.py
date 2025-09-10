@@ -10,6 +10,9 @@ import setuptools
 with open("README.md", "r") as file:
     long_description = "This is the desktop version of the MAI-BIAS toolkit.\nFor more information visit the [homepage](https://github.com/mammoth-eu/mammoth-commons)."
 
+with open("requirements[mai].txt", "r") as file:
+    deployment_requirements = file.read().splitlines()
+
 setuptools.setup(
     name="MAI-Bias",
     version="0.2.11",
@@ -25,5 +28,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.11",
-    install_requires=["mammoth-commons[mai]"],
+    install_requires=deployment_requirements,
 )

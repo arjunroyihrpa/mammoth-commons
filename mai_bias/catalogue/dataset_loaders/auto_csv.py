@@ -26,7 +26,7 @@ def data_auto_csv(path: str = "", max_discrete: int = 10) -> CSV:
     If you want to train a model while using the same loading mechanism as this dataset,
     run the following Python script. This uses supporting methods from the lightweight
     mammoth-commons core to retrieve <a href="https://numpy.org/">numpy</a>
-    arrays *X,y* of dataset features and of categorical labels respectively.
+    arrays *X,y* holding dataset features and categorical labels respectively.
 
     <small>
     <pre>

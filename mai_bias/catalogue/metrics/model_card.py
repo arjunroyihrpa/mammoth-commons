@@ -25,7 +25,8 @@ def model_card(
     min_group_size: int = 1,
 ) -> HTML:
     """
-    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench" style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
+    <img src="https://fairbench.readthedocs.io/fairbench.png" alt="Based on FairBench"
+    style="float: left; margin-right: 5px; margin-bottom: 5px; width: 80px;"/>
 
     <p>Generates a fairness and bias report using the <a href="https://github.com/mever-team/FairBench">FairBench</a>
     library. This explores many kinds of bias to paint a broad picture and help you decide on what is problematic
