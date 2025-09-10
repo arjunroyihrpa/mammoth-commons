@@ -135,6 +135,69 @@ def specific_concerns(
             "Fair" if report.flatten(True)[0] < problematic_deviation else "Biased"
         )
 
+    faq_html = f"""
+    <style>
+    .faq-container {{
+      max-width: 600px;
+      margin: 20px auto;
+      font-family: Arial, sans-serif;
+    }}
+    .faq-box {{
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+    }}
+    .faq-box h3 {{
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }}
+    .faq-box p {{
+      margin: 0;
+      color: #555;
+    }}
+    </style>
+
+    <div class="faq-container">
+        <div class="faq-box">
+            <h3>❓ What is this?</h3>
+            <p>This module computes a <i>specific fairness concern</i> using the 
+            <a href="https://github.com/mever-team/FairBench" target="_blank">FairBench</a> library. 
+            It lets you select a <b>base measure</b> (e.g. accuracy, true positive rate), 
+            how to <b>compare groups</b> (pairwise or against the population), 
+            and how to <b>reduce</b> differences to a single score. 
+            By combining these options, hundreds of different fairness metrics can be formed.</p>
+            <br/>
+            <p>Unlike broad analyses (e.g. model cards), this focuses narrowly on one fairness 
+            definition. It is most useful when you already know what type of disparity you want 
+            to evaluate, such as accuracy gaps or differences in positive rates between groups.</p>
+        </div>
+
+        <div class="faq-box">
+            <h3>❗ Summary</h3>
+               <p>A report was generated for the generated bias assessment on metric {metric_name}.
+               This combines a base performance measure, computed on each group or subgroup, and 
+               an aggregated value across all data samples.
+               Differences at least {problematic_deviation:.3f} away from their ideal values are colored red, 
+               otherwise green. Orange indicates that ideal values are not known a-priori.
+               Ideal targets are 0 for values that need to be small and 1 for those that need to be large.
+               For some metrics, ideal targets are unknown.
+               Presented values combine a base performance measure, computed on each group or subgroup, 
+               and an aggregated value across all data samples.
+               </p>
+           <br>
+           <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary>
+           <i>{', '.join(sensitive.branches().keys())}</i></details>
+           <br>
+           <p><b>{'Manual interpretation is required because problematic deviation was zero.' 
+            if problematic_deviation==0 else outcome+' model assessment on the provided data.'}</b></p>
+        </div>
+    </div>
+    """
+
     html_content = f"""
        <style>
            .tablinks {{
@@ -177,14 +240,9 @@ def specific_concerns(
            }});
        </script>
        <h1>{outcome} {metric_name}</h1>
-       <p>A report was generated for the generated bias assessment,
-       which combines a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
-       Differences at least {problematic_deviation:.3f} away from their ideal values are colored red, otherwise green. 
-       Orange indicates that ideal values are not known a-priori.
-       Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some measures, ideal targets are unknown.
-       Presented values combine a base performance measure, computed on each group or subgroup, and an aggregated value across all data samples.
-       </p>
-       <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
+       <hr/>
+       {faq_html}
+       <hr/>
        <br>
        <div>{full_report}</div>
        <div style="clear: both;">{dataset_desc}</div>
