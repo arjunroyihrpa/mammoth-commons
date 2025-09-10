@@ -10,21 +10,11 @@ from PySide6.QtWidgets import (
     QDialog,
 )
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from .step import save_all_runs
 from .style import Styled
 from datetime import datetime
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEnginePage
-import webbrowser
-
-
-class ExternalLinkPage(QWebEnginePage):
-    def acceptNavigationRequest(self, url, _type, isMainFrame):
-        if _type == QWebEnginePage.NavigationTypeLinkClicked:
-            webbrowser.open(url.toString())  # open in system browser
-            return False  # don’t navigate inside QWebEngineView
-        return super().acceptNavigationRequest(url, _type, isMainFrame)
+from .cache import ExternalLinkPage
 
 
 def format_run(run):

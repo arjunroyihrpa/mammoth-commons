@@ -1,7 +1,5 @@
 from PySide6.QtWidgets import (
-    QPushButton,
     QLabel,
-    QVBoxLayout,
     QGridLayout,
     QWidget,
     QFrame,
@@ -11,30 +9,18 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QDialog,
     QVBoxLayout,
-    QTextBrowser,
     QPushButton,
 )
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 from datetime import datetime
-
 from mammoth_commons.externals import prepare
+from PySide6.QtGui import QPixmap
+from functools import partial
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from .cache import ExternalLinkPage
 from .step import save_all_runs
 from .style import Styled
 import re
-from PySide6.QtGui import QPixmap
-from functools import partial
-import webbrowser
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEnginePage
-
-
-class ExternalLinkPage(QWebEnginePage):
-    def acceptNavigationRequest(self, url, _type, isMainFrame):
-        if _type == QWebEnginePage.NavigationTypeLinkClicked:
-            webbrowser.open(url.toString())  # open in system browser
-            return False  # don’t navigate inside QWebEngineView
-        return super().acceptNavigationRequest(url, _type, isMainFrame)
 
 
 def now():
@@ -703,13 +689,14 @@ class Dashboard(Styled):
                     col = 0
 
     def show_tag_description(self, tag):
-        dialog = QDialog()
+        dialog = QDialog(self)
         dialog.setWindowTitle("Module info")
         layout = QVBoxLayout(dialog)
-        browser = QWebEngineView(self)
+
+        browser = QWebEngineView(dialog)
         browser.setFixedHeight(300)
         browser.setFixedWidth(800)
-        # Example inline CSS and image
+
         html = self.tag_descriptions.get(tag, "No description available.")
         html = f"""
         <html>
@@ -741,7 +728,6 @@ class Dashboard(Styled):
         """
         browser.setPage(ExternalLinkPage(browser))
         browser.setHtml(html)
-
         layout.addWidget(browser)
         ok_button = QPushButton("OK")
         ok_button.clicked.connect(dialog.accept)

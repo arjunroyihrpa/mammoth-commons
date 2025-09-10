@@ -14,26 +14,17 @@ from PySide6.QtWidgets import (
     QDialog,
     QListWidget,
 )
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QLocale
 from PySide6.QtGui import QIntValidator, QDoubleValidator, QIcon
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEnginePage
+from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile
 import json
 import os
 import csv
 from mammoth_commons.externals import pd_read_csv
 import mammoth_commons.externals
 from .style import Styled
-import webbrowser
-
-
-class ExternalLinkPage(QWebEnginePage):
-    def acceptNavigationRequest(self, url, _type, isMainFrame):
-        if _type == QWebEnginePage.NavigationTypeLinkClicked:
-            webbrowser.open(url.toString())  # open in system browser
-            return False  # don’t navigate inside QWebEngineView
-        return super().acceptNavigationRequest(url, _type, isMainFrame)
+from mai_bias.states.cache import ExternalLinkPage
 
 
 def save_all_runs(path, runs):
