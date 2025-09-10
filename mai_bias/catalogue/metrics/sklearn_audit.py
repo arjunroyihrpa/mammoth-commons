@@ -183,7 +183,38 @@ def sklearn_audit(
                 f"Dataset description must be a string or a dictionary, not {type(dataset.description)}."
             )
 
+    faq_style = """
+        <style>
+        .faq-container {
+          max-width: 600px;
+          margin: 20px auto;
+          font-family: Arial, sans-serif;
+        }
+
+        .faq-box {
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 16px;
+          box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+          background: #fff;
+        }
+
+        .faq-box h3 {
+          margin-top: 0;
+          font-size: 1.2em;
+          color: #333;
+        }
+
+        .faq-box p {
+          margin: 0;
+          color: #555;
+        }
+        </style>
+    """
+
     html_content = f"""
+       {faq_style}
        <style>
            .tablinks {{
                background-color: #ddd;
@@ -203,56 +234,65 @@ def sklearn_audit(
            }}
            .tabcontent.active {{ display: block; }}
        </style>
-       <script>
-           document.addEventListener("DOMContentLoaded", function() {{
-               const tabContainer = document.querySelector("div");
-               tabContainer.addEventListener("click", function(event) {{
-                   if (event.target.classList.contains("tablinks")) {{
-                       let tabName = event.target.getAttribute("data-tab");
-
-                       // Remove "active" from all tabs and contents
-                       document.querySelectorAll(".tablinks").forEach(tab => tab.classList.remove("active"));
-                       document.querySelectorAll(".tabcontent").forEach(content => content.classList.remove("active"));
-
-                       // Activate the selected tab and content
-                       event.target.classList.add("active");
-                       document.getElementById(tabName).classList.add("active");
-                   }}
-               }});
-
-               // Show the first tab by default
-               let firstTab = document.querySelector(".tablinks");
-               if (firstTab) {{
-                   firstTab.classList.add("active");
-                   document.getElementById(firstTab.getAttribute("data-tab")).classList.add("active");
-               }}
-           }});
-       </script>
+       <div class="container">
        <h1>Audit of {len(sensitive.branches())} groups</h1>
-       <p>
-       The analysis shown here has trained and assessed a {predictor} model on the provided dataset. This is a deliberately weak
-       model of limited expressive power, because it aims to reveal prominent correlations. Expect better models, such as
-       neural networks, to pick up similar or even worse biases. The trained model is assessed in terms of both classification
-       and recommendation capabilities. When it matters, the top {top_recommendations} recommendations for retrieving class members are assessed.
-       </p>
-       <p>
-       A report was generated over several prospective biases to paint a broad picture
-       {'; set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f', but for simplicity only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "colored orange or red, otherwise green"}; this is the problematic deviation parameter of the analysis.'}
-       Ideal targets are 0 for values that need to be small and 1 for those that need to be large. For some report entries, ideal targets are unknown.
-       </p>
-       <p>
-       Presented values combine a base performance measure, computed on each group or subgroup with at least {min_group_size} members, and an aggregated value across all data samples.
-       Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
-       Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
-       literature definitions alongside caveats and recommendations.
-       </p>
-       
-       <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
-       <details><summary>Summary of measures. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'measure' in key.role) + '</table>'}</i><br></details>
-       <details><summary>Summary of reductions. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'reduction' in key.role) + '</table>'}</i><br></details>
-       <br>
-       <div>{tab_headers}</div>
-       {tab_contents}
-       {dataset_desc}
+       <hr/>
+       <div class="faq-container">
+           <div class="faq-box">
+                  <h3>❓ What is this?</h3>
+                  <p>This is an audit of your dataset using deliberately weak models from scikit-learn
+                  (either Logistic Regression or Gaussian Naive Bayes). These simple models are chosen
+                  to surface strong correlations that may reveal biases. If such models exhibit bias,
+                  more complex models (e.g., deep learning) will likely also carry or amplify them.</p>
+                  <br/>
+                  <p>The goal is to provide a fairness perspective across sensitive attributes,
+                  using the FairBench library for reporting.</p>
+            </div>
+            <div class="faq-box">
+                  <h3>❗ Summary</h3>
+                   <p>A fairness report was generated by training and testing a {predictor} classifier on the dataset.
+                   Results were computed across {len(sensitive.branches())} protected groups, considering both classification
+                   and top-{top_recommendations} recommendation performance.
+                   {'Set a problematic deviation parameter for this analysis to simplify what is shown or control coloring thresholds.' if problematic_deviation == 0 else f'Only those that differ at least {problematic_deviation:.3f} from their ideal values are {"shown" if reject else "highlighted in orange or red"}; this is the problematic deviation threshold of the analysis.'}
+                   Ideal targets are 0 for metrics that need to be minimized and 1 for those that need to be maximized.
+                   </p>
+                   <br>
+                   <p>
+                   Presented values combine a base performance measure, computed on each group or subgroup with at least {min_group_size} members, and an aggregated value across all data samples.
+                   Switch to "Details" to see full descriptions of the measures as well as the distributions across groups.
+                   Results may not give the full picture, and not all biases may be harmful to the social context. Switch to "Stamps" so see popular
+                   literature definitions alongside caveats and recommendations.
+                   </p>
+                   <br>
+                   <details><summary>In total {len(sensitive.branches())} protected groups were analysed. </summary><i>{', '.join(sensitive.branches().keys())}</i><br></details>
+                   <details><summary>Summary of measures. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'measure' in key.role) + '</table>'}</i><br></details>
+                   <details><summary>Summary of reductions. </summary><i>{'<table><tr><th>Name</th><th>Description</th></tr>' + ''.join(f'<tr><td>{key.name}</td><td>{key.details}</td></tr>' for key in report.keys() if 'reduction' in key.role) + '</table>'}</i><br></details>
+                   <br><p><b>Results require manual inspection to determine which values are socially or contextually problematic.</b></p>
+            </div>
+       </div>
+       <hr/>
+       <div id="tab-header-container">{tab_headers}</div>
+       <div id="tab-content-container">{tab_contents}</div>
+       <script>
+        document.addEventListener("DOMContentLoaded", function() {{
+            const tabContainer = document.getElementById("tab-header-container");
+            tabContainer.addEventListener("click", function(event) {{
+                if (event.target.classList.contains("tablinks")) {{
+                    let tabName = event.target.getAttribute("data-tab");
+                    document.querySelectorAll(".tablinks").forEach(tab => tab.classList.remove("active"));
+                    document.querySelectorAll(".tabcontent").forEach(content => content.classList.remove("active"));
+                    event.target.classList.add("active");
+                    document.getElementById(tabName).classList.add("active");
+                }}
+            }});
+            // Show the first tab by default
+            let firstTab = document.querySelector(".tablinks");
+            if (firstTab) {{
+                firstTab.classList.add("active");
+                document.getElementById(firstTab.getAttribute("data-tab")).classList.add("active");
+            }}
+        }});
+        </script>
+        </div>
        """
     return HTML(html_content)

@@ -68,7 +68,57 @@ def llm_audit(
         prompt="Input:" + dataset.text + "\n" + str(commentary),
     )
     notify_end()
-    # Bootstrap styled HTML output
+    faq_html = f"""
+    <style>
+    .faq-container {{
+      max-width: 600px;
+      margin: 20px auto;
+      font-family: Arial, sans-serif;
+    }}
+    .faq-box {{
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+    }}
+    .faq-box h3 {{
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }}
+    .faq-box p {{
+      margin: 0;
+      color: #555;
+    }}
+    </style>
+
+    <div class="faq-container">
+        <div class="faq-box">
+            <h3>❓ What is this?</h3>
+            <p>This module uses a large language model (LLM) as a fairness auditor of a free text snippet. 
+            The model is prompted to cast multiple votes on whether the input text is biased or neutral. 
+            Each vote includes reasoning, and valid votes are aggregated to capture a common perspective.</p>
+            <br/>
+            <p>Through this chain-of-votes methodology, the LLM provides both a verdict and a narrative explanation. 
+            This helps uncover hidden patterns of bias in text and yields actionable insights for improvement.</p>
+        </div>
+
+        <div class="faq-box">
+            <h3>❗ Summary</h3>
+            
+            <p><b>The input has been classified as {title}</b> after being subjected to {chain_of_votes} 
+            independent LLM assessments. The reasoning highlights which aspects of the text contribute to this 
+            judgement and  offers {'mitigation steps to address biases' if title.startswith('Biased') else 'an explanation of why the text is considered neutral'}.</p>
+            <br/>
+            <p>There are reasoning outputs and action points to improve fairness.
+            However, these should be used as guidance rather than definitive answers or course of action. 
+            Remember that LLM auditors may reflect the biases of their training or finetuning corpora. 
+            Manual inspection is recommended to validate findings.</p>
+        </div>
+    </div>
+    """
     html = f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -80,6 +130,9 @@ def llm_audit(
         <body class="bg-light">
             <div class="container py-5">
                 <h1 class="mb-4">{title}</h1>
+                <hr/>
+                {faq_html}
+                <hr/>
 
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">Original text</div>

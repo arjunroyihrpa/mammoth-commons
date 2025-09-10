@@ -29,6 +29,7 @@ def bias_scan(
     discovery: bool = True,
 ) -> HTML:
     """<p>This module scans your dataset to estimate the most biased attributes or combinations of attributes.
+    You can use those as inputs to other modules.
     For example, gender may only show bias when combined with socioeconomic status, despite the latter not
     bein inherently sensitive. If you have already marked some
     attributes as sensitive (such as race or gender), the module will **exclude** them from the scan. This allows
@@ -108,18 +109,67 @@ def bias_scan(
             else:
                 text += f'<h4 class="text-warning">Rerunning for new sensitive attributes</h4>'
 
-    text = f"""
-        <div class="container mt-4">
-            {'<h1 class="text-success">No concern</h1>' if counts==0 else '<h1 class="text-danger">Biased intersections of up to '+str(counts)+' attributes</h1>'}
-            {"" if len(dataset.num) == 0 else "<p><b>Numeric attributes have been ignored; the scan can work with only categorical ones.</b></p>"}
-            <p>After scanning for imbalances, the following attribute combinations out of those that were
-            <i>not</i> already marked as sensitive were found to be underestimated. {'The scan was run in discovery mode, so the process added all indicated sensitive attributes to sensitive ones and retrying the analysis. This was repeated until no more suspicions were shed on data.' if discovery else 'There may be more attribute combinations that could be underestimated, but only the top one is presented here.'}
-            Not all found attributes should necessarily be protected, and you should account only for the discovered
-            intersection.</p>
-            {text}
-        </div>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">",
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>"
-        """
+    faq_style = """
+        <div class="container">
+        <style>
+        .faq-container {
+          max-width: 600px;
+          margin: 20px auto;
+          font-family: Arial, sans-serif;
+        }
 
-    return HTML(text)
+        .faq-box {
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 16px;
+          box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+          background: #fff;
+        }
+
+        .faq-box h3 {
+          margin-top: 0;
+          font-size: 1.2em;
+          color: #333;
+        }
+
+        .faq-box p {
+          margin: 0;
+          color: #555;
+        }
+        </style>
+    """
+
+    html = f"""
+    {'<h1 class="text-success">No concern</h1>' if counts==0 else '<h1 class="text-danger">Biased intersections of up to '+str(counts)+' attributes</h1>'}
+    {faq_style}
+    <hr/>
+    <div class="faq-container">
+        <div class="faq-box">
+              <h3>❓ What is this?</h3>
+              <p>This is a suggestion of potentially biased attribute intersections, computed with a MAI-BIAS module 
+              using the AIF360 library. Results correspond to specific dataset and model loaders and parameters.</p>
+              <br/>
+              <p>Attributes or combinations of attributes that contain potentially sensitive groups may be used as 
+              sensitive attributes by other modules to examine other quantitative aspects. There is a different analysis 
+              for each prediction class.</p>
+        </div>
+        <div class="faq-box">
+              <h3>❗ Summary</h3>
+                {"" if len(dataset.num) == 0 else "<p><b>Numeric attributes have been ignored; the scan can work with only categorical ones.</b></p>"}
+                <p>After scanning for imbalances, the following attribute combinations out of those that were
+                <i>not</i> already marked as sensitive were found to be underestimated. 
+                {'The scan was run in discovery mode, so the process added all indicated sensitive attributes to sensitive ones and retrying the analysis. This was repeated until no more suspicions were shed on data.' if discovery else 'There may be more attribute combinations that could be underestimated, but only the top one is presented here.'}
+                Not all found attributes should necessarily be protected, and you can simplify the problem setting
+                by accounting only for the discovered intersection by adding data annotations.</p>
+                <br>
+                <p><b>{'No biased intersections"' if counts==0 else 'Biased intersections of up to '+str(counts)+' attributes'} were found.</b></p>
+        </div>
+    </div>
+    <hr>
+    {text}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">",
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>"
+    </div>
+    """
+    return HTML(html)

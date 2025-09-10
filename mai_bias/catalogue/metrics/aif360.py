@@ -345,28 +345,27 @@ def aif360(
         </style>
     """
 
-    # Now safely embed everything in the f-string
     html = f"""
+    <div class="container">
     <h1>AIF360 Fairness Report</h1>
     {faq_style}
     <hr/>
     <div class="faq-container">
         <div class="faq-box">
               <h3>❓ What is this?</h3>
-              This is a fairness report computed with MAI-BIAS using the AIF360 library. 
-              Results correspond to specific dataset and model loaders and parameters.
+              <p>This is a fairness report compiled with a MAI-BIAS module using the AIF360 library. 
+              Results correspond to specific dataset and model loaders and parameters.</p>
               <br/>
-              <br/>
-              You can see various metrics, grouped into those that assess the overall 
+              <p>You can see various metrics, grouped into those that assess the overall 
               model, and those that are computed for each protected group, each corresponding to
               a sensitive attribute value (see summary). Metric values should ideally be 
               similar across groups for models to be considered fair. Do not neglect performance, 
               and, after looking at everything, focus only on equalizing measures 
               that matter for your application context
-              - it is impossible to optimize for everything. 
+              - it is impossible to optimize for everything.</p>
         </div>
         <div class="faq-box">
-              <h3>❓ Summary</h3>
+              <h3>❗ Summary</h3>
                 <p>This report shows metric distributions across sensitive groups. See
                 <a href="https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html" 
                 target="_blank">AIF360 metric documentation</a> for metric definitions. Some fairness
@@ -377,17 +376,19 @@ def aif360(
                   <i>{', '.join(sensitive).replace('_', ' ')}</i><br>
                 </details>
                 <details>
-                  <summary>Metrics</summary>
+                  <summary>Computed metrics</summary>
                   <i>{metrics_table}</i><br>
                 </details>
                 {('<p class="text-warning"><br><i>Some sensitive attributes that were not '
-                  'binary have been automatically expanded via one-hot encoding.'
+                  'binary have been automatically expanded to their one-hot encoding.'
                   '</i></p>'if original_sensitive_len != len(sensitive) else '')}
+                <br>
+                <p><b>Results require manual inspection to identify problematic values or imbalances.</b></p>
         </div>
     </div>
     <hr/>
     {render_metric_bars(rows, sensitive)}
     <div class="mt-4">{dataset.to_description()}</div>
+    </div>
     """
-
     return HTML(html)

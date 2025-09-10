@@ -63,14 +63,66 @@ def facex_regions(
     assert "," not in target_layer, "Only one model layer can be analysed"
     target_class = int(target_class)
     html = run_mammoth(dataset, sensitive[0], target_class, model.model, target_layer)
-    html = (
-        """
-    <h1>Image explanations</h1>
-    <p>FaceX analysed 19 facial regions and accessories to provide explanations. In the two illustrations below,
-    left are face regions and right are hat and glasses. Blue are the least important regions and red the most
-    important ones that are taken into account. Based on the outputs, try to the question of “where does a model
-    focus on?”. We also show high-impact patches to help understand “what visual features trigger its focus?”.</p>
+
+    faq_html = """
+    <style>
+    .faq-container {
+      max-width: 600px;
+      margin: 20px auto;
+      font-family: Arial, sans-serif;
+    }
+    .faq-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+    .faq-box h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .faq-box p {
+      margin: 0;
+      color: #555;
+    }
+    </style>
+
+    <div class="faq-container">
+        <div class="faq-box">
+            <h3>❓ What is this?</h3>
+            <p>This collection of visual explanations is produced by MAI-BIAS using 
+            the <a href="https://github.com/gsarridis/faceX" target="_blank">FaceX</a> library
+            to explain how face attribute classifiers make decisions. It evaluates 19 facial regions 
+            such as eyes, nose, mouth, hair, and skin, showing which areas influence predictions the most.</p>
+            <br/>
+            <p>Rather than analyzing images one by one, FaceX aggregates activations across the dataset 
+            to reveal common patterns. It highlights high-impact regions and patches, helping identify 
+            potential biases and ensuring greater transparency in how the model interprets faces.</p>
+        </div>
+
+        <div class="faq-box">
+            <h3>❗ Summary</h3>
+            <p>FaceX produces heatmaps where <span style="color:blue;">blue</span> marks less important 
+            regions and <span style="color:red;">red</span> marks highly influential regions. 
+            These maps answer the question: <i>"Where does the model focus?"</i>. 
+            High-impact patches provide further detail on <i>"What visual features trigger this focus?"</i>.</p>
+            <br/>
+            <p>By combining regional importance with patch-level analysis, the report helps spot 
+            possible biases in model reasoning — for example, whether the classifier over-relies 
+            on irrelevant features like accessories instead of actual facial attributes.</p>
+        </div>
+    </div>
     """
-        + html
-    )
+
+    html = f"""
+    <h1>Image explanations</h1>
+    <hr/>
+    {faq_html}
+    <hr/>
+    {html}
+    """
+
     return HTML(html)

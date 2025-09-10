@@ -547,7 +547,7 @@ class Dashboard(Styled):
             grid_layout.addWidget(no_results_label, row, 0, 1, max_cols)
             row += 1
 
-        if len(latest_per_group) <= 1 and self.search_field.text():
+        if len(latest_per_group) <= 1:
             # --- Clear Search Button ---
             clear_search_btn = QPushButton("Back", self)
             clear_search_btn.setCursor(Qt.CursorShape.PointingHandCursor)

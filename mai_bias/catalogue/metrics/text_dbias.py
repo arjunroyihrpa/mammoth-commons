@@ -167,6 +167,54 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     biased_words_list = custom_recognizer(text)
     suggestions = custom_debiasing(text)
 
+    faq_html = f"""
+    <style>
+    .faq-container {{
+      max-width: 600px;
+      margin: 20px auto;
+      font-family: Arial, sans-serif;
+    }}
+    .faq-box {{
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+    }}
+    .faq-box h3 {{
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }}
+    .faq-box p {{
+      margin: 0;
+      color: #555;
+    }}
+    </style>
+
+    <div class="faq-container">
+        <div class="faq-box">
+            <h3>❓ What is this?</h3>
+            <p>This module uses the <a href="https://github.com/dreji18/Fairness-in-AI" target="_blank">DBias</a> 
+            library to audit text for biases and propose debiased alternatives. It applies transformer-based 
+            models trained on the <a href="https://github.com/Media-Bias-Group/Neural-Media-Bias-Detection-Using-Distant-Supervision-With-BABE" target="_blank">MBIC dataset</a> 
+            and pretrained language models for English. The output highlights potential biased phrases and 
+            suggests neutral phrasings to mitigate them.</p>
+        </div>
+
+        <div class="faq-box">
+            <h3>❗ Summary</h3>
+            <p>The analysis classifies the input as <strong>{classification[0]['label']}</strong> 
+            with confidence {classification[0]['score']:.3f}. 
+            {f"Biased phrases detected: {', '.join(biased_words_list)}." if biased_words_list else "No biased phrases detected."}</p>
+            <br/>
+            <p>When biases are found, DBias suggests alternative phrasings that reduce potentially harmful wording. 
+            This helps improve fairness and neutrality in textual outputs, making them less prone to reinforcing stereotypes.</p>
+        </div>
+    </div>
+    """
+
     html = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -178,7 +226,9 @@ def text_debias(dataset: Text, model: EmptyModel, sensitive: list[str]) -> HTML:
     <body class="bg-light">
         <div class="container py-5">
             <h1 class="mb-4">{'Biased text fixes' if 'Biased'==classification[0]['label'] else 'Neutral text'}</h1>
-
+            <hr/>
+            {faq_html}
+            <hr/>
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">Original text</div>
                 <div class="card-body">
