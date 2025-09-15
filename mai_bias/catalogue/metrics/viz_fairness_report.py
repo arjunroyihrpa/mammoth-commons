@@ -44,8 +44,6 @@ def viz_fairness_report(
     <p>
         Results are presented in aligned tables with clear formatting, allowing users to compare outcomes across groups at a glance.
         Each metric is briefly explained to help interpret whether the model exhibits performance or outcome disparities for different groups.
-    </p>
-    <p>
         This module is particularly useful in evaluation pipelines, audit reports, and model reviews where transparency and fairness are essential.
         It helps teams assess group-level equity in model behavior using interpretable, tabular summaries.
     </p>

@@ -45,16 +45,11 @@ def viz_fairness_plots(
     <p>
         Interactive charts allow users to hover for precise values, compare metrics between groups, and quickly identify fairness gaps.
         An explanation panel is included to define each metric and guide interpretation.
-    </p>
-    <p>
         This module is well suited for exploratory analysis, presentations, and fairness monitoring.
         It makes group disparities visible and intuitive, helping identify where further scrutiny or mitigation may be needed.
     </p>
     """
-
-    # Import the existing function from mmm-fair
     from mmm_fair_cli.fairlearn_report import generate_reports_from_fairlearn
-    import numpy as np
 
     # 1. Unwrap model if needed
     if hasattr(model, "mmm"):

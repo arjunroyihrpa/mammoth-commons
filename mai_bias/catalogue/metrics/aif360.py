@@ -6,6 +6,7 @@ from mammoth_commons.exports import HTML
 from typing import List
 from mammoth_commons.integration import metric
 from mammoth_commons.externals import align_predictions
+from mammoth_commons.integration_callback import notify_progress, notify_end
 import json
 
 
@@ -197,10 +198,7 @@ def aif360(
         "Between Group CV": "between_group_coefficient_of_variation",
         "Between Group GEI": "between_group_generalized_entropy_index",
         "Between Group Theil Index": "between_group_theil_index",
-        # "Binary Confusion Matrix": "binary_confusion_matrix",
         "Coefficient of Variation": "coefficient_of_variation",
-        # "Consistency": "consistency",
-        # "Difference": "difference",
         "Bias Amplification": "differential_fairness_bias_amplification",
         "Disparate Impact": "disparate_impact",
         "Equal Opportunity Difference": "equal_opportunity_difference",
@@ -220,14 +218,12 @@ def aif360(
         "False Positive Rate": "false_positive_rate",
         "False Positive Rate Difference": "false_positive_rate_difference",
         "False Positive Rate Ratio": "false_positive_rate_ratio",
-        # "Gen. Binary Confusion Matrix": "generalized_binary_confusion_matrix",
         "Gen. Entropy Index": "generalized_entropy_index",
         "Gen. Equalized Odds Difference": "generalized_equalized_odds_difference",
         "Gen. False Negative Rate": "generalized_false_negative_rate",
         "Gen. False Positive Rate": "generalized_false_positive_rate",
         "Gen. True Negative Rate": "generalized_true_negative_rate",
         "Gen. True Positive Rate": "generalized_true_positive_rate",
-        # "Mean Difference": "mean_difference",
         "Negative Predictive Value": "negative_predictive_value",
         "Num False Negatives": "num_false_negatives",
         "Num False Positives": "num_false_positives",
@@ -242,23 +238,16 @@ def aif360(
         "Num Pred. Positives": "num_pred_positives",
         "Num True Negatives": "num_true_negatives",
         "Num True Positives": "num_true_positives",
-        # "Performance Measures": "performance_measures",
         "Positive Predictive Value": "positive_predictive_value",
-        # "Power": "power",
-        # "Precision": "precision",
-        # "Ratio": "ratio",
-        # "Recall": "recall",
-        # "Rich Subgroup": "rich_subgroup",
         "Selection Rate": "selection_rate",
-        # "Sensitivity": "sensitivity",
         "Smoothed EDF": "smoothed_empirical_differential_fairness",
-        # "Specificity": "specificity",
         "Statistical Parity Difference": "statistical_parity_difference",
         "Theil Index": "theil_index",
         "True Negative Rate": "true_negative_rate",
         "True Positive Rate": "true_positive_rate",
         "True Positive Rate Difference": "true_positive_rate_difference",
     }
+    prog = 0
     for attr in sensitive:
         privileged = [{attr: 1}]
         unprivileged = [{attr: 0}]
@@ -268,8 +257,12 @@ def aif360(
             aif_dataset_true, aif_dataset_pred, unprivileged, privileged
         )
         metrics = dict()
-
         for label, method in classification_metrics.items():
+            notify_progress(
+                float(prog) / len(classification_metrics) / len(sensitive),
+                f"Analyzing attribute {attr} under metric {label}",
+            )
+            prog += 1
             try:
                 value = getattr(metric_obj, method)()
                 if isinstance(value, (int, float, np.number)):
@@ -282,7 +275,7 @@ def aif360(
                 metrics[label] = math.nan
         metrics_by_group[attr] = metrics
         all_metric_names.update(metrics_by_group[attr].keys())
-
+    notify_end()
     all_metric_names = sorted(all_metric_names)
     rows = []
     for metric in all_metric_names:
