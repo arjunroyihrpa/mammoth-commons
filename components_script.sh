@@ -36,6 +36,8 @@ kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/n
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/onnx_ensemble.py
 docker system prune -a --force --volumes
+kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/ollama.py
+docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/onnx.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/pytorch.py
@@ -45,11 +47,13 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/model_loaders/trivial_predictor.py
 docker system prune -a --force --volumes
 
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/aif360.py
+docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/augmentation_report.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/bias_scan.py
 docker system prune -a --force --volumes
-kfp component build . --component-filepattern mai_bias/catalogue/metrics/aif360.py
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/croissant.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/image_bias_analysis.py
 docker system prune -a --force --volumes
@@ -58,6 +62,8 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/model_card.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/multi_objective_report.py
+docker system prune -a --force --volumes
+kfp component build . --component-filepattern mai_bias/catalogue/metrics/networks_layouts.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern mai_bias/catalogue/metrics/optimal_transport.py
 docker system prune -a --force --volumes

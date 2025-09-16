@@ -1,9 +1,11 @@
 from mammoth_commons.datasets import CSV
+from mammoth_commons.externals import prepare
 from mammoth_commons.integration import loader, Options
-import pandas as pd
 
 
-def data_local(raw_data: pd.DataFrame, target: str = None) -> CSV:
+def data_local(raw_data, target: str = None) -> CSV:
+    import pandas as pd
+
     numeric = [
         col
         for col in raw_data
@@ -14,7 +16,7 @@ def data_local(raw_data: pd.DataFrame, target: str = None) -> CSV:
     categorical = [col for col in raw_data if col not in numeric_set]
     if len(categorical) < 1:
         raise Exception("At least one categorical column is required.")
-    if target is None:
+    if not target:
         if "class" in categorical:
             target = "class"
         elif "Class" in categorical:
@@ -25,11 +27,11 @@ def data_local(raw_data: pd.DataFrame, target: str = None) -> CSV:
             target = "y"
         else:
             target = categorical[-1]
+    label = raw_data[target].copy()
     if target in categorical:
         categorical.remove(target)
     elif target in numeric:
         numeric.remove(target)
-    label = raw_data[target].copy()
     raw_data = raw_data.drop(columns=[target])
     return CSV(raw_data, num=numeric, cat=categorical, labels=label)
 
@@ -62,9 +64,21 @@ def data_read_any(
         dataset_path: Path or URL to the dataset file. Must have one of the supported extensions.
         target: The name of the column to treat as the predictive label.
     """
+    import csv
+    import pandas as pd
+
+    dataset_path = prepare(dataset_path)
     try:
         if dataset_path.endswith(".csv"):
-            df = pd.read_csv(dataset_path)
+            try:
+                with open(dataset_path, "r") as file:
+                    sample = file.read(1024)
+                    sniffer = csv.Sniffer()
+                    delimiter = sniffer.sniff(sample).delimiter
+                    delimiter = str(delimiter)
+            except Exception:
+                delimiter = None
+            df = pd.read_csv(dataset_path, delimiter=delimiter)
         elif dataset_path.endswith(".xls", ".xlsx", ".xlsm", ".xlsb", ".odf", ".ods"):
             df = pd.read_excel(dataset_path)
         elif dataset_path.endswith(".json"):
@@ -72,5 +86,7 @@ def data_read_any(
         elif dataset_path.endswith(".html", ".htm"):
             df = pd.read_html(dataset_path)
         return data_local(df, target)
-    except:
-        raise ValueError("Could not read data. Unsupported or invalid format.")
+    except Exception as e:
+        raise ValueError(
+            f"Could not read data. Unsupported or invalid format for: {dataset_path}"
+        )

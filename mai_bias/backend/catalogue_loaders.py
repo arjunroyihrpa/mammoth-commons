@@ -52,7 +52,6 @@ registry = Registry(desktopmode=False)
 
 registry.data(data_auto_csv)
 registry.data(data_uci)
-registry.data(data_read_any)
 registry.data(data_custom_csv)
 registry.data(data_csv_rankings)
 registry.data(data_researchers)
@@ -60,6 +59,7 @@ registry.data(data_graph)
 registry.data(data_images)
 registry.data(data_image_pairs)
 registry.data(data_free_text)
+registry.data(data_read_any)
 
 registry.model(
     no_model,
