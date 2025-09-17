@@ -44,6 +44,8 @@ class Image(ImageLike):
             shuffle (bool): Set to True to have the data reshuffled every time they are obtained.
             num_workers (int): Number of subprocesses to use for data loading.
         """
+        target = str(target)
+        cols = [str(col) for col in cols]
 
         assert target in cols, f"Target {target} not one of the columns: " + ",".join(
             cols
