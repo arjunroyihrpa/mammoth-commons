@@ -65,6 +65,7 @@ def data_read_any(
         target: The name of the column to treat as the predictive label.
     """
     import csv
+    import string
     import pandas as pd
 
     dataset_path = prepare(dataset_path)
@@ -76,6 +77,13 @@ def data_read_any(
                     sniffer = csv.Sniffer()
                     delimiter = sniffer.sniff(sample).delimiter
                     delimiter = str(delimiter)
+                    if delimiter in string.ascii_letters:
+                        common_delims = [",", ";", "|", "\t"]
+                        counts = {d: sample.count(d) for d in common_delims}
+                        # pick the one with highest count, fallback to ","
+                        delimiter = (
+                            max(counts, key=counts.get) if any(counts.values()) else ","
+                        )
             except Exception:
                 delimiter = None
             df = pd.read_csv(dataset_path, delimiter=delimiter)

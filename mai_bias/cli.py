@@ -1,5 +1,7 @@
 import json
 import re
+import string
+
 import readchar
 import os
 import glob
@@ -44,6 +46,15 @@ def find_columns(path, delimiter):
                     sniffer = csv.Sniffer()
                     delimiter = sniffer.sniff(sample).delimiter
                     delimiter = str(delimiter)
+                    import string
+
+                    if delimiter in string.ascii_letters:
+                        common_delims = [",", ";", "|", "\t"]
+                        counts = {d: sample.count(d) for d in common_delims}
+                        # pick the one with highest count, fallback to ","
+                        delimiter = (
+                            max(counts, key=counts.get) if any(counts.values()) else ","
+                        )
             except Exception as e:
                 delimiter = ","
         df = pd_read_csv(path, nrows=3, on_bad_lines="skip", delimiter=delimiter)
@@ -378,12 +389,20 @@ class Step:
             return default
         try:
             import csv
+            import string
 
             with open(path, "r") as file:
                 sample = file.read(4096)
                 sniffer = csv.Sniffer()
                 delimiter = sniffer.sniff(sample).delimiter
                 delimiter = str(delimiter)
+                if delimiter in string.ascii_letters:
+                    common_delims = [",", ";", "|", "\t"]
+                    counts = {d: sample.count(d) for d in common_delims}
+                    # pick the one with highest count, fallback to ","
+                    delimiter = (
+                        max(counts, key=counts.get) if any(counts.values()) else ","
+                    )
                 return delimiter
         except Exception as e:
             print(

@@ -217,6 +217,17 @@ class Step(Styled):
                             sniffer = csv.Sniffer()
                             delimiter = sniffer.sniff(sample).delimiter
                             delimiter = str(delimiter)
+                            import string
+
+                            if delimiter in string.ascii_letters:
+                                common_delims = [",", ";", "|", "\t"]
+                                counts = {d: sample.count(d) for d in common_delims}
+                                # pick the one with highest count, fallback to ","
+                                delimiter = (
+                                    max(counts, key=counts.get)
+                                    if any(counts.values())
+                                    else ","
+                                )
                     except Exception as e:
                         delimiter = ","
                 df = pd_read_csv(
@@ -525,6 +536,17 @@ class Step(Styled):
                         sniffer = csv.Sniffer()
                         delimiter = sniffer.sniff(sample).delimiter
                         delimiter = str(delimiter)
+                        import string
+
+                        if delimiter in string.ascii_letters:
+                            common_delims = [",", ";", "|", "\t"]
+                            counts = {d: sample.count(d) for d in common_delims}
+                            # pick the one with highest count, fallback to ","
+                            delimiter = (
+                                max(counts, key=counts.get)
+                                if any(counts.values())
+                                else ","
+                            )
                         input_widget.setText(delimiter)
                 except Exception as e:
                     QMessageBox.warning(

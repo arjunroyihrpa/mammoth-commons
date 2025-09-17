@@ -217,6 +217,7 @@ def prepare(url, cache=".cache"):
 def pd_read_csv(url, **kwargs):
     import pandas as pd
     import csv
+    import string
 
     path = prepare(url)
     if "delimiter" in kwargs:
@@ -227,6 +228,10 @@ def pd_read_csv(url, **kwargs):
             sniffer = csv.Sniffer()
             delimiter = sniffer.sniff(sample).delimiter
             delimiter = str(delimiter)
+            if delimiter in string.ascii_letters:
+                common_delims = [",", ";", "|", "\t"]
+                counts = {d: sample.count(d) for d in common_delims}
+                delimiter = max(counts, key=counts.get) if any(counts.values()) else ","
     except Exception:
         delimiter = None
     return pd.read_csv(path, delimiter=delimiter, **kwargs)
